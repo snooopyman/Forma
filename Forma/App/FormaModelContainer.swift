@@ -29,19 +29,26 @@ enum FormaModelContainer {
 
     private static func makeConfiguration(for schema: Schema) -> ModelConfiguration {
         guard let storeURL = appGroupStoreURL() else {
-            // Fallback: simulator sin App Group configurado o primer arranque sin entitlements
             Logger.core.warning("App Group no disponible — usando ubicación por defecto")
             return ModelConfiguration(
                 schema: schema,
-                cloudKitDatabase: .private(cloudKitIdentifier)
+                cloudKitDatabase: cloudKitDatabase
             )
         }
 
         return ModelConfiguration(
             schema: schema,
             url: storeURL,
-            cloudKitDatabase: .private(cloudKitIdentifier)
+            cloudKitDatabase: cloudKitDatabase
         )
+    }
+
+    private static var cloudKitDatabase: ModelConfiguration.CloudKitDatabase {
+        #if targetEnvironment(simulator)
+        .none
+        #else
+        .private(cloudKitIdentifier)
+        #endif
     }
 
     private static func appGroupStoreURL() -> URL? {

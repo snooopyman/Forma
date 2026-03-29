@@ -35,7 +35,7 @@ struct NutritionProgressBar: View {
                     .animation(.spring(duration: 0.4), value: progress)
             }
         }
-        .accessibilityValue("\(Int(progress * 100))%")
+        .accessibilityValue(Text(verbatim: progress.formatted(.percent.precision(.fractionLength(0)))))
     }
 }
 

@@ -16,7 +16,7 @@ struct FormaApp: App {
         WindowGroup {
             Group {
                 if let container {
-                    Text("Forma")
+                    MainTabView()
                         .environment(container)
                 } else if containerError != nil {
                     ContentUnavailableView(

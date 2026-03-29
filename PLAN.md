@@ -1,6 +1,6 @@
 # Forma — Plan de Desarrollo
 
-Estado actual: → **Fase 3**
+Estado actual: → **Fase 4**
 
 ---
 
@@ -45,11 +45,11 @@ Estado actual: → **Fase 3**
 
 ---
 
-## Fase 3 — Navigation shell
-- [ ] MainTabView con 4 tabs (Tab API iOS 26)
-- [ ] NavigationStack por módulo
-- [ ] Placeholder views compilables
-- [ ] AppContainer inyectado via `@Environment` desde FormaApp
+## Fase 3 — Navigation shell ✅
+- [x] MainTabView con 4 tabs (Tab API iOS 26)
+- [x] NavigationStack por módulo
+- [x] Placeholder views compilables
+- [x] AppContainer inyectado via `@Environment` desde FormaApp
 
 ---
 
