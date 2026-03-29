@@ -7,7 +7,7 @@ disable-model-invocation: true
 Crea una nueva pantalla SwiftUI para: $ARGUMENTS
 
 1. Identifica a qué Feature pertenece y en qué subcarpeta de `Features/` debe vivir
-2. Lee el spec en `.claude/specs/features/` si existe para esta pantalla, y `.claude/specs/design/CLAUDE.md` para las reglas de diseño
+2. Lee `.claude/specs/design/CLAUDE.md` para reglas de diseño y `.claude/specs/patterns/ui-patterns.md` para patrones de ViewModel/View. Si existe un spec en `.claude/specs/features/` para esta pantalla, léelo también.
 3. Crea `Features/<Modulo>/<Nombre>/$ARGUMENTSView.swift` — View pasiva, sin lógica de negocio
 4. Si la pantalla tiene estado o lógica no trivial, crea `Features/<Modulo>/<Nombre>/$ARGUMENTSViewModel.swift`:
    - `@MainActor @Observable final class $ARGUMENTSViewModel`

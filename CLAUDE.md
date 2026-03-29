@@ -70,7 +70,7 @@ Forma/
 - Repositories: protocolo termina en `RepositoryProtocol`, implementación en `Repository`
 - Services: terminan en `Service` (ej: `HealthKitService`, `VolumeCalculatorService`)
 - Modelos SwiftData: nombres en singular sin sufijo (ej: `Mesocycle`, `WorkoutSession`)
-- Comentarios en español, explicando el POR QUÉ, no el qué
+- Comentarios siempre en inglés, solo cuando la lógica no es evidente; `// MARK: -` obligatorio en todos los archivos
 - Colores y fuentes: siempre desde `DesignSystem/`, nunca hardcoded
 - SF Symbols: siempre usar `Image(systemName:)`, nunca assets custom para iconos de sistema
 
@@ -101,37 +101,7 @@ DS.Spacing.xl  → 24
 DS.Spacing.xxl → 32
 ```
 
-## Diseño — Liquid Glass (iOS 26)
-- Glass SOLO en capa de navegación: FABs, botones flotantes, sheets, tab bar, nav bar
-- Glass NUNCA en capa de contenido: cards, list rows, ScrollViews, fondos
-- `.glassEffect()` siempre es el ÚLTIMO modificador de layout
-- CTA primario: `.buttonStyle(.glassProminent)` con tint azul `#0A7AFF`
-- Acción secundaria: `.buttonStyle(.glass)`
-- Múltiples glass adyacentes: siempre dentro de `GlassEffectContainer`
-- TabView y NavigationStack ya tienen glass automático — no añadir `.glassEffect()` encima
-- Fondo app: `#F5F5F5` (nunca blanco puro), cards: `#FFFFFF`
-
-## Tokens de color (siempre desde `Color+DesignSystem.swift`)
-
-| Token | Light | Dark | Uso |
-|-------|-------|------|-----|
-| `.accent` | `#0A7AFF` | `#0A84FF` | CTAs, progreso activo, tint principal |
-| `.success` | `#34C759` | `#30D158` | Series completadas, metas |
-| `.warning` | `#FF9500` | `#FF9F0A` | Volumen bajo óptimo |
-| `.error` | `#FF3B30` | `#FF453A` | Volumen sobre MRV, errores |
-| `.macroProtein` | `#007AFF` | `#0A84FF` | Anillo y badge proteína |
-| `.macroCarbs` | `#FF9500` | `#FF9F0A` | Anillo y badge carbohidratos |
-| `.macroFat` | `#FFCC00` | `#FFD60A` | Anillo y badge grasa |
-| `.backgroundPrimary` | `#F5F5F5` | `#000000` | Fondo de pantalla |
-| `.backgroundCard` | `#FFFFFF` | `#1C1C1E` | Cards y list rows |
-| `.backgroundSecondary` | `#EBEBEB` | `#2C2C2E` | Superficies secundarias |
-| `.textPrimary` | `#1C1C1E` | `#FFFFFF` | Texto principal |
-| `.textSecondary` | `#6C6C70` | `#8E8E93` | Subtítulos, metadatos |
-| `.textTertiary` | `#AEAEB2` | `#636366` | Solo decorativo |
-| `.textOnAccent` | `#FFFFFF` | `#FFFFFF` | Texto sobre fondos de acento |
-| `.borderSubtle` | `#E5E5EA` | `#38383A` | Bordes sutiles, separadores |
-
-**Grupos musculares:** `Color.muscleGroup("chest")` — definidos en `Color+DesignSystem.swift` como colores adaptativos del sistema.
+Tokens de color, Liquid Glass y SF Symbols completos → `.claude/specs/design/CLAUDE.md`
 
 ## Modelos de datos clave
 - `UserProfile` — perfil único, altura/peso/edad para cálculos
@@ -179,8 +149,9 @@ CloudKit usa el Apple ID de iCloud del dispositivo como identidad. Sin login pro
 |-----------|-------|
 | Feature nueva | Spec en `.claude/specs/features/` → crítica → implementa → `/review` → commit |
 | Bug / tarea pequeña | Describe el problema → implementa → `/review` → commit |
-| Pantalla nueva | Di "Lee design/CLAUDE.md" → `/new-screen Nombre` |
+| Pantalla nueva | `/new-screen Nombre` (lee design + ui-patterns automáticamente) |
 | Duda de arquitectura | Pide que lea `.claude/specs/decisions/` |
+| Patrón de implementación | Lee `.claude/specs/patterns/` (ui-patterns, data-patterns, testing, utilities) |
 | Estado general del proyecto | Lee `forma-prd.md` sección 12 |
 
 ## Lo que está fuera de alcance en MVP

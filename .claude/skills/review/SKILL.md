@@ -45,3 +45,5 @@ Haz code review verificando:
 22. ¿`bodyFatPercent` o `bmi` persistidos como campo en vez de `@Transient`?
 
 Para cada problema encontrado: archivo, número de línea aproximado, qué está mal y cómo corregirlo.
+
+Referencia de patrones: `.claude/specs/patterns/` (ui-patterns, data-patterns, testing, utilities)
