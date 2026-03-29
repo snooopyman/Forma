@@ -1,3 +1,10 @@
+//
+//  MacroRingView.swift
+//  Forma
+//
+//  Created by Armando Cáceres on 29/3/26.
+//
+
 import SwiftUI
 import Charts
 

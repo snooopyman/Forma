@@ -1,3 +1,10 @@
+//
+//  UserProfileRepositoryProtocol.swift
+//  Forma
+//
+//  Created by Armando Cáceres on 29/3/26.
+//
+
 import Foundation
 
 protocol UserProfileRepositoryProtocol: Sendable {
