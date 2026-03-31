@@ -1,6 +1,6 @@
 # Forma — Plan de Desarrollo
 
-Estado actual: → **Fase 5**
+Estado actual: → **Fase 6**
 
 ---
 
@@ -66,11 +66,11 @@ Estado actual: → **Fase 5**
 
 ---
 
-## Fase 5 — Live Activity (temporizador descanso)
-- [ ] RestTimerAttributes (ActivityAttributes)
-- [ ] Lock Screen layout
-- [ ] Dynamic Island compact + expanded
-- [ ] AsyncStream countdown + háptica
+## Fase 5 — Live Activity (temporizador descanso) ✅
+- [x] RestTimerAttributes (ActivityAttributes)
+- [x] Lock Screen layout
+- [x] Dynamic Island compact + expanded + minimal
+- [x] Countdown con Task + háptica básica (3 pulsos → Fase 12)
 
 ---
 

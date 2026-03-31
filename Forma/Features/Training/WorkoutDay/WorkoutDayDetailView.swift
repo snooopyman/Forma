@@ -87,6 +87,7 @@ struct WorkoutDayDetailView: View {
                 workoutDay: viewModel.workoutDay,
                 sessionService: container.workoutSessionService,
                 volumeCalculatorService: container.volumeCalculatorService,
+                restTimerActivityService: container.restTimerActivityService,
                 onDone: { activeSession = nil }
             )
         }

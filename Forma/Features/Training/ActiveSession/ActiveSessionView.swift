@@ -28,12 +28,14 @@ struct ActiveSessionView: View {
         workoutDay: WorkoutDay,
         sessionService: WorkoutSessionServiceProtocol,
         volumeCalculatorService: VolumeCalculatorServiceProtocol,
+        restTimerActivityService: RestTimerActivityServiceProtocol,
         onDone: @escaping () -> Void
     ) {
         _viewModel = State(initialValue: ActiveSessionViewModel(
             session: session,
             workoutDay: workoutDay,
-            sessionService: sessionService
+            sessionService: sessionService,
+            restTimerActivityService: restTimerActivityService
         ))
         self.volumeCalculatorService = volumeCalculatorService
         self.onDone = onDone
@@ -127,6 +129,15 @@ struct ActiveSessionView: View {
                 try? await Task.sleep(for: .seconds(1))
                 elapsedTime = Date.now.timeIntervalSince(viewModel.session.startedAt)
             }
+        }
+        .sensoryFeedback(.impact(weight: .heavy, intensity: 0.8), trigger: viewModel.isResting) { _, new in
+            new == true
+        }
+        .sensoryFeedback(.success, trigger: viewModel.restJustEnded) { _, new in
+            new == true
+        }
+        .onChange(of: viewModel.restJustEnded) { _, new in
+            if new { viewModel.restJustEnded = false }
         }
     }
 
@@ -428,6 +439,7 @@ private struct ActiveSessionPreviewWrapper: View {
                 workoutDay: day,
                 sessionService: container.workoutSessionService,
                 volumeCalculatorService: container.volumeCalculatorService,
+                restTimerActivityService: container.restTimerActivityService,
                 onDone: {}
             )
         }

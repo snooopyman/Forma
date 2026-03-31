@@ -18,6 +18,9 @@ final class ActiveSessionViewModel {
     private let sessionService: WorkoutSessionServiceProtocol
 
     @ObservationIgnored
+    private let restTimerActivityService: RestTimerActivityServiceProtocol
+
+    @ObservationIgnored
     private var restTimerTask: Task<Void, Never>?
 
     // MARK: - Properties
@@ -39,6 +42,7 @@ final class ActiveSessionViewModel {
 
     var restSecondsRemaining = 0
     var isResting = false
+    var restJustEnded = false
 
     // MARK: - Computed Properties
 
@@ -61,10 +65,16 @@ final class ActiveSessionViewModel {
 
     // MARK: - Initializers
 
-    init(session: WorkoutSession, workoutDay: WorkoutDay, sessionService: WorkoutSessionServiceProtocol) {
+    init(
+        session: WorkoutSession,
+        workoutDay: WorkoutDay,
+        sessionService: WorkoutSessionServiceProtocol,
+        restTimerActivityService: RestTimerActivityServiceProtocol
+    ) {
         self.session = session
         self.workoutDay = workoutDay
         self.sessionService = sessionService
+        self.restTimerActivityService = restTimerActivityService
     }
 
     // MARK: - Functions
@@ -136,6 +146,7 @@ final class ActiveSessionViewModel {
         do {
             try await sessionService.completeSession(session)
             restTimerTask?.cancel()
+            await restTimerActivityService.endActivity()
             isCompleted = true
         } catch {
             Logger.training.error("Failed to complete session: \(error, privacy: .private)")
@@ -146,6 +157,7 @@ final class ActiveSessionViewModel {
     func discardSession() async {
         do {
             restTimerTask?.cancel()
+            await restTimerActivityService.endActivity()
             try await sessionService.discardSession(session)
             isCompleted = true
         } catch {
@@ -173,6 +185,7 @@ final class ActiveSessionViewModel {
         restTimerTask?.cancel()
         restSecondsRemaining = 0
         isResting = false
+        Task { await restTimerActivityService.endActivity() }
     }
 
     // MARK: - Private Functions
@@ -183,14 +196,21 @@ final class ActiveSessionViewModel {
         restSecondsRemaining = seconds
         isResting = true
 
+        let exerciseName = currentExercise?.exercise?.name ?? ""
+
         restTimerTask = Task { [weak self] in
+            guard let self else { return }
+            await restTimerActivityService.startActivity(exerciseName: exerciseName, seconds: seconds)
+
             for remaining in stride(from: seconds - 1, through: 0, by: -1) {
                 try? await Task.sleep(for: .seconds(1))
                 guard !Task.isCancelled else { break }
-                self?.restSecondsRemaining = remaining
+                restSecondsRemaining = remaining
             }
-            if !(Task.isCancelled) {
-                self?.isResting = false
+            if !Task.isCancelled {
+                isResting = false
+                restJustEnded = true
+                await restTimerActivityService.endActivity()
             }
         }
     }

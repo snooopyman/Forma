@@ -24,6 +24,7 @@ final class AppContainer {
 
     let workoutSessionService: WorkoutSessionServiceProtocol
     let volumeCalculatorService: VolumeCalculatorServiceProtocol
+    let restTimerActivityService: RestTimerActivityServiceProtocol
 
     // MARK: - Initializers
 
@@ -37,5 +38,6 @@ final class AppContainer {
         self.foodItemRepository = FoodItemRepository(modelContext: modelContext)
         self.workoutSessionService = WorkoutSessionService(sessionRepository: sessionRepo)
         self.volumeCalculatorService = VolumeCalculatorService()
+        self.restTimerActivityService = RestTimerActivityService()
     }
 }
