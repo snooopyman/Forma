@@ -19,16 +19,16 @@ struct MetricTrendCard: View {
         VStack(alignment: .leading, spacing: DS.Spacing.sm) {
             Text(title)
                 .font(.subheadline)
-                .foregroundStyle(Color.textSecondary)
+                .foregroundStyle(.textSecondary)
 
             HStack(alignment: .firstTextBaseline, spacing: DS.Spacing.xs) {
                 Text(verbatim: value)
                     .font(.title2.weight(.semibold).monospacedDigit())
-                    .foregroundStyle(Color.textPrimary)
+                    .foregroundStyle(.textPrimary)
 
                 Text(unit)
                     .font(.caption)
-                    .foregroundStyle(Color.textSecondary)
+                    .foregroundStyle(.textSecondary)
 
                 Spacer()
 
@@ -71,7 +71,7 @@ private struct Sparkline: View {
                     x: .value("Index", index),
                     y: .value("Value", value)
                 )
-                .foregroundStyle(Color.accent)
+                .foregroundStyle(.accent)
                 .interpolationMethod(.catmullRom)
 
                 AreaMark(
@@ -80,7 +80,7 @@ private struct Sparkline: View {
                 )
                 .foregroundStyle(
                     LinearGradient(
-                        colors: [Color.accent.opacity(0.3), Color.accent.opacity(0)],
+                        colors: [.accent.opacity(0.3), .accent.opacity(0)],
                         startPoint: .top,
                         endPoint: .bottom
                     )
@@ -112,5 +112,5 @@ private struct Sparkline: View {
         )
     }
     .padding()
-    .background(Color.backgroundPrimary)
+    .background(.backgroundPrimary)
 }

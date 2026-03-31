@@ -1,6 +1,6 @@
 # Forma — Plan de Desarrollo
 
-Estado actual: → **Fase 4**
+Estado actual: → **Fase 5**
 
 ---
 
@@ -53,16 +53,16 @@ Estado actual: → **Fase 4**
 
 ---
 
-## Fase 4 — Módulo Entreno
-- [ ] MesocycleListView + MesocycleListViewModel
-- [ ] MesocycleDetailView + MesocycleDetailViewModel
-- [ ] WorkoutDayDetailView + WorkoutDayDetailViewModel
-- [ ] ActiveSessionView + ActiveSessionViewModel
-- [ ] PostWorkoutSummaryView
-- [ ] WorkoutSessionService
-- [ ] VolumeCalculatorService
-- [ ] MesocycleRepository (implementación concreta)
-- [ ] WorkoutSessionRepository (implementación concreta)
+## Fase 4 — Módulo Entreno ✅
+- [x] MesocycleListView + MesocycleListViewModel
+- [x] MesocycleDetailView + MesocycleDetailViewModel
+- [x] WorkoutDayDetailView + WorkoutDayDetailViewModel
+- [x] ActiveSessionView + ActiveSessionViewModel
+- [x] PostWorkoutSummaryView
+- [x] WorkoutSessionService
+- [x] VolumeCalculatorService
+- [x] MesocycleRepository (implementación concreta)
+- [x] WorkoutSessionRepository (implementación concreta)
 
 ---
 

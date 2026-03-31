@@ -17,4 +17,8 @@ protocol MesocycleRepositoryProtocol: Sendable {
     func setActive(_ mesocycle: Mesocycle) async throws
     func pause(_ mesocycle: Mesocycle) async throws
     func resume(_ mesocycle: Mesocycle) async throws
+
+    func addWorkoutDay(_ day: WorkoutDay, to mesocycle: Mesocycle) async throws
+    func addPlannedExercise(_ planned: PlannedExercise, exercise: Exercise, to day: WorkoutDay) async throws
+    func deletePlannedExercise(_ planned: PlannedExercise) async throws
 }

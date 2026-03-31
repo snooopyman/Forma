@@ -114,6 +114,11 @@ struct MesocycleListView: View {
     // MARK: - Environment
     @Environment(AppContainer.self) private var container
 
+    // MARK: - Initializers
+    init(repository: MesocycleRepositoryProtocol) {
+        _viewModel = State(initialValue: MesocycleListViewModel(repository: repository))
+    }
+
     // MARK: - Body
     var body: some View {
         NavigationStack {
@@ -156,11 +161,6 @@ struct MesocycleListView: View {
                 await viewModel.loadMesocycles()
             }
         }
-    }
-
-    // MARK: - Initializers
-    init(repository: MesocycleRepositoryProtocol) {
-        _viewModel = State(initialValue: MesocycleListViewModel(repository: repository))
     }
 
     // MARK: - Private Views

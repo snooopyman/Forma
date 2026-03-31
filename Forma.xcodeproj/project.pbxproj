@@ -6,6 +6,11 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		47EC37E52F7A5684009F789A /* PLAN.md in Resources */ = {isa = PBXBuildFile; fileRef = 47EC37E42F7A5684009F789A /* PLAN.md */; };
+		47EC37E62F7A5684009F789A /* CLAUDE.md in Resources */ = {isa = PBXBuildFile; fileRef = 47EC37E32F7A5684009F789A /* CLAUDE.md */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXContainerItemProxy section */
 		47E6DCEC2F7752DD002E8446 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -27,6 +32,8 @@
 		47E6DCDC2F7752DA002E8446 /* Forma.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Forma.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		47E6DCEB2F7752DD002E8446 /* FormaTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = FormaTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		47E6DCF52F7752DD002E8446 /* FormaUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = FormaUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		47EC37E32F7A5684009F789A /* CLAUDE.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = CLAUDE.md; sourceTree = "<group>"; };
+		47EC37E42F7A5684009F789A /* PLAN.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = PLAN.md; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -75,6 +82,8 @@
 		47E6DCD32F7752DA002E8446 = {
 			isa = PBXGroup;
 			children = (
+				47EC37E32F7A5684009F789A /* CLAUDE.md */,
+				47EC37E42F7A5684009F789A /* PLAN.md */,
 				47E6DCDE2F7752DA002E8446 /* Forma */,
 				47E6DCEE2F7752DD002E8446 /* FormaTests */,
 				47E6DCF82F7752DD002E8446 /* FormaUITests */,
@@ -212,6 +221,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				47EC37E52F7A5684009F789A /* PLAN.md in Resources */,
+				47EC37E62F7A5684009F789A /* CLAUDE.md in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

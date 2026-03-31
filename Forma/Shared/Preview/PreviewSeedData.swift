@@ -13,7 +13,8 @@ enum PreviewSeedData {
     static func insert(into context: ModelContext) {
         insertUserProfile(into: context)
         let exercises = insertExercises(into: context)
-        insertMesocycle(with: exercises, into: context)
+        let (mesocycle, workoutDays, plannedExercises) = insertMesocycle(with: exercises, into: context)
+        insertWorkoutSessions(mesocycle: mesocycle, workoutDays: workoutDays, plannedExercises: plannedExercises, into: context)
         let foodItems = insertFoodItems(into: context)
         insertNutritionPlan(with: foodItems, into: context)
         insertBodyMeasurements(into: context)
@@ -54,7 +55,8 @@ enum PreviewSeedData {
 
     // MARK: - Mesocycle
 
-    private static func insertMesocycle(with exercises: [Exercise], into context: ModelContext) {
+    @discardableResult
+    private static func insertMesocycle(with exercises: [Exercise], into context: ModelContext) -> (Mesocycle, [WorkoutDay], [PlannedExercise]) {
         let startDate = Calendar.current.date(byAdding: .day, value: -14, to: .now)!
         let mesocycle = Mesocycle(
             name: "Hipertrofia Bloque 1",
@@ -122,6 +124,58 @@ enum PreviewSeedData {
         rest.mesocycle = mesocycle
 
         mesocycle.workoutDays = [push, pull, legs, rest]
+
+        return (mesocycle, [push, pull, legs, rest], [pe1, pe2, pe3, pe4, pe5, pe6, pe7, pe8, pe9, pe10])
+    }
+
+    // MARK: - Workout Sessions
+
+    private static func insertWorkoutSessions(
+        mesocycle: Mesocycle,
+        workoutDays: [WorkoutDay],
+        plannedExercises: [PlannedExercise],
+        into context: ModelContext
+    ) {
+        let push = workoutDays[0]
+        let pull = workoutDays[1]
+        let pe1 = plannedExercises[0]  // Bench Press
+        let pe3 = plannedExercises[2]  // Overhead Press
+        let pe6 = plannedExercises[5]  // Pull-Up
+
+        // Completed session (Push day, 1 week ago)
+        let completedStart = Calendar.current.date(byAdding: .hour, value: -1, to:
+            Calendar.current.date(byAdding: .day, value: -7, to: .now)!)!
+        let completedEnd = Calendar.current.date(byAdding: .minute, value: 52, to: completedStart)!
+        let completedSession = WorkoutSession(date: completedStart, startedAt: completedStart)
+        completedSession.completedAt = completedEnd
+        completedSession.workoutDay = push
+        completedSession.mesocycle = mesocycle
+        context.insert(completedSession)
+
+        let ls1 = LoggedSet(order: 1, exerciseName: "Bench Press", weightKg: 80, reps: 10, rirActual: 2)
+        let ls2 = LoggedSet(order: 2, exerciseName: "Bench Press", weightKg: 80, reps: 9, rirActual: 1)
+        let ls3 = LoggedSet(order: 3, exerciseName: "Bench Press", weightKg: 77.5, reps: 8, rirActual: 1)
+        let ls4 = LoggedSet(order: 1, exerciseName: "Overhead Press", weightKg: 50, reps: 10, rirActual: 2)
+        [ls1, ls2, ls3].forEach {
+            $0.session = completedSession
+            $0.plannedExercise = pe1
+            context.insert($0)
+        }
+        ls4.session = completedSession
+        ls4.plannedExercise = pe3
+        context.insert(ls4)
+
+        // In-progress session (Pull day, started 20 min ago)
+        let inProgressStart = Calendar.current.date(byAdding: .minute, value: -20, to: .now)!
+        let inProgress = WorkoutSession(date: inProgressStart, startedAt: inProgressStart)
+        inProgress.workoutDay = pull
+        inProgress.mesocycle = mesocycle
+        context.insert(inProgress)
+
+        let ls5 = LoggedSet(order: 1, exerciseName: "Pull-Up", weightKg: 0, reps: 12, rirActual: 2)
+        ls5.session = inProgress
+        ls5.plannedExercise = pe6
+        context.insert(ls5)
     }
 
     private static func makePlannedExercise(

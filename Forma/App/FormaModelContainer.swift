@@ -17,19 +17,22 @@ enum FormaModelContainer {
     private static let databaseFilename = "Forma.sqlite"
     private static let cloudKitIdentifier = "iCloud.com.armando.forma"
 
-    // MARK: - Functions
-
-    static func make() throws -> ModelContainer {
+    static let shared: ModelContainer? = {
         let schema = Schema(FormaSchema.models)
         let configuration = makeConfiguration(for: schema)
-        return try ModelContainer(for: schema, configurations: [configuration])
-    }
+        do {
+            return try ModelContainer(for: schema, configurations: [configuration])
+        } catch {
+            Logger.core.error("ModelContainer failed: \(error, privacy: .public)")
+            return nil
+        }
+    }()
 
     // MARK: - Private Functions
 
     private static func makeConfiguration(for schema: Schema) -> ModelConfiguration {
         guard let storeURL = appGroupStoreURL() else {
-            Logger.core.warning("App Group no disponible — usando ubicación por defecto")
+            Logger.core.warning("App Group not available — using default location")
             return ModelConfiguration(
                 schema: schema,
                 cloudKitDatabase: cloudKitDatabase

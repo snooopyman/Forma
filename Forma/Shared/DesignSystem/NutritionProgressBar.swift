@@ -27,7 +27,7 @@ struct NutritionProgressBar: View {
         GeometryReader { geo in
             ZStack(alignment: .leading) {
                 RoundedRectangle(cornerRadius: DS.Radius.inner)
-                    .fill(Color.backgroundSecondary)
+                    .fill(.backgroundSecondary)
 
                 RoundedRectangle(cornerRadius: DS.Radius.inner)
                     .fill(barColor)
@@ -35,7 +35,6 @@ struct NutritionProgressBar: View {
                     .animation(.spring(duration: 0.4), value: progress)
             }
         }
-        .accessibilityValue(Text(verbatim: progress.formatted(.percent.precision(.fractionLength(0)))))
     }
 }
 

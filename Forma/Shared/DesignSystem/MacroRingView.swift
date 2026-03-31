@@ -23,15 +23,6 @@ struct MacroRingView: View {
             MacroRing(current: proteinCurrent, goal: proteinGoal, color: .macroProtein, diameter: DS.Sizing.macroRingInner)
         }
         .frame(width: DS.Sizing.macroRingOuter, height: DS.Sizing.macroRingOuter)
-        .accessibilityElement(children: .ignore)
-        .accessibilityLabel(accessibilityDescription)
-    }
-
-    private var accessibilityDescription: String {
-        let p = Int((proteinCurrent / proteinGoal * 100).clamped(to: 0...100))
-        let c = Int((carbsCurrent / carbsGoal * 100).clamped(to: 0...100))
-        let f = Int((fatCurrent / fatGoal * 100).clamped(to: 0...100))
-        return "Macros: protein \(p)%, carbs \(c)%, fat \(f)%"
     }
 }
 

@@ -9,6 +9,10 @@ import SwiftUI
 
 struct MainTabView: View {
 
+    // MARK: - Environment
+
+    @Environment(AppContainer.self) private var container
+
     // MARK: - Body
 
     var body: some View {
@@ -20,7 +24,7 @@ struct MainTabView: View {
             }
             Tab("Training", systemImage: "figure.strengthtraining.traditional") {
                 NavigationStack {
-                    MesocycleListView()
+                    MesocycleListView(mesocycleRepository: container.mesocycleRepository)
                 }
             }
             Tab("Nutrition", systemImage: "fork.knife") {

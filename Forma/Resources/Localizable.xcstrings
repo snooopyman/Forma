@@ -1,13 +1,91 @@
 {
   "sourceLanguage" : "en",
   "strings" : {
+    "%lld sets" : {
+      "comment" : "Label showing a number of sets, e.g. '3 sets'.",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld series"
+          }
+        }
+      }
+    },
+    "%lld weeks" : {
+      "comment" : "Duration label showing a number of weeks, e.g. '6 weeks'.",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld semanas"
+          }
+        }
+      }
+    },
+    "Active" : {
+      "comment" : "Status badge for an active mesocycle.",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Activo"
+          }
+        }
+      }
+    },
+    "Add" : {
+      "comment" : "Generic confirm button to add an item.",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Añadir"
+          }
+        }
+      }
+    },
+    "Add exercise" : {
+      "comment" : "Navigation title, toolbar button label, and accessibility label for adding a planned exercise to a workout day.",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Añadir ejercicio"
+          }
+        }
+      }
+    },
+    "Add workout day" : {
+      "comment" : "Accessibility label for the toolbar button that opens the create workout day sheet.",
+      "extractionState" : "stale",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Añadir día de entreno"
+          }
+        }
+      }
+    },
     "Back" : {
-      "comment" : "Localized name of the \"Back\" photo angle.",
+      "comment" : "Localized name of the back muscle group and the back photo angle.",
       "localizations" : {
         "es" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Espalda"
+          }
+        }
+      }
+    },
+    "Biceps" : {
+      "comment" : "Localized name of the biceps muscle group.",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bíceps"
           }
         }
       }
@@ -19,6 +97,28 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Desayuno"
+          }
+        }
+      }
+    },
+    "Calves" : {
+      "comment" : "Localized name of the calves muscle group.",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gemelos"
+          }
+        }
+      }
+    },
+    "Cancel" : {
+      "comment" : "Generic cancel button label.",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cancelar"
           }
         }
       }
@@ -44,13 +144,58 @@
         }
       }
     },
+    "Chest" : {
+      "comment" : "Localized name of the chest muscle group.",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pecho"
+          }
+        }
+      }
+    },
     "Complete set %lld" : {
       "comment" : "A button that marks a specific exercise set as complete. The placeholder is replaced with the set number.",
+      "extractionState" : "stale",
       "localizations" : {
         "es" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Completar serie %lld"
+          }
+        }
+      }
+    },
+    "Core" : {
+      "comment" : "Localized name of the core muscle group.",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Core"
+          }
+        }
+      }
+    },
+    "Day name" : {
+      "comment" : "Placeholder for the workout day name text field.",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nombre del día"
+          }
+        }
+      }
+    },
+    "Delete" : {
+      "comment" : "Generic delete action label.",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Eliminar"
           }
         }
       }
@@ -62,6 +207,105 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Cena"
+          }
+        }
+      }
+    },
+    "Discard" : {
+      "comment" : "Button to discard an in-progress workout session.",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Descartar"
+          }
+        }
+      }
+    },
+    "Discard workout" : {
+      "comment" : "Menu action to discard the current workout session.",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Descartar entreno"
+          }
+        }
+      }
+    },
+    "Discard workout?" : {
+      "comment" : "Alert title asking user to confirm discarding a workout.",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "¿Descartar el entreno?"
+          }
+        }
+      }
+    },
+    "Done" : {
+      "comment" : "Generic done button label.",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Listo"
+          }
+        }
+      }
+    },
+    "Duration" : {
+      "comment" : "Label for workout session duration.",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Duración"
+          }
+        }
+      }
+    },
+    "Enter valid weight and reps" : {
+      "comment" : "Validation error when logging a set with missing weight or reps.",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Introduce un peso y repeticiones válidos"
+          }
+        }
+      }
+    },
+    "Error" : {
+      "comment" : "Generic error alert title.",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Error"
+          }
+        }
+      }
+    },
+    "Exercise name" : {
+      "comment" : "Placeholder for the exercise name text field.",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nombre del ejercicio"
+          }
+        }
+      }
+    },
+    "exercises" : {
+      "comment" : "Unit label for exercise count.",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ejercicios"
           }
         }
       }
@@ -94,6 +338,50 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Femenino"
+          }
+        }
+      }
+    },
+    "Finish" : {
+      "comment" : "Button to finish and save a workout session.",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Finalizar"
+          }
+        }
+      }
+    },
+    "Finish workout" : {
+      "comment" : "Button to finish the current workout session.",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Finalizar entreno"
+          }
+        }
+      }
+    },
+    "Finish workout?" : {
+      "comment" : "Alert title asking user to confirm finishing a workout.",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "¿Finalizar el entreno?"
+          }
+        }
+      }
+    },
+    "Fixed days" : {
+      "comment" : "Toggle label for assigning fixed weekdays to a mesocycle.",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Días fijos"
           }
         }
       }
@@ -153,6 +441,50 @@
         }
       }
     },
+    "Full Body" : {
+      "comment" : "Localized name of the full body muscle group.",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cuerpo completo"
+          }
+        }
+      }
+    },
+    "Glutes" : {
+      "comment" : "Localized name of the glutes muscle group.",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Glúteos"
+          }
+        }
+      }
+    },
+    "Great workout!" : {
+      "comment" : "Congratulatory headline shown on the post-workout summary.",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "¡Gran entreno!"
+          }
+        }
+      }
+    },
+    "Hamstrings" : {
+      "comment" : "Localized name of the hamstrings muscle group.",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Isquiotibiales"
+          }
+        }
+      }
+    },
     "Index" : {
       "comment" : "Chart x-axis placeholder label.",
       "localizations" : {
@@ -164,6 +496,28 @@
         }
       }
     },
+    "Intensity" : {
+      "comment" : "Form section header for RIR and rest configuration.",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Intensidad"
+          }
+        }
+      }
+    },
+    "Legs" : {
+      "comment" : "Localized name of the legs muscle group.",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Piernas"
+          }
+        }
+      }
+    },
     "Lightly active" : {
       "comment" : "Activity level corresponding to a multiplier of 1.375.",
       "localizations" : {
@@ -171,6 +525,17 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Ligeramente activo"
+          }
+        }
+      }
+    },
+    "Log set" : {
+      "comment" : "Button to log/save a completed exercise set.",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Registrar serie"
           }
         }
       }
@@ -193,6 +558,28 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Masculino"
+          }
+        }
+      }
+    },
+    "Max reps" : {
+      "comment" : "Stepper label for maximum reps per set.",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Reps máximas"
+          }
+        }
+      }
+    },
+    "Min reps" : {
+      "comment" : "Stepper label for minimum reps per set.",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Reps mínimas"
           }
         }
       }
@@ -241,6 +628,117 @@
         }
       }
     },
+    "Muscle group" : {
+      "comment" : "Picker label for selecting the primary muscle group of an exercise.",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Grupo muscular"
+          }
+        }
+      }
+    },
+    "Name" : {
+      "comment" : "Form label for the name field.",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nombre"
+          }
+        }
+      }
+    },
+    "New mesocycle" : {
+      "comment" : "Title for the create mesocycle sheet.",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nuevo mesociclo"
+          }
+        }
+      }
+    },
+    "New workout day" : {
+      "comment" : "Navigation title for the create workout day sheet.",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nuevo día de entreno"
+          }
+        }
+      }
+    },
+    "Next exercise" : {
+      "comment" : "Accessibility label for the next exercise navigation button in the active session.",
+      "extractionState" : "stale",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ejercicio siguiente"
+          }
+        }
+      }
+    },
+    "No exercises" : {
+      "comment" : "Empty state shown when a workout day has no exercises.",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sin ejercicios"
+          }
+        }
+      }
+    },
+    "No exercises configured" : {
+      "comment" : "Placeholder shown when a workout day has no exercises assigned.",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sin ejercicios configurados"
+          }
+        }
+      }
+    },
+    "No mesocycles yet" : {
+      "comment" : "Empty state title for the mesocycle list.",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sin mesociclos todavía"
+          }
+        }
+      }
+    },
+    "No workout days configured" : {
+      "comment" : "Placeholder shown when a mesocycle has no workout days.",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sin días de entreno configurados"
+          }
+        }
+      }
+    },
+    "Not fixed" : {
+      "comment" : "Weekday picker option meaning no fixed day is assigned to the workout.",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sin día fijo"
+          }
+        }
+      }
+    },
     "Nutrition" : {
       "comment" : "Tab bar label for the Nutrition module.",
       "localizations" : {
@@ -263,6 +761,17 @@
         }
       }
     },
+    "OK" : {
+      "comment" : "Generic OK button label.",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aceptar"
+          }
+        }
+      }
+    },
     "Partial" : {
       "comment" : "Adherence status when the user has partially met their nutrition goals.",
       "localizations" : {
@@ -270,6 +779,28 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Parcial"
+          }
+        }
+      }
+    },
+    "Pause" : {
+      "comment" : "Action to pause an active mesocycle.",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pausar"
+          }
+        }
+      }
+    },
+    "Paused" : {
+      "comment" : "Status badge for a paused mesocycle.",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pausado"
           }
         }
       }
@@ -296,6 +827,18 @@
         }
       }
     },
+    "Previous exercise" : {
+      "comment" : "Accessibility label for the previous exercise navigation button in the active session.",
+      "extractionState" : "stale",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ejercicio anterior"
+          }
+        }
+      }
+    },
     "Progress" : {
       "comment" : "Tab bar label for the Progress module.",
       "localizations" : {
@@ -317,6 +860,50 @@
         }
       }
     },
+    "Quads" : {
+      "comment" : "Localized name of the quadriceps muscle group.",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cuádriceps"
+          }
+        }
+      }
+    },
+    "Reps" : {
+      "comment" : "Input label for the reps field in the active session.",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Reps"
+          }
+        }
+      }
+    },
+    "Rest" : {
+      "comment" : "Picker label for selecting rest time between sets.",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Descanso"
+          }
+        }
+      }
+    },
+    "Rest day" : {
+      "comment" : "Label shown for a rest day in the workout schedule.",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Día de descanso"
+          }
+        }
+      }
+    },
     "Restart the app. If the problem persists, reinstall Forma." : {
       "comment" : "Error message shown when the app fails to load its data.",
       "localizations" : {
@@ -328,13 +915,35 @@
         }
       }
     },
-    "RIR %lld" : {
-      "comment" : "Label showing the Reps In Reserve value for an exercise set. RIR is a fitness acronym, do not translate.",
+    "Resume" : {
+      "comment" : "Action to resume a paused mesocycle.",
       "localizations" : {
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "RIR %lld"
+            "value" : "Reanudar"
+          }
+        }
+      }
+    },
+    "Resume session" : {
+      "comment" : "Button to resume an in-progress workout session.",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Continuar sesión"
+          }
+        }
+      }
+    },
+    "Retry" : {
+      "comment" : "Generic retry button shown in error alerts.",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Reintentar"
           }
         }
       }
@@ -361,6 +970,17 @@
         }
       }
     },
+    "Save" : {
+      "comment" : "Generic save button label.",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Guardar"
+          }
+        }
+      }
+    },
     "Sedentary" : {
       "comment" : "Activity level corresponding to a Harris-Benedict multiplier of 1.2.",
       "localizations" : {
@@ -368,6 +988,72 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Sedentario"
+          }
+        }
+      }
+    },
+    "Set" : {
+      "comment" : "Label prefix for a numbered exercise set, e.g. 'Set 3'.",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Serie"
+          }
+        }
+      }
+    },
+    "Set active" : {
+      "comment" : "Swipe action to mark a mesocycle as the active one.",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Activar"
+          }
+        }
+      }
+    },
+    "Set as active" : {
+      "comment" : "Menu action to set a mesocycle as the currently active one.",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Establecer como activo"
+          }
+        }
+      }
+    },
+    "Sets" : {
+      "comment" : "Stepper label for the number of sets of an exercise.",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Series"
+          }
+        }
+      }
+    },
+    "Sets & reps" : {
+      "comment" : "Form section header for sets and repetitions configuration.",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Series y reps"
+          }
+        }
+      }
+    },
+    "Shoulders" : {
+      "comment" : "Localized name of the shoulders muscle group.",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hombros"
           }
         }
       }
@@ -394,6 +1080,17 @@
         }
       }
     },
+    "Skip" : {
+      "comment" : "Button to skip the rest timer.",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Saltar"
+          }
+        }
+      }
+    },
     "Snack" : {
       "comment" : "Name of the Snack meal type.",
       "localizations" : {
@@ -401,6 +1098,39 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Merienda"
+          }
+        }
+      }
+    },
+    "Something went wrong" : {
+      "comment" : "Generic error message shown when an operation fails.",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Algo salió mal"
+          }
+        }
+      }
+    },
+    "Start date" : {
+      "comment" : "Form label for the mesocycle start date field.",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fecha de inicio"
+          }
+        }
+      }
+    },
+    "Start workout" : {
+      "comment" : "Button to start a new workout session.",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Iniciar entreno"
           }
         }
       }
@@ -423,6 +1153,28 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Domingo"
+          }
+        }
+      }
+    },
+    "Tap + to add your first exercise" : {
+      "comment" : "Description in the empty state when a workout day has no exercises.",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pulsa + para añadir tu primer ejercicio"
+          }
+        }
+      }
+    },
+    "Tap + to create your first mesocycle" : {
+      "comment" : "Empty state description for the mesocycle list.",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pulsa + para crear tu primer mesociclo"
           }
         }
       }
@@ -460,6 +1212,39 @@
         }
       }
     },
+    "Total reps" : {
+      "comment" : "Label for total reps stat on the post-workout summary.",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Repeticiones totales"
+          }
+        }
+      }
+    },
+    "Total sets" : {
+      "comment" : "Label for total sets stat on the post-workout summary.",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Series totales"
+          }
+        }
+      }
+    },
+    "Total volume" : {
+      "comment" : "Label for total training volume stat on the post-workout summary.",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Volumen total"
+          }
+        }
+      }
+    },
     "Training" : {
       "comment" : "Tab bar label for the Training module.",
       "localizations" : {
@@ -467,6 +1252,17 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Entreno"
+          }
+        }
+      }
+    },
+    "Triceps" : {
+      "comment" : "Localized name of the triceps muscle group.",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tríceps"
           }
         }
       }
@@ -526,6 +1322,17 @@
         }
       }
     },
+    "Volume by muscle" : {
+      "comment" : "Section title on the post-workout summary showing volume per muscle group.",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Volumen por músculo"
+          }
+        }
+      }
+    },
     "Wed" : {
       "comment" : "Short name for Wednesday.",
       "localizations" : {
@@ -544,6 +1351,73 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Miércoles"
+          }
+        }
+      }
+    },
+    "Week %lld of %lld" : {
+      "comment" : "Progress label showing current week out of total weeks in a mesocycle.",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Semana %lld de %lld"
+          }
+        }
+      }
+    },
+    "Weekday" : {
+      "comment" : "Section header and picker label for selecting a fixed weekday.",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Día de la semana"
+          }
+        }
+      }
+    },
+    "Weight" : {
+      "comment" : "Input label for the weight field in the active session.",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Peso"
+          }
+        }
+      }
+    },
+    "Workout complete" : {
+      "comment" : "Navigation title for the post-workout summary screen.",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Entreno completado"
+          }
+        }
+      }
+    },
+    "Workout days" : {
+      "comment" : "Section header for the list of workout days in a mesocycle.",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Días de entreno"
+          }
+        }
+      }
+    },
+    "Workout options" : {
+      "comment" : "Accessibility label for the ellipsis menu in the active session toolbar.",
+      "extractionState" : "stale",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Opciones del entreno"
           }
         }
       }

@@ -53,4 +53,13 @@ final class WorkoutSessionRepository: WorkoutSessionRepositoryProtocol {
         modelContext.delete(set)
         try modelContext.save()
     }
+
+    func fetchCompleted(for workoutDay: WorkoutDay) async throws -> [WorkoutSession] {
+        let workoutDayID = workoutDay.id
+        let descriptor = FetchDescriptor<WorkoutSession>(
+            predicate: #Predicate { $0.workoutDay?.id == workoutDayID && $0.completedAt != nil },
+            sortBy: [SortDescriptor(\.completedAt, order: .reverse)]
+        )
+        return try modelContext.fetch(descriptor)
+    }
 }

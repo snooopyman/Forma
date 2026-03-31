@@ -16,4 +16,6 @@ protocol WorkoutSessionRepositoryProtocol: Sendable {
 
     func addSet(_ set: LoggedSet, to session: WorkoutSession) async throws
     func deleteSet(_ set: LoggedSet) async throws
+
+    func fetchCompleted(for workoutDay: WorkoutDay) async throws -> [WorkoutSession]
 }

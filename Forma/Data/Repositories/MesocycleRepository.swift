@@ -58,4 +58,23 @@ final class MesocycleRepository: MesocycleRepositoryProtocol {
         mesocycle.resumedAt = .now
         try modelContext.save()
     }
+
+    func addWorkoutDay(_ day: WorkoutDay, to mesocycle: Mesocycle) async throws {
+        modelContext.insert(day)
+        day.mesocycle = mesocycle
+        try modelContext.save()
+    }
+
+    func addPlannedExercise(_ planned: PlannedExercise, exercise: Exercise, to day: WorkoutDay) async throws {
+        modelContext.insert(exercise)
+        modelContext.insert(planned)
+        planned.exercise = exercise
+        planned.workoutDay = day
+        try modelContext.save()
+    }
+
+    func deletePlannedExercise(_ planned: PlannedExercise) async throws {
+        modelContext.delete(planned)
+        try modelContext.save()
+    }
 }

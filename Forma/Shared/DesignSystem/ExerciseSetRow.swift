@@ -26,13 +26,13 @@ struct ExerciseSetRow: View {
             setIndicator
 
             VStack(alignment: .leading, spacing: 2) {
-                Text(verbatim: "\(targetWeight) kg × \(targetReps)")
+                Text(verbatim: "\(targetWeight.asWeight) kg × \(targetReps)")
                     .font(.body.weight(.semibold).monospaced())
                     .foregroundStyle(labelColor)
 
-                Text("RIR \(rir)")
+                Text(verbatim: "RIR \(rir)")
                     .font(.caption)
-                    .foregroundStyle(Color.textSecondary)
+                    .foregroundStyle(.textSecondary)
             }
 
             Spacer()
@@ -41,15 +41,13 @@ struct ExerciseSetRow: View {
                 Button(action: onComplete) {
                     Image(systemName: "checkmark.circle.fill")
                         .font(.title2)
-                        .foregroundStyle(state == .active ? Color.accent : Color.textTertiary)
+                        .foregroundStyle(state == .active ? .accent : .textTertiary)
                 }
                 .frame(minWidth: DS.Sizing.minTapTarget, minHeight: DS.Sizing.minTapTarget)
-                .accessibilityLabel("Complete set \(setNumber)")
             } else {
                 Image(systemName: "checkmark.circle.fill")
                     .font(.title2)
-                    .foregroundStyle(Color.success)
-                    .accessibilityHidden(true)
+                    .foregroundStyle(.success)
             }
         }
         .padding(.horizontal, DS.Spacing.md)
@@ -71,32 +69,32 @@ struct ExerciseSetRow: View {
 
     private var rowBackground: Color {
         switch state {
-        case .pending:   return Color.backgroundCard
-        case .active:    return Color.accent.opacity(0.08)
-        case .completed: return Color.success.opacity(0.08)
+        case .pending:   return .backgroundCard
+        case .active:    return .accent.opacity(0.08)
+        case .completed: return .success.opacity(0.08)
         }
     }
 
     private var labelColor: Color {
         switch state {
-        case .pending:   return Color.textPrimary
-        case .active:    return Color.accent
-        case .completed: return Color.textSecondary
+        case .pending:   return .textPrimary
+        case .active:    return .accent
+        case .completed: return .textSecondary
         }
     }
 
     private var indicatorBackground: Color {
         switch state {
-        case .pending:   return Color.backgroundSecondary
-        case .active:    return Color.accent
-        case .completed: return Color.success
+        case .pending:   return .backgroundSecondary
+        case .active:    return .accent
+        case .completed: return .success
         }
     }
 
     private var indicatorForeground: Color {
         switch state {
-        case .pending:   return Color.textSecondary
-        case .active, .completed: return Color.textOnAccent
+        case .pending:   return .textSecondary
+        case .active, .completed: return .textOnAccent
         }
     }
 }
@@ -108,5 +106,5 @@ struct ExerciseSetRow: View {
         ExerciseSetRow(setNumber: 3, targetReps: 8, targetWeight: 80, rir: 2, state: .pending, onComplete: {})
     }
     .padding()
-    .background(Color.backgroundPrimary)
+    .background(.backgroundPrimary)
 }

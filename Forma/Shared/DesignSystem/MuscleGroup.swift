@@ -40,19 +40,19 @@ enum MuscleGroup: String, CaseIterable, Codable {
 
     var localizedName: String {
         switch self {
-        case .chest:        return "Chest"
-        case .back:         return "Back"
-        case .legs:         return "Legs"
-        case .quadriceps:   return "Quads"
-        case .hamstrings:   return "Hamstrings"
-        case .shoulders:    return "Shoulders"
-        case .biceps:       return "Biceps"
-        case .triceps:      return "Triceps"
-        case .core:         return "Core"
-        case .glutes:       return "Glutes"
-        case .calves:       return "Calves"
-        case .cardio:       return "Cardio"
-        case .fullBody:     return "Full Body"
+        case .chest:        return String(localized: "Chest")
+        case .back:         return String(localized: "Back")
+        case .legs:         return String(localized: "Legs")
+        case .quadriceps:   return String(localized: "Quads")
+        case .hamstrings:   return String(localized: "Hamstrings")
+        case .shoulders:    return String(localized: "Shoulders")
+        case .biceps:       return String(localized: "Biceps")
+        case .triceps:      return String(localized: "Triceps")
+        case .core:         return String(localized: "Core")
+        case .glutes:       return String(localized: "Glutes")
+        case .calves:       return String(localized: "Calves")
+        case .cardio:       return String(localized: "Cardio")
+        case .fullBody:     return String(localized: "Full Body")
         }
     }
 }

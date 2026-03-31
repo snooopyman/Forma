@@ -10,7 +10,7 @@ import SwiftUI
 struct CardStyle: ViewModifier {
     func body(content: Content) -> some View {
         content
-            .background(Color.backgroundCard)
+            .background(.backgroundCard)
             .clipShape(RoundedRectangle(cornerRadius: DS.Radius.card))
     }
 }
@@ -19,7 +19,7 @@ struct PrimaryButtonLabel: ViewModifier {
     func body(content: Content) -> some View {
         content
             .font(.body.weight(.semibold))
-            .foregroundStyle(Color.textOnAccent)
+            .foregroundStyle(.textOnAccent)
             .frame(maxWidth: .infinity, minHeight: DS.Sizing.minTapTarget)
     }
 }
