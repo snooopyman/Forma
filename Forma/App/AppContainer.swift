@@ -7,6 +7,7 @@
 
 import SwiftData
 import Observation
+import Foundation
 
 @Observable
 final class AppContainer {
@@ -25,6 +26,7 @@ final class AppContainer {
     let workoutSessionService: WorkoutSessionServiceProtocol
     let volumeCalculatorService: VolumeCalculatorServiceProtocol
     let restTimerActivityService: RestTimerActivityServiceProtocol
+    let macroTrackingService: MacroTrackingServiceProtocol
 
     // MARK: - Initializers
 
@@ -39,5 +41,16 @@ final class AppContainer {
         self.workoutSessionService = WorkoutSessionService(sessionRepository: sessionRepo)
         self.volumeCalculatorService = VolumeCalculatorService()
         self.restTimerActivityService = RestTimerActivityService()
+        self.macroTrackingService = MacroTrackingService()
+
+        if !UserDefaults.standard.bool(forKey: "com.armando.forma.foodCatalogV1") {
+            let descriptor = FetchDescriptor<FoodItem>(predicate: #Predicate { !$0.isCustom })
+            if let existing = try? modelContext.fetch(descriptor) {
+                existing.forEach { modelContext.delete($0) }
+            }
+            FoodCatalog.catalog.forEach { modelContext.insert($0) }
+            try? modelContext.save()
+            UserDefaults.standard.set(true, forKey: "com.armando.forma.foodCatalogV1")
+        }
     }
 }

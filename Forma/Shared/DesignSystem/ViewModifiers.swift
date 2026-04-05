@@ -24,6 +24,14 @@ struct PrimaryButtonLabel: ViewModifier {
     }
 }
 
+struct GlassButtonLabel: ViewModifier {
+    func body(content: Content) -> some View {
+        content
+            .font(.body.weight(.semibold))
+            .frame(maxWidth: .infinity, minHeight: DS.Sizing.minTapTarget)
+    }
+}
+
 extension View {
     func cardStyle() -> some View {
         modifier(CardStyle())
@@ -31,5 +39,9 @@ extension View {
 
     func primaryButtonLabel() -> some View {
         modifier(PrimaryButtonLabel())
+    }
+
+    func glassButtonLabel() -> some View {
+        modifier(GlassButtonLabel())
     }
 }

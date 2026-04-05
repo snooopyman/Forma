@@ -29,7 +29,7 @@ struct MainTabView: View {
             }
             Tab("Nutrition", systemImage: "fork.knife") {
                 NavigationStack {
-                    PlanOverviewView()
+                    PlanOverviewView(nutritionRepository: container.nutritionRepository, macroService: container.macroTrackingService)
                 }
             }
             Tab("Progress", systemImage: "chart.line.uptrend.xyaxis") {

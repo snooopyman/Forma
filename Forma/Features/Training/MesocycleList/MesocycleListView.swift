@@ -100,6 +100,8 @@ struct MesocycleListView: View {
                 }
             }
         }
+        .scrollContentBackground(.hidden)
+        .background(.backgroundPrimary)
         .navigationDestination(for: Mesocycle.self) { mesocycle in
             MesocycleDetailView(
                 mesocycle: mesocycle,

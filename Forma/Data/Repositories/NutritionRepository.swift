@@ -42,10 +42,44 @@ final class NutritionRepository: NutritionRepositoryProtocol {
         try modelContext.save()
     }
 
+    func save() async throws {
+        try modelContext.save()
+    }
+
     func setActivePlan(_ plan: NutritionPlan) async throws {
         let all = try await fetchAllPlans()
         all.forEach { $0.isActive = false }
         plan.isActive = true
+        try modelContext.save()
+    }
+
+    func insertMeal(_ meal: Meal) async throws {
+        modelContext.insert(meal)
+        try modelContext.save()
+    }
+
+    func deleteMeal(_ meal: Meal) async throws {
+        modelContext.delete(meal)
+        try modelContext.save()
+    }
+
+    func insertMealOption(_ option: MealOption) async throws {
+        modelContext.insert(option)
+        try modelContext.save()
+    }
+
+    func deleteMealOption(_ option: MealOption) async throws {
+        modelContext.delete(option)
+        try modelContext.save()
+    }
+
+    func insertMealOptionItem(_ item: MealOptionItem) async throws {
+        modelContext.insert(item)
+        try modelContext.save()
+    }
+
+    func deleteMealOptionItem(_ item: MealOptionItem) async throws {
+        modelContext.delete(item)
         try modelContext.save()
     }
 
@@ -62,6 +96,17 @@ final class NutritionRepository: NutritionRepositoryProtocol {
 
     func saveLog(_ log: DailyNutritionLog) async throws {
         modelContext.insert(log)
+        try modelContext.save()
+    }
+
+    func addMealLog(_ mealLog: MealLog, to dailyLog: DailyNutritionLog) async throws {
+        modelContext.insert(mealLog)
+        mealLog.dailyLog = dailyLog
+        try modelContext.save()
+    }
+
+    func removeMealLog(_ mealLog: MealLog) async throws {
+        modelContext.delete(mealLog)
         try modelContext.save()
     }
 }

@@ -70,4 +70,12 @@ enum MacroType: String, Codable, CaseIterable {
         case .fat:     return String(localized: "Fat")
         }
     }
+
+    var sortOrder: Int {
+        switch self {
+        case .protein: return 0
+        case .carbs:   return 1
+        case .fat:     return 2
+        }
+    }
 }

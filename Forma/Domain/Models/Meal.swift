@@ -19,6 +19,7 @@ final class Meal {
     var targetProteinG: Double
     var targetCarbsG: Double
     var targetFatG: Double
+    var preferredOptionNumber: Int = 1
 
     @Relationship(deleteRule: .cascade)
     var options: [MealOption]
@@ -33,7 +34,8 @@ final class Meal {
         targetCalories: Int = 0,
         targetProteinG: Double = 0,
         targetCarbsG: Double = 0,
-        targetFatG: Double = 0
+        targetFatG: Double = 0,
+        preferredOptionNumber: Int = 1
     ) {
         self.id = id
         self.name = name
@@ -43,6 +45,7 @@ final class Meal {
         self.targetProteinG = targetProteinG
         self.targetCarbsG = targetCarbsG
         self.targetFatG = targetFatG
+        self.preferredOptionNumber = preferredOptionNumber
         self.options = []
     }
 }

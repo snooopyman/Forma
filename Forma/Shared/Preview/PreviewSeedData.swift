@@ -203,18 +203,7 @@ enum PreviewSeedData {
     // MARK: - Food Items
 
     private static func insertFoodItems(into context: ModelContext) -> [FoodItem] {
-        let items: [FoodItem] = [
-            FoodItem(name: "Chicken Breast", category: "Meat", mainMacro: .protein, caloriesPer100g: 165, proteinPer100g: 31, carbsPer100g: 0, fatPer100g: 3.6, basePortionG: 150),
-            FoodItem(name: "White Rice", category: "Grains", mainMacro: .carbs, caloriesPer100g: 130, proteinPer100g: 2.7, carbsPer100g: 28, fatPer100g: 0.3, fiberPer100g: 0.4, basePortionG: 200),
-            FoodItem(name: "Whole Eggs", category: "Dairy & Eggs", mainMacro: .protein, caloriesPer100g: 155, proteinPer100g: 13, carbsPer100g: 1.1, fatPer100g: 11, basePortionG: 120),
-            FoodItem(name: "Oats", category: "Grains", mainMacro: .carbs, caloriesPer100g: 389, proteinPer100g: 17, carbsPer100g: 66, fatPer100g: 7, fiberPer100g: 11, basePortionG: 80),
-            FoodItem(name: "Greek Yogurt", category: "Dairy & Eggs", mainMacro: .protein, caloriesPer100g: 97, proteinPer100g: 10, carbsPer100g: 4, fatPer100g: 5, basePortionG: 200),
-            FoodItem(name: "Banana", category: "Fruit", mainMacro: .carbs, caloriesPer100g: 89, proteinPer100g: 1.1, carbsPer100g: 23, fatPer100g: 0.3, fiberPer100g: 2.6, basePortionG: 120),
-            FoodItem(name: "Salmon", category: "Fish", mainMacro: .protein, caloriesPer100g: 208, proteinPer100g: 20, carbsPer100g: 0, fatPer100g: 13, basePortionG: 150),
-            FoodItem(name: "Avocado", category: "Fruit", mainMacro: .fat, caloriesPer100g: 160, proteinPer100g: 2, carbsPer100g: 9, fatPer100g: 15, fiberPer100g: 7, basePortionG: 80),
-            FoodItem(name: "Whey Protein", category: "Supplements", mainMacro: .protein, caloriesPer100g: 380, proteinPer100g: 80, carbsPer100g: 8, fatPer100g: 4, basePortionG: 30),
-            FoodItem(name: "Sweet Potato", category: "Vegetables", mainMacro: .carbs, caloriesPer100g: 86, proteinPer100g: 1.6, carbsPer100g: 20, fatPer100g: 0.1, fiberPer100g: 3, basePortionG: 200),
-        ]
+        let items = FoodCatalog.catalog
         items.forEach { context.insert($0) }
         return items
     }
@@ -232,14 +221,18 @@ enum PreviewSeedData {
         )
         context.insert(plan)
 
-        let chicken = foodItems[0]
-        let rice = foodItems[1]
-        let eggs = foodItems[2]
-        let oats = foodItems[3]
-        let yogurt = foodItems[4]
-        let banana = foodItems[5]
-        let whey = foodItems[8]
-        let sweetPotato = foodItems[9]
+        func food(_ name: String) -> FoodItem {
+            foodItems.first { $0.name == name } ?? foodItems[0]
+        }
+
+        let chicken    = food("Chicken Breast")
+        let rice       = food("White Rice (cooked)")
+        let eggs       = food("Whole Eggs")
+        let oats       = food("Oats (dry)")
+        let yogurt     = food("Greek Yogurt 0%")
+        let banana     = food("Banana")
+        let whey       = food("Whey Protein")
+        let sweetPotato = food("Sweet Potato")
 
         // Breakfast
         let breakfast = Meal(name: "Breakfast", mealType: .breakfast, order: 0, targetCalories: 600, targetProteinG: 40, targetCarbsG: 70, targetFatG: 15)

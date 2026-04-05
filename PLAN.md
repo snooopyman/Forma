@@ -1,6 +1,6 @@
 # Forma — Plan de Desarrollo
 
-Estado actual: → **Fase 6**
+Estado actual: → **Fase 7**
 
 ---
 
@@ -74,14 +74,17 @@ Estado actual: → **Fase 6**
 
 ---
 
-## Fase 6 — Módulo Nutrición
-- [ ] PlanOverviewView + PlanOverviewViewModel
-- [ ] MealDetailView + MealDetailViewModel
-- [ ] FoodBrowserView + FoodBrowserViewModel
-- [ ] MacroTrackingService
-- [ ] NutritionRepository (implementación concreta)
-- [ ] FoodItemRepository (implementación concreta)
-- [ ] Seed data: catálogo ~250 alimentos
+## Fase 6 — Módulo Nutrición ✅
+- [x] PlanOverviewView + PlanOverviewViewModel
+- [x] MealDetailView + MealDetailViewModel (opciones intercambiables, log diario, opción preferida)
+- [x] FoodBrowserView + FoodBrowserViewModel
+- [x] CreateNutritionPlanView + CreateNutritionPlanViewModel
+- [x] EditNutritionPlanView + EditNutritionPlanViewModel
+- [x] MacroTrackingService + MacroTrackingServiceProtocol
+- [x] NutritionRepository (implementación concreta)
+- [x] FoodItemRepository (implementación concreta)
+- [x] FoodCatalog.swift — seed data ~250 alimentos con macros
+- [x] Localizable.xcstrings — 100% traducido EN + ES
 
 ---
 
