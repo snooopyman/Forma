@@ -103,12 +103,12 @@ Estado actual: → **Fase 8**
 
 ---
 
-## Fase 8 — Dashboard
-- [ ] DashboardView + DashboardViewModel
-- [ ] Tarjeta entreno del día (planned/rest/paused states)
-- [ ] Anillos de macros (MacroRingView integrado)
-- [ ] Tarjeta HealthKit (pasos, calorías, anillos actividad)
-- [ ] Tarjeta medición corporal (prompt semanal)
+## Fase 8 — Dashboard ✅
+- [x] DashboardView + DashboardViewModel
+- [x] Tarjeta entreno del día (planned/rest/paused states)
+- [x] Anillos de macros (MacroRingView integrado)
+- [x] Tarjeta HealthKit (pasos, calorías, anillos actividad)
+- [x] Tarjeta medición corporal (prompt semanal)
 
 ---
 

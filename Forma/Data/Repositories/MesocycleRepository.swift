@@ -73,6 +73,17 @@ final class MesocycleRepository: MesocycleRepositoryProtocol {
         try modelContext.save()
     }
 
+    func updatePlannedExercise(_ planned: PlannedExercise, name: String, muscle: MuscleGroup, sets: Int, repsMin: Int, repsMax: Int, rir: Int, restSeconds: Int) async throws {
+        planned.exercise?.name = name
+        planned.exercise?.primaryMuscle = muscle
+        planned.sets = sets
+        planned.repsMin = repsMin
+        planned.repsMax = repsMax
+        planned.rirTarget = rir
+        planned.restSeconds = restSeconds
+        try modelContext.save()
+    }
+
     func deletePlannedExercise(_ planned: PlannedExercise) async throws {
         modelContext.delete(planned)
         try modelContext.save()

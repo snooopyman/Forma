@@ -62,7 +62,7 @@ enum PreviewSeedData {
             name: "Hipertrofia Bloque 1",
             startDate: startDate,
             durationWeeks: 6,
-            useFixedDays: true,
+            useFixedDays: false,
             isActive: true
         )
         context.insert(mesocycle)
@@ -137,7 +137,7 @@ enum PreviewSeedData {
         into context: ModelContext
     ) {
         let push = workoutDays[0]
-        let pull = workoutDays[1]
+        _ = workoutDays[1]
         let pe1 = plannedExercises[0]  // Bench Press
         let pe3 = plannedExercises[2]  // Overhead Press
         let pe6 = plannedExercises[5]  // Pull-Up
@@ -165,10 +165,10 @@ enum PreviewSeedData {
         ls4.plannedExercise = pe3
         context.insert(ls4)
 
-        // In-progress session (Pull day, started 20 min ago)
+        // In-progress session (Push day, started 20 min ago — Push is order:0 so Dashboard always shows it)
         let inProgressStart = Calendar.current.date(byAdding: .minute, value: -20, to: .now)!
         let inProgress = WorkoutSession(date: inProgressStart, startedAt: inProgressStart)
-        inProgress.workoutDay = pull
+        inProgress.workoutDay = push
         inProgress.mesocycle = mesocycle
         context.insert(inProgress)
 
@@ -296,6 +296,24 @@ enum PreviewSeedData {
         }
 
         plan.meals = [breakfast, lunch, postWorkout, dinner]
+
+        // Today's partial log — breakfast and lunch followed, dinner pending
+        let todayLog = DailyNutritionLog(date: .now, adherenceStatus: .partial)
+        context.insert(todayLog)
+
+        let bfLog = MealLog(wasFollowed: true)
+        bfLog.meal = breakfast
+        bfLog.selectedOption = bfOption
+        bfLog.dailyLog = todayLog
+        context.insert(bfLog)
+
+        let lunchLog = MealLog(wasFollowed: true)
+        lunchLog.meal = lunch
+        lunchLog.selectedOption = lOption
+        lunchLog.dailyLog = todayLog
+        context.insert(lunchLog)
+
+        todayLog.mealLogs = [bfLog, lunchLog]
     }
 
     private static func makeItem(food: FoodItem, grams: Double) -> MealOptionItem {

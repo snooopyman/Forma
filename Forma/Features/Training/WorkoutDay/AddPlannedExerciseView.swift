@@ -11,7 +11,8 @@ struct AddPlannedExerciseView: View {
 
     // MARK: - Private Properties
 
-    private let workoutDay: WorkoutDay
+    private let workoutDay: WorkoutDay?
+    private let editingExercise: PlannedExercise?
     private let mesocycleRepository: MesocycleRepositoryProtocol
 
     // MARK: - Environment
@@ -20,21 +21,46 @@ struct AddPlannedExerciseView: View {
 
     // MARK: - States
 
-    @State private var exerciseName = ""
-    @State private var muscle: MuscleGroup = .chest
-    @State private var sets = 3
-    @State private var repsMin = 8
-    @State private var repsMax = 12
-    @State private var rir = 2
-    @State private var restSeconds = 120
+    @State private var exerciseName: String
+    @State private var muscle: MuscleGroup
+    @State private var sets: Int
+    @State private var repsMin: Int
+    @State private var repsMax: Int
+    @State private var rir: Int
+    @State private var restSeconds: Int
     @State private var isSaving = false
     @State private var errorMessage: String?
+
+    // MARK: - Computed Properties
+
+    private var isEditMode: Bool { editingExercise != nil }
 
     // MARK: - Initializers
 
     init(workoutDay: WorkoutDay, mesocycleRepository: MesocycleRepositoryProtocol) {
         self.workoutDay = workoutDay
+        self.editingExercise = nil
         self.mesocycleRepository = mesocycleRepository
+        _exerciseName = State(initialValue: "")
+        _muscle = State(initialValue: .chest)
+        _sets = State(initialValue: 3)
+        _repsMin = State(initialValue: 8)
+        _repsMax = State(initialValue: 12)
+        _rir = State(initialValue: 2)
+        _restSeconds = State(initialValue: 120)
+    }
+
+    init(editing planned: PlannedExercise, mesocycleRepository: MesocycleRepositoryProtocol) {
+        self.workoutDay = nil
+        self.editingExercise = planned
+        self.mesocycleRepository = mesocycleRepository
+        _exerciseName = State(initialValue: planned.exercise?.name ?? "")
+        _muscle = State(initialValue: planned.exercise?.primaryMuscle ?? .chest)
+        _sets = State(initialValue: planned.sets)
+        _repsMin = State(initialValue: planned.repsMin)
+        _repsMax = State(initialValue: planned.repsMax)
+        _rir = State(initialValue: planned.rirTarget)
+        _restSeconds = State(initialValue: planned.restSeconds)
     }
 
     // MARK: - Body
@@ -94,14 +120,14 @@ struct AddPlannedExerciseView: View {
                     }
                 }
             }
-            .navigationTitle(String(localized: "Add exercise"))
+            .navigationTitle(isEditMode ? String(localized: "Edit exercise") : String(localized: "Add exercise"))
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .topBarLeading) {
                     Button(String(localized: "Cancel")) { dismiss() }
                 }
                 ToolbarItem(placement: .topBarTrailing) {
-                    Button(String(localized: "Add")) {
+                    Button(isEditMode ? String(localized: "Save") : String(localized: "Add")) {
                         Task { await save() }
                     }
                     .fontWeight(.semibold)
@@ -127,21 +153,34 @@ struct AddPlannedExerciseView: View {
     private func save() async {
         isSaving = true
         defer { isSaving = false }
-        let exercise = Exercise(
-            name: exerciseName.trimmingCharacters(in: .whitespaces),
-            primaryMuscle: muscle,
-            isCustom: true
-        )
-        let planned = PlannedExercise(
-            order: workoutDay.plannedExercises.count,
-            sets: sets,
-            repsMin: repsMin,
-            repsMax: repsMax,
-            rirTarget: rir,
-            restSeconds: restSeconds
-        )
         do {
-            try await mesocycleRepository.addPlannedExercise(planned, exercise: exercise, to: workoutDay)
+            if let planned = editingExercise {
+                try await mesocycleRepository.updatePlannedExercise(
+                    planned,
+                    name: exerciseName.trimmingCharacters(in: .whitespaces),
+                    muscle: muscle,
+                    sets: sets,
+                    repsMin: repsMin,
+                    repsMax: repsMax,
+                    rir: rir,
+                    restSeconds: restSeconds
+                )
+            } else if let day = workoutDay {
+                let exercise = Exercise(
+                    name: exerciseName.trimmingCharacters(in: .whitespaces),
+                    primaryMuscle: muscle,
+                    isCustom: true
+                )
+                let planned = PlannedExercise(
+                    order: day.plannedExercises.count,
+                    sets: sets,
+                    repsMin: repsMin,
+                    repsMax: repsMax,
+                    rirTarget: rir,
+                    restSeconds: restSeconds
+                )
+                try await mesocycleRepository.addPlannedExercise(planned, exercise: exercise, to: day)
+            }
             dismiss()
         } catch {
             errorMessage = String(localized: "Something went wrong")

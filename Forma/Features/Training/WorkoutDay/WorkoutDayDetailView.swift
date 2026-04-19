@@ -19,6 +19,7 @@ struct WorkoutDayDetailView: View {
     @State private var viewModel: WorkoutDayDetailViewModel
     @State private var activeSession: WorkoutSession?
     @State private var showingAddExercise = false
+    @State private var editingExercise: PlannedExercise?
 
     // MARK: - Environment
 
@@ -35,6 +36,7 @@ struct WorkoutDayDetailView: View {
         self.mesocycleRepository = mesocycleRepository
         _viewModel = State(initialValue: WorkoutDayDetailViewModel(
             workoutDay: workoutDay,
+            mesocycleRepository: mesocycleRepository,
             sessionService: sessionService,
             sessionRepository: sessionRepository
         ))
@@ -67,6 +69,12 @@ struct WorkoutDayDetailView: View {
         .sheet(isPresented: $showingAddExercise) {
             AddPlannedExerciseView(
                 workoutDay: viewModel.workoutDay,
+                mesocycleRepository: mesocycleRepository
+            )
+        }
+        .sheet(item: $editingExercise) { planned in
+            AddPlannedExerciseView(
+                editing: planned,
                 mesocycleRepository: mesocycleRepository
             )
         }
@@ -129,6 +137,21 @@ struct WorkoutDayDetailView: View {
             List {
                 ForEach(viewModel.sortedExercises) { planned in
                     PlannedExerciseRowView(planned: planned)
+                        .swipeActions(edge: .trailing, allowsFullSwipe: true) {
+                            Button(role: .destructive) {
+                                Task { await viewModel.deleteExercise(planned) }
+                            } label: {
+                                Label(String(localized: "Delete"), systemImage: "trash")
+                            }
+                        }
+                        .swipeActions(edge: .leading) {
+                            Button {
+                                editingExercise = planned
+                            } label: {
+                                Label(String(localized: "Edit"), systemImage: "pencil")
+                            }
+                            .tint(.accent)
+                        }
                 }
             }
             .safeAreaInset(edge: .bottom) {
@@ -190,11 +213,13 @@ private struct PlannedExerciseRowView: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: DS.Spacing.sm) {
-            HStack {
+            HStack(alignment: .top) {
                 Text(planned.exercise?.name ?? "—")
                     .font(.body.weight(.medium))
                     .foregroundStyle(.textPrimary)
-                Spacer()
+                    .lineLimit(2)
+                    .fixedSize(horizontal: false, vertical: true)
+                Spacer(minLength: DS.Spacing.sm)
                 if let muscle = planned.exercise?.primaryMuscle {
                     MuscleGroupBadge(muscleGroup: muscle)
                 }

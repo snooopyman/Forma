@@ -29,6 +29,7 @@ final class AppContainer {
     let restTimerActivityService: RestTimerActivityServiceProtocol
     let macroTrackingService: MacroTrackingServiceProtocol
     let bodyMetricsService: BodyMetricsServiceProtocol
+    let healthKitService: HealthKitServiceProtocol
 
     // MARK: - Initializers
 
@@ -46,6 +47,7 @@ final class AppContainer {
         self.restTimerActivityService = RestTimerActivityService()
         self.macroTrackingService = MacroTrackingService()
         self.bodyMetricsService = BodyMetricsService()
+        self.healthKitService = HealthKitService()
 
         if !UserDefaults.standard.bool(forKey: "com.armando.forma.foodCatalogV1") {
             let descriptor = FetchDescriptor<FoodItem>(predicate: #Predicate { !$0.isCustom })

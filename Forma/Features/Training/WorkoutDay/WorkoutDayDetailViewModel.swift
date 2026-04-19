@@ -15,6 +15,9 @@ final class WorkoutDayDetailViewModel {
     // MARK: - Private Properties
 
     @ObservationIgnored
+    private let mesocycleRepository: MesocycleRepositoryProtocol
+
+    @ObservationIgnored
     private let sessionService: WorkoutSessionServiceProtocol
 
     @ObservationIgnored
@@ -46,10 +49,12 @@ final class WorkoutDayDetailViewModel {
 
     init(
         workoutDay: WorkoutDay,
+        mesocycleRepository: MesocycleRepositoryProtocol,
         sessionService: WorkoutSessionServiceProtocol,
         sessionRepository: WorkoutSessionRepositoryProtocol
     ) {
         self.workoutDay = workoutDay
+        self.mesocycleRepository = mesocycleRepository
         self.sessionService = sessionService
         self.sessionRepository = sessionRepository
     }
@@ -63,6 +68,15 @@ final class WorkoutDayDetailViewModel {
             inProgressSession = try await sessionRepository.fetchInProgress()
         } catch {
             Logger.training.error("WorkoutDayDetail load error: \(error, privacy: .private)")
+        }
+    }
+
+    func deleteExercise(_ planned: PlannedExercise) async {
+        do {
+            try await mesocycleRepository.deletePlannedExercise(planned)
+        } catch {
+            errorMessage = String(localized: "Something went wrong")
+            Logger.training.error("Delete exercise error: \(error, privacy: .private)")
         }
     }
 

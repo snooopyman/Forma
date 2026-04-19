@@ -127,11 +127,13 @@ private struct MesocycleRowView: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: DS.Spacing.xs) {
-            HStack {
+            HStack(alignment: .top) {
                 Text(mesocycle.name)
                     .font(.body.weight(.semibold))
                     .foregroundStyle(.textPrimary)
-                Spacer()
+                    .lineLimit(2)
+                    .fixedSize(horizontal: false, vertical: true)
+                Spacer(minLength: DS.Spacing.sm)
                 statusBadge
             }
             Text("Week \(mesocycle.currentWeek) of \(mesocycle.durationWeeks)")

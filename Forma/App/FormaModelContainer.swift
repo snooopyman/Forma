@@ -19,18 +19,30 @@ enum FormaModelContainer {
 
     static let shared: ModelContainer? = {
         let schema = Schema(FormaSchema.models)
-        let configuration = makeConfiguration(for: schema)
-        do {
-            return try ModelContainer(for: schema, configurations: [configuration])
-        } catch {
-            Logger.core.error("ModelContainer failed, attempting store reset: \(error, privacy: .public)")
-            return recoverContainer(schema: schema, configuration: configuration)
+
+        // Try CloudKit first; fall back to local-only if the entitlement isn't provisioned.
+        if let container = makeContainer(schema: schema, useCloudKit: true) {
+            return container
         }
+        Logger.core.warning("CloudKit unavailable — running in local-only mode")
+        return makeContainer(schema: schema, useCloudKit: false)
     }()
 
     // MARK: - Private Functions
 
-    private static func recoverContainer(schema: Schema, configuration: ModelConfiguration) -> ModelContainer? {
+    private static func makeContainer(schema: Schema, useCloudKit: Bool) -> ModelContainer? {
+        let configuration = makeConfiguration(for: schema, useCloudKit: useCloudKit)
+        do {
+            return try ModelContainer(for: schema, configurations: [configuration])
+        } catch {
+            Logger.core.error("ModelContainer init failed (cloudKit=\(useCloudKit)): \(error, privacy: .public)")
+            if useCloudKit { return nil }
+            return recoverContainer(schema: schema)
+        }
+    }
+
+    private static func recoverContainer(schema: Schema) -> ModelContainer? {
+        let configuration = makeConfiguration(for: schema, useCloudKit: false)
         let url = configuration.url
         let relatedURLs = [
             url,
@@ -40,7 +52,7 @@ enum FormaModelContainer {
         relatedURLs.forEach { try? FileManager.default.removeItem(at: $0) }
         Logger.core.warning("Deleted corrupt store at \(url.lastPathComponent, privacy: .public) — starting fresh")
         do {
-            let freshConfig = makeConfiguration(for: schema)
+            let freshConfig = makeConfiguration(for: schema, useCloudKit: false)
             return try ModelContainer(for: schema, configurations: [freshConfig])
         } catch {
             Logger.core.error("ModelContainer recovery failed: \(error, privacy: .public)")
@@ -48,20 +60,15 @@ enum FormaModelContainer {
         }
     }
 
-    private static func makeConfiguration(for schema: Schema) -> ModelConfiguration {
+    private static func makeConfiguration(for schema: Schema, useCloudKit: Bool) -> ModelConfiguration {
+        let cloudKit: ModelConfiguration.CloudKitDatabase = useCloudKit ? cloudKitDatabase : .none
+
         guard let storeURL = appGroupStoreURL() else {
             Logger.core.warning("App Group not available — using default location")
-            return ModelConfiguration(
-                schema: schema,
-                cloudKitDatabase: cloudKitDatabase
-            )
+            return ModelConfiguration(schema: schema, cloudKitDatabase: cloudKit)
         }
 
-        return ModelConfiguration(
-            schema: schema,
-            url: storeURL,
-            cloudKitDatabase: cloudKitDatabase
-        )
+        return ModelConfiguration(schema: schema, url: storeURL, cloudKitDatabase: cloudKit)
     }
 
     private static var cloudKitDatabase: ModelConfiguration.CloudKitDatabase {
