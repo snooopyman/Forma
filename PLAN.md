@@ -1,6 +1,6 @@
 # Forma — Plan de Desarrollo
 
-Estado actual: → **Fase 7**
+Estado actual: → **Fase 8**
 
 ---
 
@@ -88,13 +88,18 @@ Estado actual: → **Fase 7**
 
 ---
 
-## Fase 7 — Módulo Progreso
-- [ ] ProgressOverviewView + ProgressOverviewViewModel
-- [ ] NewMeasurementView + NewMeasurementViewModel
-- [ ] BodyChartsView
-- [ ] BodyMetricsService (% grasa fórmula Marina, IMC)
-- [ ] BodyMeasurementRepository (implementación concreta)
-- [ ] Swift Charts: peso, % grasa, perímetros
+## Fase 7 — Módulo Progreso ✅
+- [x] ProgressOverviewView + ProgressOverviewViewModel
+- [x] NewMeasurementView + NewMeasurementViewModel (edit mode, DatePicker, Advanced con altura)
+- [x] BodyChartsView — filtro por rango (1M/3M/6M/1Y/All) + picker de perímetro individual
+- [x] BodyMetricsService (% grasa fórmula US Navy, IMC, categorías ACE)
+- [x] BodyMeasurementRepository (implementación concreta + update)
+- [x] ProgressPhotoRepository + ProgressPhotoRepositoryProtocol
+- [x] PhotoGalleryView + PhotoGalleryViewModel — galería agrupada por mes, orden frontal→espalda→lados
+- [x] Miniatura cuadrada universal (portrait/landscape), label de ángulo siempre visible
+- [x] Límite 1 foto por ángulo/mes con alert de reemplazo
+- [x] Swift Charts: peso, % grasa, perímetros
+- [x] Localizable.xcstrings — 100% EN + ES
 
 ---
 

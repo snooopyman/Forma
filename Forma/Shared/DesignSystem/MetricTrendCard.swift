@@ -55,7 +55,7 @@ private struct DeltaBadge: View {
     private var color: Color { isPositive ? .success : .error }
 
     var body: some View {
-        Label(String(format: "%.1f", abs(delta)), systemImage: symbol)
+        Label(abs(delta).formatted(.number.precision(.fractionLength(1))), systemImage: symbol)
             .font(.caption.weight(.medium))
             .foregroundStyle(color)
     }

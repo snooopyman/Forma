@@ -48,4 +48,13 @@ enum PhotoAngle: String, Codable, CaseIterable {
         case .back:      return String(localized: "Back")
         }
     }
+
+    var sortOrder: Int {
+        switch self {
+        case .front:     return 0
+        case .back:      return 1
+        case .sideLeft:  return 2
+        case .sideRight: return 3
+        }
+    }
 }

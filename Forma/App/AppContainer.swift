@@ -18,6 +18,7 @@ final class AppContainer {
     let mesocycleRepository: MesocycleRepositoryProtocol
     let workoutSessionRepository: WorkoutSessionRepositoryProtocol
     let bodyMeasurementRepository: BodyMeasurementRepositoryProtocol
+    let progressPhotoRepository: ProgressPhotoRepositoryProtocol
     let nutritionRepository: NutritionRepositoryProtocol
     let foodItemRepository: FoodItemRepositoryProtocol
 
@@ -27,6 +28,7 @@ final class AppContainer {
     let volumeCalculatorService: VolumeCalculatorServiceProtocol
     let restTimerActivityService: RestTimerActivityServiceProtocol
     let macroTrackingService: MacroTrackingServiceProtocol
+    let bodyMetricsService: BodyMetricsServiceProtocol
 
     // MARK: - Initializers
 
@@ -36,12 +38,14 @@ final class AppContainer {
         let sessionRepo = WorkoutSessionRepository(modelContext: modelContext)
         self.workoutSessionRepository = sessionRepo
         self.bodyMeasurementRepository = BodyMeasurementRepository(modelContext: modelContext)
+        self.progressPhotoRepository = ProgressPhotoRepository(modelContext: modelContext)
         self.nutritionRepository = NutritionRepository(modelContext: modelContext)
         self.foodItemRepository = FoodItemRepository(modelContext: modelContext)
         self.workoutSessionService = WorkoutSessionService(sessionRepository: sessionRepo)
         self.volumeCalculatorService = VolumeCalculatorService()
         self.restTimerActivityService = RestTimerActivityService()
         self.macroTrackingService = MacroTrackingService()
+        self.bodyMetricsService = BodyMetricsService()
 
         if !UserDefaults.standard.bool(forKey: "com.armando.forma.foodCatalogV1") {
             let descriptor = FetchDescriptor<FoodItem>(predicate: #Predicate { !$0.isCustom })

@@ -37,6 +37,10 @@ final class BodyMeasurementRepository: BodyMeasurementRepositoryProtocol {
         try modelContext.save()
     }
 
+    func update(_ measurement: BodyMeasurement) async throws {
+        try modelContext.save()
+    }
+
     func delete(_ measurement: BodyMeasurement) async throws {
         modelContext.delete(measurement)
         try modelContext.save()

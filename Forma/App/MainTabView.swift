@@ -34,7 +34,7 @@ struct MainTabView: View {
             }
             Tab("Progress", systemImage: "chart.line.uptrend.xyaxis") {
                 NavigationStack {
-                    ProgressOverviewView()
+                    ProgressOverviewView(repository: container.bodyMeasurementRepository)
                 }
             }
         }
