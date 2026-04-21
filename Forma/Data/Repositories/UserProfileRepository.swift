@@ -26,3 +26,10 @@ final class UserProfileRepository: UserProfileRepositoryProtocol {
         try modelContext.save()
     }
 }
+
+// MARK: - Mock
+
+struct MockUserProfileRepository: UserProfileRepositoryProtocol {
+    func fetch() async throws -> UserProfile? { nil }
+    func save(_ profile: UserProfile) async throws {}
+}

@@ -109,6 +109,16 @@
         }
       }
     },
+    "Activity level" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nivel de actividad"
+          }
+        }
+      }
+    },
     "Add" : {
       "comment" : "Generic confirm button to add an item.",
       "localizations" : {
@@ -356,6 +366,16 @@
         }
       }
     },
+    "Biological sex" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sexo biológico"
+          }
+        }
+      }
+    },
     "Body fat" : {
       "localizations" : {
         "en" : {
@@ -573,6 +593,26 @@
         }
       }
     },
+    "Connect" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Conectar"
+          }
+        }
+      }
+    },
+    "Connect HealthKit" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Conectar HealthKit"
+          }
+        }
+      }
+    },
     "Connect with Health" : {
       "localizations" : {
         "es" : {
@@ -656,6 +696,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Fecha"
+          }
+        }
+      }
+    },
+    "Date of birth" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fecha de nacimiento"
           }
         }
       }
@@ -840,6 +890,26 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Introduce un peso y repeticiones válidos"
+          }
+        }
+      }
+    },
+    "Create training plan" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Crear plan de entrenamiento"
+          }
+        }
+      }
+    },
+    "Explore the app" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Explorar la app"
           }
         }
       }
@@ -1090,6 +1160,16 @@
         }
       }
     },
+    "Fuel your training" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Impulsa tu entreno"
+          }
+        }
+      }
+    },
     "Full Body" : {
       "comment" : "Localized name of the full body muscle group.",
       "localizations" : {
@@ -1097,6 +1177,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Cuerpo completo"
+          }
+        }
+      }
+    },
+    "Get started" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Empezar"
           }
         }
       }
@@ -1172,6 +1262,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Isquiotibiales"
+          }
+        }
+      }
+    },
+    "Hard exercise 6–7 days/week" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ejercicio intenso 6-7 días/semana"
           }
         }
       }
@@ -1313,6 +1413,16 @@
         }
       }
     },
+    "Light exercise 1–3 days/week" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ejercicio ligero 1-3 días/semana"
+          }
+        }
+      }
+    },
     "Lightly active" : {
       "comment" : "Activity level corresponding to a multiplier of 1.375.",
       "localizations" : {
@@ -1320,6 +1430,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Ligeramente activo"
+          }
+        }
+      }
+    },
+    "Little or no exercise" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Poca o ninguna actividad"
           }
         }
       }
@@ -1439,6 +1559,16 @@
         }
       }
     },
+    "Measure your progress" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mide tu progreso"
+          }
+        }
+      }
+    },
     "Measurements" : {
       "localizations" : {
         "en" : {
@@ -1451,6 +1581,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Mediciones"
+          }
+        }
+      }
+    },
+    "Mesocycles, sets, and rest timers with Live Activity." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mesociclos, series y temporizadores con Live Activity."
           }
         }
       }
@@ -1473,6 +1613,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Movilidad"
+          }
+        }
+      }
+    },
+    "Moderate exercise 3–5 days/week" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ejercicio moderado 3-5 días/semana"
           }
         }
       }
@@ -1625,6 +1775,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Nuevo día de entreno"
+          }
+        }
+      }
+    },
+    "Next" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Siguiente"
           }
         }
       }
@@ -2008,6 +2168,26 @@
         }
       }
     },
+    "Photos, measurements, and body metrics week by week." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fotos, medidas y métricas corporales semana a semana."
+          }
+        }
+      }
+    },
+    "Physical stats" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Datos físicos"
+          }
+        }
+      }
+    },
     "Plan" : {
       "comment" : "Section header for the plan name field in the create nutrition plan form.",
       "localizations" : {
@@ -2275,6 +2455,16 @@
         }
       }
     },
+    "Selected" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Seleccionado"
+          }
+        }
+      }
+    },
     "Sessions completed" : {
       "localizations" : {
         "es" : {
@@ -2314,6 +2504,26 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Establecer como activo"
+          }
+        }
+      }
+    },
+    "Set up nutrition" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Configurar nutrición"
+          }
+        }
+      }
+    },
+    "Set up your profile" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Configura tu perfil"
           }
         }
       }
@@ -2480,6 +2690,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Domingo"
+          }
+        }
+      }
+    },
+    "Sync steps, calories and weight from Apple Health." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sincroniza pasos, calorías y peso desde Apple Health."
           }
         }
       }
@@ -2658,6 +2878,16 @@
         }
       }
     },
+    "Track macros with a personalised nutrition plan." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Controla tus macros con un plan nutricional personalizado."
+          }
+        }
+      }
+    },
     "Track your visual progress" : {
       "localizations" : {
         "en" : {
@@ -2674,6 +2904,16 @@
         }
       }
     },
+    "Train with structure" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Entrena con estructura"
+          }
+        }
+      }
+    },
     "Training" : {
       "comment" : "Tab bar label for the Training module.",
       "localizations" : {
@@ -2681,6 +2921,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Entreno"
+          }
+        }
+      }
+    },
+    "Training, nutrition and progress — all in one place." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Entreno, nutrición y progreso, todo en un solo lugar."
           }
         }
       }
@@ -2779,6 +3029,16 @@
         }
       }
     },
+    "Very hard exercise or physical job" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ejercicio muy intenso o trabajo físico"
+          }
+        }
+      }
+    },
     "Volume by muscle" : {
       "comment" : "Section title on the post-workout summary showing volume per muscle group.",
       "localizations" : {
@@ -2871,6 +3131,46 @@
         }
       }
     },
+    "What would you like to set up first?" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "¿Por dónde quieres empezar?"
+          }
+        }
+      }
+    },
+    "Welcome to Forma" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bienvenido a Forma"
+          }
+        }
+      }
+    },
+    "What's your name?" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "¿Cómo te llamas?"
+          }
+        }
+      }
+    },
+    "You're all set!" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "¡Todo listo!"
+          }
+        }
+      }
+    },
     "Workout complete" : {
       "comment" : "Navigation title for the post-workout summary screen.",
       "localizations" : {
@@ -2921,6 +3221,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Ya tienes una foto de este ángulo este mes. Al guardar, la reemplazarás."
+          }
+        }
+      }
+    },
+    "Your name" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tu nombre"
           }
         }
       }

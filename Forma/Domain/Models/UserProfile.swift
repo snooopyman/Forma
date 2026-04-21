@@ -74,6 +74,16 @@ enum ActivityLevel: String, Codable, CaseIterable {
         }
     }
 
+    var description: String {
+        switch self {
+        case .sedentary:        return String(localized: "Little or no exercise")
+        case .lightlyActive:    return String(localized: "Light exercise 1–3 days/week")
+        case .moderatelyActive: return String(localized: "Moderate exercise 3–5 days/week")
+        case .veryActive:       return String(localized: "Hard exercise 6–7 days/week")
+        case .extraActive:      return String(localized: "Very hard exercise or physical job")
+        }
+    }
+
     // Multiplier Harris-Benedict
     var tdeeMultiplier: Double {
         switch self {

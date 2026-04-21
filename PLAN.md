@@ -1,6 +1,6 @@
 # Forma — Plan de Desarrollo
 
-Estado actual: → **Fase 8**
+Estado actual: → **Fase 10**
 
 ---
 
@@ -112,13 +112,13 @@ Estado actual: → **Fase 8**
 
 ---
 
-## Fase 9 — Onboarding
-- [ ] WelcomeView
-- [ ] Perfil de usuario (nombre, fecha, altura, sexo)
-- [ ] Nivel de actividad
-- [ ] Permisos HealthKit
-- [ ] @AppStorage("onboardingCompleted")
-- [ ] Enlace a crear mesociclo y plan nutricional
+## Fase 9 — Onboarding ✅
+- [x] WelcomeView
+- [x] Perfil de usuario (nombre, fecha, altura, sexo)
+- [x] Nivel de actividad
+- [x] Permisos HealthKit
+- [x] @AppStorage("onboardingCompleted")
+- [x] Enlace a crear mesociclo y plan nutricional
 
 ---
 

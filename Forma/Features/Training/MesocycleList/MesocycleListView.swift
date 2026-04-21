@@ -11,6 +11,7 @@ struct MesocycleListView: View {
 
     // MARK: - States
 
+    @AppStorage("postOnboardingAction") private var postOnboardingAction = ""
     @State private var viewModel: MesocycleListViewModel
     @State private var showingCreate = false
 
@@ -68,6 +69,12 @@ struct MesocycleListView: View {
         }
         .task {
             await viewModel.load()
+        }
+        .onAppear {
+            if postOnboardingAction == "training" {
+                postOnboardingAction = ""
+                showingCreate = true
+            }
         }
         .refreshable {
             await viewModel.load()

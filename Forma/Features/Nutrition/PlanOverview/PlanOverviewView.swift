@@ -11,6 +11,7 @@ struct PlanOverviewView: View {
 
     // MARK: - Private Properties
 
+    @AppStorage("postOnboardingAction") private var postOnboardingAction = ""
     @State private var viewModel: PlanOverviewViewModel
     @State private var selectedMeal: Meal?
     @State private var showCreatePlan = false
@@ -80,6 +81,12 @@ struct PlanOverviewView: View {
             if let msg = viewModel.errorMessage { Text(msg) }
         }
         .task { await viewModel.load() }
+        .onAppear {
+            if postOnboardingAction == "nutrition" {
+                postOnboardingAction = ""
+                showCreatePlan = true
+            }
+        }
         .refreshable { await viewModel.load() }
         .sheet(isPresented: $showCreatePlan) {
             CreateNutritionPlanView(nutritionRepository: container.nutritionRepository) {
