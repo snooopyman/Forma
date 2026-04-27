@@ -52,7 +52,8 @@ struct ProgressOverviewView: View {
         .sheet(isPresented: $showNewMeasurement) {
             NewMeasurementView(
                 repository: container.bodyMeasurementRepository,
-                profileRepository: container.userProfileRepository
+                profileRepository: container.userProfileRepository,
+                healthKitService: container.healthKitService
             ) {
                 Task { await viewModel.load() }
             }
@@ -61,6 +62,7 @@ struct ProgressOverviewView: View {
             NewMeasurementView(
                 repository: container.bodyMeasurementRepository,
                 profileRepository: container.userProfileRepository,
+                healthKitService: container.healthKitService,
                 editing: measurement
             ) {
                 Task { await viewModel.load() }

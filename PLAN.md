@@ -122,10 +122,9 @@ Estado actual: → **Fase 10**
 
 ---
 
-## Fase 10 — Integraciones
-- [ ] HealthKitService — peso bidireccional, pasos, calorías
-- [ ] CloudKit — verificar NSPersistentCloudKitContainer con FormaModelContainer
-- [ ] Estado de sync en Settings
+## Fase 10 — Integraciones ✅
+- [x] HealthKitService — writeWeight con dedup por día + permiso toShare
+- [x] NewMeasurementViewModel — prellenar peso desde HealthKit (solo medición nueva) + escribir a HealthKit al guardar
 
 ---
 
@@ -133,7 +132,8 @@ Estado actual: → **Fase 10**
 - [ ] SettingsView (sheet global)
 - [ ] Perfil de usuario (edición)
 - [ ] Permisos HealthKit
-- [ ] Estado CloudKit sync
+- [ ] CloudKit — verificar NSPersistentCloudKitContainer con FormaModelContainer
+- [ ] Estado de sync CloudKit
 - [ ] Exportar datos
 
 ---

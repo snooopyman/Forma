@@ -35,7 +35,6 @@ final class DashboardViewModel {
     var todaySteps: Int = 0
     var todayActiveCalories: Double = 0
     var todayExerciseMinutes: Double = 0
-    var latestWeightKg: Double?
     var healthKitAuthorized: Bool = false
     
     var showMeasurementReminder: Bool = false
@@ -157,8 +156,7 @@ final class DashboardViewModel {
         async let steps = healthKitService.fetchTodaySteps()
         async let calories = healthKitService.fetchTodayActiveCalories()
         async let minutes = healthKitService.fetchTodayExerciseMinutes()
-        async let weight = healthKitService.fetchLatestWeight()
-        (todaySteps, todayActiveCalories, todayExerciseMinutes, latestWeightKg) = await (steps, calories, minutes, weight)
+        (todaySteps, todayActiveCalories, todayExerciseMinutes) = await (steps, calories, minutes)
     }
     
     private func resolveTodayWorkoutDay(from mesocycle: Mesocycle) -> WorkoutDay? {

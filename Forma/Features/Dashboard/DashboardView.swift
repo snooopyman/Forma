@@ -48,7 +48,8 @@ struct DashboardView: View {
         .sheet(isPresented: $showingNewMeasurement) {
             NewMeasurementView(
                 repository: container.bodyMeasurementRepository,
-                profileRepository: container.userProfileRepository
+                profileRepository: container.userProfileRepository,
+                healthKitService: container.healthKitService
             ) { }
         }
         .fullScreenCover(item: $activeSession) { session in
@@ -447,15 +448,6 @@ struct DashboardView: View {
                 icon: "figure.run",
                 color: .accent
             )
-            if let weight = vm.latestWeightKg {
-                Divider()
-                healthKitMetric(
-                    value: weight.formatted(.number.precision(.fractionLength(1))),
-                    label: String(localized: "kg"),
-                    icon: "scalemass.fill",
-                    color: .textSecondary
-                )
-            }
         }
         .frame(maxWidth: .infinity)
     }

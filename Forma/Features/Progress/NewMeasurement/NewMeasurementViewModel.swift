@@ -21,6 +21,9 @@ final class NewMeasurementViewModel {
     private let profileRepository: UserProfileRepositoryProtocol
 
     @ObservationIgnored
+    private let healthKitService: HealthKitServiceProtocol
+
+    @ObservationIgnored
     private let existingMeasurement: BodyMeasurement?
 
     // MARK: - States
@@ -59,11 +62,13 @@ final class NewMeasurementViewModel {
     init(
         repository: BodyMeasurementRepositoryProtocol,
         profileRepository: UserProfileRepositoryProtocol,
+        healthKitService: HealthKitServiceProtocol,
         editing: BodyMeasurement? = nil,
         onSaved: @escaping @MainActor () -> Void
     ) {
         self.repository = repository
         self.profileRepository = profileRepository
+        self.healthKitService = healthKitService
         self.existingMeasurement = editing
         self.onSaved = onSaved
 
@@ -90,6 +95,11 @@ final class NewMeasurementViewModel {
         let profile = try? await profileRepository.fetch()
         let h = profile?.heightCm ?? 170
         heightText = h.formatted(.number.precision(.fractionLength(0)))
+
+        if weightText.isEmpty, existingMeasurement == nil,
+           let hkWeight = await healthKitService.fetchLatestWeight() {
+            weightText = hkWeight.formatted(.number.precision(.fractionLength(1)))
+        }
     }
 
     func save() async {
@@ -127,6 +137,7 @@ final class NewMeasurementViewModel {
                 )
                 try await repository.save(measurement)
             }
+            await healthKitService.writeWeight(weight, date: date)
             Logger.progress.info("Saved measurement: \(weight, privacy: .public) kg")
             onSaved()
         } catch {

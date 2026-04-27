@@ -22,12 +22,14 @@ struct NewMeasurementView: View {
     init(
         repository: BodyMeasurementRepositoryProtocol,
         profileRepository: UserProfileRepositoryProtocol,
+        healthKitService: HealthKitServiceProtocol,
         editing: BodyMeasurement? = nil,
         onSaved: @escaping @MainActor () -> Void
     ) {
         _viewModel = State(initialValue: NewMeasurementViewModel(
             repository: repository,
             profileRepository: profileRepository,
+            healthKitService: healthKitService,
             editing: editing,
             onSaved: onSaved
         ))
@@ -144,6 +146,7 @@ private struct MeasurementField: View {
     NewMeasurementView(
         repository: container.bodyMeasurementRepository,
         profileRepository: container.userProfileRepository,
+        healthKitService: container.healthKitService,
         onSaved: {}
     )
 }

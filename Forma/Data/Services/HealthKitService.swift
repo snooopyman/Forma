@@ -17,6 +17,7 @@ protocol HealthKitServiceProtocol: Sendable {
     func fetchTodayActiveCalories() async -> Double
     func fetchTodayExerciseMinutes() async -> Double
     func fetchLatestWeight() async -> Double?
+    func writeWeight(_ kg: Double, date: Date) async
 }
 
 // MARK: - Concrete
@@ -32,11 +33,15 @@ final class HealthKitService: HealthKitServiceProtocol, @unchecked Sendable {
         HKQuantityType(.bodyMass)
     ]
 
+    private let writeTypes: Set<HKSampleType> = [
+        HKQuantityType(.bodyMass)
+    ]
+
     var isAvailable: Bool { HKHealthStore.isHealthDataAvailable() }
 
     func requestAuthorization() async throws {
         guard isAvailable else { return }
-        try await store.requestAuthorization(toShare: [], read: readTypes)
+        try await store.requestAuthorization(toShare: writeTypes, read: readTypes)
     }
 
     func fetchTodaySteps() async -> Int {
@@ -64,6 +69,26 @@ final class HealthKitService: HealthKitServiceProtocol, @unchecked Sendable {
                 continuation.resume(returning: sample.quantity.doubleValue(for: .gramUnit(with: .kilo)))
             }
             store.execute(query)
+        }
+    }
+
+    func writeWeight(_ kg: Double, date: Date) async {
+        guard isAvailable else { return }
+        let type = HKQuantityType(.bodyMass)
+        let startOfDay = Calendar.current.startOfDay(for: date)
+        guard let endOfDay = Calendar.current.date(byAdding: .day, value: 1, to: startOfDay) else { return }
+
+        let datePredicate = HKQuery.predicateForSamples(withStart: startOfDay, end: endOfDay)
+        let sourcePredicate = HKQuery.predicateForObjects(from: HKSource.default())
+        let predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [datePredicate, sourcePredicate])
+
+        do {
+            try await store.deleteObjects(of: type, predicate: predicate)
+            let quantity = HKQuantity(unit: .gramUnit(with: .kilo), doubleValue: kg)
+            let sample = HKQuantitySample(type: type, quantity: quantity, start: date, end: date)
+            try await store.save(sample)
+        } catch {
+            Logger.progress.error("Failed to write weight to HealthKit: \(error, privacy: .private)")
         }
     }
 
@@ -96,4 +121,5 @@ struct MockHealthKitService: HealthKitServiceProtocol {
     func fetchTodayActiveCalories() async -> Double { 320 }
     func fetchTodayExerciseMinutes() async -> Double { 45 }
     func fetchLatestWeight() async -> Double? { 78.5 }
+    func writeWeight(_ kg: Double, date: Date) async {}
 }
