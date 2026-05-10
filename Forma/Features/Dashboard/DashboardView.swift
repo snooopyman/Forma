@@ -376,6 +376,7 @@ struct DashboardView: View {
                         Text(String(localized: "No active nutrition plan"))
                             .font(.subheadline)
                             .foregroundStyle(.textSecondary)
+                        Spacer()
                     }
                 }
             }
