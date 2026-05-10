@@ -1,6 +1,6 @@
 # Forma — Plan de Desarrollo
 
-Estado actual: → **Fase 10**
+Estado actual: → **Fase 12**
 
 ---
 
@@ -128,13 +128,14 @@ Estado actual: → **Fase 10**
 
 ---
 
-## Fase 11 — Settings
-- [ ] SettingsView (sheet global)
-- [ ] Perfil de usuario (edición)
-- [ ] Permisos HealthKit
-- [ ] CloudKit — verificar NSPersistentCloudKitContainer con FormaModelContainer
-- [ ] Estado de sync CloudKit
-- [ ] Exportar datos
+## Fase 11 — Settings ✅
+- [x] SettingsView (sheet global)
+- [x] Perfil de usuario (edición)
+- [x] Permisos HealthKit
+- [x] CloudKit — verificar NSPersistentCloudKitContainer con FormaModelContainer
+- [x] Estado de sync CloudKit
+- [x] Exportar datos (perfil en JSON via ShareLink)
+- [x] NSHealthShareUsageDescription + NSHealthUpdateUsageDescription en Info.plist
 
 ---
 

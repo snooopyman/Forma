@@ -14,6 +14,7 @@ struct DashboardView: View {
     @State private var viewModel: DashboardViewModel?
     @State private var showingCreateMesocycle = false
     @State private var showingNewMeasurement = false
+    @State private var showingSettings = false
     @State private var activeSession: WorkoutSession?
     
     // MARK: - Environment
@@ -86,6 +87,21 @@ struct DashboardView: View {
         }
         .background(.backgroundPrimary)
         .navigationTitle(String(localized: "Today"))
+        .toolbar {
+            ToolbarItem(placement: .topBarTrailing) {
+                Button {
+                    showingSettings = true
+                } label: {
+                    Image(systemName: "gearshape.fill")
+                }
+            }
+        }
+        .sheet(isPresented: $showingSettings) {
+            SettingsView(
+                userProfileRepository: container.userProfileRepository,
+                healthKitService: container.healthKitService
+            )
+        }
         .refreshable {
             await vm.load()
             await vm.refreshHealthKit()

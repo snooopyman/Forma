@@ -4,5 +4,9 @@
 <dict>
 	<key>NSSupportsLiveActivities</key>
 	<true/>
+	<key>NSHealthShareUsageDescription</key>
+	<string>Forma reads steps, active calories, and exercise minutes from Apple Health to show your daily activity on the Dashboard.</string>
+	<key>NSHealthUpdateUsageDescription</key>
+	<string>Forma writes your body weight to Apple Health so your measurements stay in sync across apps.</string>
 </dict>
 </plist>

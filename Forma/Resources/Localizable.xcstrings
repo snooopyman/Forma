@@ -62,6 +62,16 @@
         }
       }
     },
+    "About" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Acerca de"
+          }
+        }
+      }
+    },
     "Above average" : {
       "localizations" : {
         "en" : {
@@ -292,6 +302,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Ángulo"
+          }
+        }
+      }
+    },
+    "Apple Health" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Apple Salud"
           }
         }
       }
@@ -528,6 +548,16 @@
         }
       }
     },
+    "Checking…" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Comprobando…"
+          }
+        }
+      }
+    },
     "Chest" : {
       "comment" : "Localized name of the chest muscle group.",
       "localizations" : {
@@ -677,6 +707,16 @@
         }
       }
     },
+    "Create training plan" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Crear plan de entrenamiento"
+          }
+        }
+      }
+    },
     "Daily targets" : {
       "comment" : "Section header for the daily macro targets in the create plan form.",
       "localizations" : {
@@ -684,6 +724,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Objetivos diarios"
+          }
+        }
+      }
+    },
+    "Data" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Datos"
           }
         }
       }
@@ -883,6 +933,16 @@
         }
       }
     },
+    "Edit profile" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Editar perfil"
+          }
+        }
+      }
+    },
     "Enter valid weight and reps" : {
       "comment" : "Validation error when logging a set with missing weight or reps.",
       "localizations" : {
@@ -890,26 +950,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Introduce un peso y repeticiones válidos"
-          }
-        }
-      }
-    },
-    "Create training plan" : {
-      "localizations" : {
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Crear plan de entrenamiento"
-          }
-        }
-      }
-    },
-    "Explore the app" : {
-      "localizations" : {
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Explorar la app"
           }
         }
       }
@@ -969,6 +1009,26 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "ejercicios"
+          }
+        }
+      }
+    },
+    "Explore the app" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Explorar la app"
+          }
+        }
+      }
+    },
+    "Export profile data" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Exportar datos del perfil"
           }
         }
       }
@@ -1112,6 +1172,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Comidas"
+          }
+        }
+      }
+    },
+    "Forma profile export" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Exportación de perfil de Forma"
           }
         }
       }
@@ -1276,6 +1346,16 @@
         }
       }
     },
+    "Health & Activity" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Salud y actividad"
+          }
+        }
+      }
+    },
     "Health not available on this device" : {
       "localizations" : {
         "es" : {
@@ -1334,6 +1414,26 @@
         }
       }
     },
+    "iCloud restricted" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "iCloud restringido"
+          }
+        }
+      }
+    },
+    "iCloud Sync" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sincronización de iCloud"
+          }
+        }
+      }
+    },
     "In progress" : {
       "localizations" : {
         "es" : {
@@ -1377,6 +1477,7 @@
       }
     },
     "kg" : {
+      "extractionState" : "stale",
       "localizations" : {
         "es" : {
           "stringUnit" : {
@@ -1855,6 +1956,16 @@
         }
       }
     },
+    "No iCloud account" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sin cuenta de iCloud"
+          }
+        }
+      }
+    },
     "No measurements yet" : {
       "localizations" : {
         "en" : {
@@ -1904,6 +2015,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Sin fotos todavía"
+          }
+        }
+      }
+    },
+    "No profile found" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No se encontró perfil"
           }
         }
       }
@@ -2037,6 +2158,16 @@
         }
       }
     },
+    "Open Health app to manage permissions" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Abre la app Salud para gestionar los permisos"
+          }
+        }
+      }
+    },
     "Option" : {
       "comment" : "A label for a segmented control that lets a user select different options from a meal.",
       "isCommentAutoGenerated" : true,
@@ -2152,6 +2283,16 @@
         }
       }
     },
+    "Personal" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Personal"
+          }
+        }
+      }
+    },
     "Photo gallery" : {
       "localizations" : {
         "en" : {
@@ -2232,6 +2373,16 @@
         }
       }
     },
+    "Profile" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Perfil"
+          }
+        }
+      }
+    },
     "Progress" : {
       "comment" : "Tab bar label for the Progress module.",
       "localizations" : {
@@ -2303,6 +2454,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Reps"
+          }
+        }
+      }
+    },
+    "Request permissions" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Solicitar permisos"
           }
         }
       }
@@ -2550,6 +2711,16 @@
         }
       }
     },
+    "Settings" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Configuración"
+          }
+        }
+      }
+    },
     "Shoulders" : {
       "comment" : "Localized name of the shoulders muscle group.",
       "localizations" : {
@@ -2603,6 +2774,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Lado derecho"
+          }
+        }
+      }
+    },
+    "Sign in to iCloud in Settings to sync your data across devices." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Inicia sesión en iCloud en Ajustes para sincronizar tus datos en todos tus dispositivos."
           }
         }
       }
@@ -2704,6 +2885,16 @@
         }
       }
     },
+    "Syncing with iCloud" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sincronizando con iCloud"
+          }
+        }
+      }
+    },
     "Tap + to add your first exercise" : {
       "comment" : "Description in the empty state when a workout day has no exercises.",
       "localizations" : {
@@ -2744,6 +2935,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Pulsa para añadir alimentos"
+          }
+        }
+      }
+    },
+    "Temporarily unavailable" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Temporalmente no disponible"
           }
         }
       }
@@ -2995,6 +3196,26 @@
         }
       }
     },
+    "Units" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Unidades"
+          }
+        }
+      }
+    },
+    "Unknown" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Desconocido"
+          }
+        }
+      }
+    },
     "Unlog" : {
       "comment" : "A button label that unlogs a meal option.",
       "isCommentAutoGenerated" : true,
@@ -3014,6 +3235,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Valor"
+          }
+        }
+      }
+    },
+    "Version" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Versión"
           }
         }
       }
@@ -3131,12 +3362,12 @@
         }
       }
     },
-    "What would you like to set up first?" : {
+    "Weight unit" : {
       "localizations" : {
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "¿Por dónde quieres empezar?"
+            "value" : "Unidad de peso"
           }
         }
       }
@@ -3151,22 +3382,22 @@
         }
       }
     },
+    "What would you like to set up first?" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "¿Por dónde quieres empezar?"
+          }
+        }
+      }
+    },
     "What's your name?" : {
       "localizations" : {
         "es" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "¿Cómo te llamas?"
-          }
-        }
-      }
-    },
-    "You're all set!" : {
-      "localizations" : {
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "¡Todo listo!"
           }
         }
       }
@@ -3189,6 +3420,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Días de entreno"
+          }
+        }
+      }
+    },
+    "years" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "años"
           }
         }
       }
@@ -3221,6 +3462,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Ya tienes una foto de este ángulo este mes. Al guardar, la reemplazarás."
+          }
+        }
+      }
+    },
+    "You're all set!" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "¡Todo listo!"
           }
         }
       }
