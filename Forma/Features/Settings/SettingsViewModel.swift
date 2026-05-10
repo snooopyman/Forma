@@ -70,7 +70,7 @@ final class SettingsViewModel {
     func load(userProfileRepository: UserProfileRepositoryProtocol) async {
         profile = try? await userProfileRepository.fetch()
         buildExportJSON()
-        await checkCloudKitStatus()
+        checkCloudKitStatus()
     }
 
     func requestHealthKitAccess() async {
@@ -105,16 +105,8 @@ final class SettingsViewModel {
         exportJSON = json
     }
 
-    private func checkCloudKitStatus() async {
-        #if targetEnvironment(simulator)
-        cloudKitStatus = .noAccount
-        #else
-        do {
-            cloudKitStatus = try await CKContainer(identifier: "iCloud.com.armando.forma").accountStatus()
-        } catch {
-            Logger.sync.error("CloudKit status check failed: \(error, privacy: .private)")
-        }
-        #endif
+    private func checkCloudKitStatus() {
+        cloudKitStatus = FileManager.default.ubiquityIdentityToken != nil ? .available : .noAccount
     }
 }
 
