@@ -528,6 +528,22 @@
         }
       }
     },
+    "Carbs abbreviation" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "C"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "C"
+          }
+        }
+      }
+    },
     "Cardio" : {
       "comment" : "Localized name of the `.cardio` case in the `SessionType` enum.",
       "localizations" : {
@@ -1109,6 +1125,22 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Grasa"
+          }
+        }
+      }
+    },
+    "Fat abbreviation" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "F"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "G"
           }
         }
       }
@@ -2437,6 +2469,22 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Proteína"
+          }
+        }
+      }
+    },
+    "Protein abbreviation" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "P"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "P"
           }
         }
       }

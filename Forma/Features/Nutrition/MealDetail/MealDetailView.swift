@@ -500,9 +500,9 @@ private struct FoodPickerRow: View {
                     .font(.subheadline.weight(.medium))
                     .foregroundStyle(.textSecondary)
                 HStack(spacing: DS.Spacing.xs) {
-                    macroLabel(value: food.proteinPer100g, color: .macroProtein, prefix: "P")
-                    macroLabel(value: food.carbsPer100g, color: .macroCarbs, prefix: "C")
-                    macroLabel(value: food.fatPer100g, color: .macroFat, prefix: "F")
+                    macroLabel(value: food.proteinPer100g, color: .macroProtein, prefix: MacroType.protein.abbreviation)
+                    macroLabel(value: food.carbsPer100g, color: .macroCarbs, prefix: MacroType.carbs.abbreviation)
+                    macroLabel(value: food.fatPer100g, color: .macroFat, prefix: MacroType.fat.abbreviation)
                 }
             }
         }

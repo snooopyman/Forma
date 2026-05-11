@@ -167,9 +167,9 @@ private struct FoodBrowserRow: View {
                     .font(.subheadline.weight(.medium))
                     .foregroundStyle(.textSecondary)
                 HStack(spacing: DS.Spacing.xs) {
-                    macroLabel(value: item.proteinPer100g, color: .macroProtein, prefix: "P")
-                    macroLabel(value: item.carbsPer100g, color: .macroCarbs, prefix: "C")
-                    macroLabel(value: item.fatPer100g, color: .macroFat, prefix: "F")
+                    macroLabel(value: item.proteinPer100g, color: .macroProtein, prefix: MacroType.protein.abbreviation)
+                    macroLabel(value: item.carbsPer100g, color: .macroCarbs, prefix: MacroType.carbs.abbreviation)
+                    macroLabel(value: item.fatPer100g, color: .macroFat, prefix: MacroType.fat.abbreviation)
                 }
             }
         }

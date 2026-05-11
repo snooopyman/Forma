@@ -71,6 +71,14 @@ enum MacroType: String, Codable, CaseIterable {
         }
     }
 
+    var abbreviation: String {
+        switch self {
+        case .protein: return String(localized: "Protein abbreviation")
+        case .carbs:   return String(localized: "Carbs abbreviation")
+        case .fat:     return String(localized: "Fat abbreviation")
+        }
+    }
+
     var sortOrder: Int {
         switch self {
         case .protein: return 0
