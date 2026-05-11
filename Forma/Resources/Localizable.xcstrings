@@ -129,17 +129,6 @@
         }
       }
     },
-    "All sets done" : {
-      "comment" : "Shown when all sets for the current exercise have been logged.",
-      "localizations" : {
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Todas las series completadas"
-          }
-        }
-      }
-    },
     "Add" : {
       "comment" : "Generic confirm button to add an item.",
       "localizations" : {
@@ -285,6 +274,17 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Todas"
+          }
+        }
+      }
+    },
+    "All sets done" : {
+      "comment" : "Shown when all sets for the current exercise have been logged.",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Todas las series completadas"
           }
         }
       }
@@ -1827,6 +1827,17 @@
         }
       }
     },
+    "New day" : {
+      "comment" : "Navigation title for the create workout day sheet.",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nuevo día"
+          }
+        }
+      }
+    },
     "New measurement" : {
       "localizations" : {
         "en" : {
@@ -1881,23 +1892,23 @@
         }
       }
     },
-    "New workout day" : {
-      "comment" : "Navigation title for the create workout day sheet.",
-      "localizations" : {
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Nuevo día de entreno"
-          }
-        }
-      }
-    },
     "Next" : {
       "localizations" : {
         "es" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Siguiente"
+          }
+        }
+      }
+    },
+    "Next exercise" : {
+      "comment" : "Button to navigate to the next exercise after completing all sets.",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Siguiente ejercicio"
           }
         }
       }
@@ -1930,17 +1941,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Plan no activo"
-          }
-        }
-      }
-    },
-    "Next exercise" : {
-      "comment" : "Button to navigate to the next exercise after completing all sets.",
-      "localizations" : {
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Siguiente ejercicio"
           }
         }
       }

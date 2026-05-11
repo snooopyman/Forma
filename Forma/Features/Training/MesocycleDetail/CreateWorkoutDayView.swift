@@ -54,7 +54,7 @@ struct CreateWorkoutDayView: View {
                     }
                 }
             }
-            .navigationTitle(String(localized: "New workout day"))
+            .navigationTitle(String(localized: "New day"))
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .topBarLeading) {
