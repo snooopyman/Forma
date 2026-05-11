@@ -11,8 +11,11 @@ import CloudKit
 struct SettingsView: View {
     
     // MARK: - Private Properties
-    
+
     private let userProfileRepository: UserProfileRepositoryProtocol
+
+    // MARK: - States
+
     @State private var viewModel: SettingsViewModel
     @State private var showingEditProfile = false
     
@@ -80,15 +83,15 @@ struct SettingsView: View {
                         VStack(alignment: .leading, spacing: DS.Spacing.xs) {
                             Text(verbatim: profile.name)
                                 .font(.body.weight(.semibold))
-                                .foregroundStyle(.primary)
+                                .foregroundStyle(.textPrimary)
                             Text(verbatim: "\(profile.age) \(String(localized: "years")) · \(Int(profile.heightCm)) cm · \(profile.biologicalSex.localizedName)")
                                 .font(.caption)
-                                .foregroundStyle(.secondary)
+                                .foregroundStyle(.textSecondary)
                         }
                         Spacer()
                         Image(systemName: "chevron.right")
                             .font(.caption.weight(.semibold))
-                            .foregroundStyle(.tertiary)
+                            .foregroundStyle(.textTertiary)
                     }
                     .padding(.vertical, DS.Spacing.xs)
                 }
@@ -98,7 +101,7 @@ struct SettingsView: View {
                 LabeledContent(String(localized: "Weight unit"), value: profile.weightUnit.localizedName)
             } else {
                 Text(String(localized: "No profile found"))
-                    .foregroundStyle(.secondary)
+                    .foregroundStyle(.textSecondary)
             }
         }
     }
@@ -109,7 +112,7 @@ struct SettingsView: View {
             if viewModel.isHealthKitAvailable {
                 HStack {
                     Label(String(localized: "Apple Health"), systemImage: "heart.fill")
-                        .foregroundStyle(.primary)
+                        .foregroundStyle(.textPrimary)
                     Spacer()
                     if viewModel.isHealthKitAuthorized {
                         Image(systemName: "checkmark.circle.fill")
@@ -131,13 +134,13 @@ struct SettingsView: View {
                 }
                 Text(String(localized: "Open Health app to manage permissions"))
                     .font(.caption)
-                    .foregroundStyle(.secondary)
+                    .foregroundStyle(.textSecondary)
             } else {
                 Label(
                     String(localized: "Health not available on this device"),
                     systemImage: "heart.slash"
                 )
-                .foregroundStyle(.secondary)
+                .foregroundStyle(.textSecondary)
             }
         }
     }
@@ -162,7 +165,7 @@ struct SettingsView: View {
             if viewModel.cloudKitStatus == .noAccount {
                 Text(String(localized: "Sign in to iCloud in Settings to sync your data across devices."))
                     .font(.caption)
-                    .foregroundStyle(.secondary)
+                    .foregroundStyle(.textSecondary)
             }
         }
     }

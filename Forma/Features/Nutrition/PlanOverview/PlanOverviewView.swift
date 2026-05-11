@@ -202,26 +202,20 @@ struct PlanOverviewView: View {
     }
 
     private var emptyView: some View {
-        VStack(spacing: DS.Spacing.lg) {
-            Image(systemName: "fork.knife")
-                .font(.system(size: 56))
-                .foregroundStyle(.textTertiary)
-            VStack(spacing: DS.Spacing.sm) {
-                Text(String(localized: "No active plan"))
-                    .font(.title3.weight(.semibold))
-                    .foregroundStyle(.textPrimary)
-                Text(String(localized: "Create a nutrition plan to start tracking your macros"))
-                    .font(.subheadline)
-                    .foregroundStyle(.textSecondary)
-                    .multilineTextAlignment(.center)
-            }
-            Button(String(localized: "Create plan")) {
+        ContentUnavailableView {
+            Label(String(localized: "No active plan"), systemImage: "fork.knife")
+        } description: {
+            Text(String(localized: "Create a nutrition plan to start tracking your daily macros and calories"))
+        } actions: {
+            Button {
                 showCreatePlan = true
+            } label: {
+                Text(String(localized: "Create plan"))
+                    .primaryButtonLabel()
             }
-            .buttonStyle(.borderedProminent)
+            .buttonStyle(.glassProminent)
+            .tint(.accent)
         }
-        .padding(DS.Spacing.xxl)
-        .frame(maxWidth: .infinity, maxHeight: .infinity)
     }
 }
 

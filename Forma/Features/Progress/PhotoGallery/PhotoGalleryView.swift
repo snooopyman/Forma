@@ -114,27 +114,20 @@ struct PhotoGalleryView: View {
     }
 
     private var emptyView: some View {
-        VStack(spacing: DS.Spacing.lg) {
-            Image(systemName: "photo.stack")
-                .font(.system(size: 56))
-                .foregroundStyle(.textTertiary)
-                .accessibilityHidden(true)
-            VStack(spacing: DS.Spacing.sm) {
-                Text(String(localized: "No photos yet"))
-                    .font(.title3.weight(.semibold))
-                    .foregroundStyle(.textPrimary)
-                Text(String(localized: "Add your first progress photo to track visual changes"))
-                    .font(.subheadline)
-                    .foregroundStyle(.textSecondary)
-                    .multilineTextAlignment(.center)
-            }
-            Button(String(localized: "Add photo")) {
+        ContentUnavailableView {
+            Label(String(localized: "No photos yet"), systemImage: "photo.stack")
+        } description: {
+            Text(String(localized: "Add your first progress photo to track visual changes"))
+        } actions: {
+            Button {
                 showAddPhoto = true
+            } label: {
+                Text(String(localized: "Add photo"))
+                    .primaryButtonLabel()
             }
-            .buttonStyle(.borderedProminent)
+            .buttonStyle(.glassProminent)
+            .tint(.accent)
         }
-        .padding(DS.Spacing.xxl)
-        .frame(maxWidth: .infinity, maxHeight: .infinity)
     }
 }
 

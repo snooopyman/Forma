@@ -272,27 +272,20 @@ struct ProgressOverviewView: View {
     }
 
     private var emptyView: some View {
-        VStack(spacing: DS.Spacing.lg) {
-            Image(systemName: "chart.line.uptrend.xyaxis")
-                .font(.system(size: 56))
-                .foregroundStyle(.textTertiary)
-                .accessibilityHidden(true)
-            VStack(spacing: DS.Spacing.sm) {
-                Text(String(localized: "No measurements yet"))
-                    .font(.title3.weight(.semibold))
-                    .foregroundStyle(.textPrimary)
-                Text(String(localized: "Log your weight and circumferences to track your progress"))
-                    .font(.subheadline)
-                    .foregroundStyle(.textSecondary)
-                    .multilineTextAlignment(.center)
-            }
-            Button(String(localized: "Add measurement")) {
+        ContentUnavailableView {
+            Label(String(localized: "No measurements yet"), systemImage: "chart.line.uptrend.xyaxis")
+        } description: {
+            Text(String(localized: "Log your weight and circumferences weekly to track your body changes"))
+        } actions: {
+            Button {
                 showNewMeasurement = true
+            } label: {
+                Text(String(localized: "Add measurement"))
+                    .primaryButtonLabel()
             }
-            .buttonStyle(.borderedProminent)
+            .buttonStyle(.glassProminent)
+            .tint(.accent)
         }
-        .padding(DS.Spacing.xxl)
-        .frame(maxWidth: .infinity, maxHeight: .infinity)
     }
 
     // MARK: - Private Functions

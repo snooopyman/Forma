@@ -102,7 +102,7 @@ struct MesocycleListView: View {
                         } label: {
                             Label(String(localized: "Set active"), systemImage: "checkmark.circle")
                         }
-                        .tint(.green)
+                        .tint(.success)
                     }
                 }
             }
@@ -119,11 +119,20 @@ struct MesocycleListView: View {
     }
 
     private var emptyView: some View {
-        ContentUnavailableView(
-            String(localized: "No mesocycles yet"),
-            systemImage: "figure.strengthtraining.traditional",
-            description: Text(String(localized: "Tap + to create your first mesocycle"))
-        )
+        ContentUnavailableView {
+            Label(String(localized: "No mesocycles yet"), systemImage: "figure.strengthtraining.traditional")
+        } description: {
+            Text(String(localized: "Create your first mesocycle to build a structured training routine"))
+        } actions: {
+            Button {
+                showingCreate = true
+            } label: {
+                Text(String(localized: "Create mesocycle"))
+                    .primaryButtonLabel()
+            }
+            .buttonStyle(.glassProminent)
+            .tint(.accent)
+        }
     }
 }
 

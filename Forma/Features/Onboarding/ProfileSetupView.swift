@@ -9,13 +9,13 @@ import SwiftUI
 
 struct ProfileSetupView: View {
 
-    // MARK: - States
-
-    @AppStorage("postOnboardingAction") private var postOnboardingAction: AppTab = .today
-
     // MARK: - Private Properties
 
     @State private var viewModel: ProfileSetupViewModel
+
+    // MARK: - States
+
+    @AppStorage("postOnboardingAction") private var postOnboardingAction: AppTab = .today
 
     // MARK: - Initializers
 

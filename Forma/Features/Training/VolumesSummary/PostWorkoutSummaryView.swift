@@ -149,7 +149,7 @@ private struct MuscleVolumeRow: View {
             MuscleGroupBadge(muscleGroup: summary.muscleGroup)
             Spacer()
             VStack(alignment: .trailing, spacing: 2) {
-                Text("\(summary.totalSets) sets")
+                Text(String(localized: "\(summary.totalSets) sets"))
                     .font(.caption.weight(.semibold))
                     .foregroundStyle(.textPrimary)
                 Text(verbatim: "\(summary.totalVolume.formatted(.number.precision(.fractionLength(0)))) kg")

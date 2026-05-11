@@ -40,7 +40,7 @@ struct CreateMesocycleView: View {
                         HStack {
                             Text(String(localized: "Duration"))
                             Spacer()
-                            Text("\(durationWeeks) weeks")
+                            Text(String(localized: "\(durationWeeks) weeks"))
                                 .foregroundStyle(.textSecondary)
                         }
                     }

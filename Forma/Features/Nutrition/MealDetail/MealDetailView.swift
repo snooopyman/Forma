@@ -11,12 +11,15 @@ struct MealDetailView: View {
 
     // MARK: - Private Properties
 
+    private let onLogged: () -> Void
+
+    // MARK: - States
+
     @State private var viewModel: MealDetailViewModel
     @State private var isEditing = false
     @State private var showFoodPicker = false
     @State private var pickingForOption: MealOption? = nil
     @State private var allFoods: [FoodItem] = []
-    private let onLogged: () -> Void
 
     // MARK: - Environment
 
@@ -335,7 +338,7 @@ private struct FoodItemRow: View {
             if isEditing {
                 Button(action: onDelete) {
                     Image(systemName: "minus.circle.fill")
-                        .foregroundStyle(.red)
+                        .foregroundStyle(.error)
                         .font(.title3)
                 }
             }
@@ -496,7 +499,7 @@ private struct FoodPickerRow: View {
                 Text(verbatim: "\(food.caloriesPer100g.formatted(.number.precision(.fractionLength(0)))) kcal")
                     .font(.subheadline.weight(.medium))
                     .foregroundStyle(.textSecondary)
-                HStack(spacing: 4) {
+                HStack(spacing: DS.Spacing.xs) {
                     macroLabel(value: food.proteinPer100g, color: .macroProtein, prefix: "P")
                     macroLabel(value: food.carbsPer100g, color: .macroCarbs, prefix: "C")
                     macroLabel(value: food.fatPer100g, color: .macroFat, prefix: "F")

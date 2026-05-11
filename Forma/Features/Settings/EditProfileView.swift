@@ -81,7 +81,7 @@ struct EditProfileView: View {
                     Text(String(localized: "Height"))
                     Spacer()
                     Text(verbatim: "\(Int(viewModel.heightCm)) cm")
-                        .foregroundStyle(.secondary)
+                        .foregroundStyle(.textSecondary)
                         .monospacedDigit()
                 }
             }
@@ -102,7 +102,7 @@ struct EditProfileView: View {
                         Text(level.localizedName)
                         Text(level.description)
                             .font(.caption)
-                            .foregroundStyle(.secondary)
+                            .foregroundStyle(.textSecondary)
                     }
                     .tag(level)
                 }

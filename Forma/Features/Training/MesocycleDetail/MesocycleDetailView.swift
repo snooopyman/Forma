@@ -100,10 +100,10 @@ struct MesocycleDetailView: View {
         Section {
             HStack {
                 VStack(alignment: .leading, spacing: DS.Spacing.xs) {
-                    Text("\(viewModel.mesocycle.durationWeeks) weeks")
+                    Text(String(localized: "\(viewModel.mesocycle.durationWeeks) weeks"))
                         .font(.caption)
                         .foregroundStyle(.textSecondary)
-                    Text("Week \(viewModel.mesocycle.currentWeek) of \(viewModel.mesocycle.durationWeeks)")
+                    Text(String(localized: "Week \(viewModel.mesocycle.currentWeek) of \(viewModel.mesocycle.durationWeeks)"))
                         .font(.body.weight(.semibold))
                 }
                 Spacer()

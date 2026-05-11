@@ -5,9 +5,9 @@
 //  Created by Armando Cáceres on 29/3/26.
 //
 
+import SwiftUI
 import SwiftData
 import Observation
-import Foundation
 
 @Observable
 final class AppContainer {
@@ -49,7 +49,8 @@ final class AppContainer {
         self.bodyMetricsService = BodyMetricsService()
         self.healthKitService = HealthKitService()
 
-        if !UserDefaults.standard.bool(forKey: "com.armando.forma.foodCatalogV1") {
+        let catalogSeeded = UserDefaults.standard.bool(forKey: "com.armando.forma.foodCatalogV1")
+        if !catalogSeeded {
             let descriptor = FetchDescriptor<FoodItem>(predicate: #Predicate { !$0.isCustom })
             if let existing = try? modelContext.fetch(descriptor) {
                 existing.forEach { modelContext.delete($0) }

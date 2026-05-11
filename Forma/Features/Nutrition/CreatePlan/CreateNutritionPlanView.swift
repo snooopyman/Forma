@@ -117,7 +117,7 @@ private struct MacroField: View {
                 .multilineTextAlignment(.trailing)
                 .frame(width: 80)
             Text(verbatim: unit)
-                .foregroundStyle(.secondary)
+                .foregroundStyle(.textSecondary)
                 .frame(width: 36, alignment: .leading)
         }
     }
@@ -135,7 +135,7 @@ private struct DraftMealRow: View {
                 .font(.body)
             Text(meal.mealType.localizedName)
                 .font(.caption)
-                .foregroundStyle(.secondary)
+                .foregroundStyle(.textSecondary)
         }
     }
 }
