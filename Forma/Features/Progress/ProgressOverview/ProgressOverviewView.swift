@@ -9,7 +9,7 @@ import SwiftUI
 
 struct ProgressOverviewView: View {
 
-    // MARK: - Private Properties
+    // MARK: - States
 
     @State private var viewModel: ProgressOverviewViewModel
     @State private var showNewMeasurement = false
@@ -125,7 +125,7 @@ struct ProgressOverviewView: View {
 
                 if let bmi = m.bmi {
                     metricCell(
-                        label: "IMC",
+                        label: String(localized: "BMI"),
                         value: bmi.formatted(.number.precision(.fractionLength(1))),
                         unit: "",
                         delta: nil,

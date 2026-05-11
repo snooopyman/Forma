@@ -11,7 +11,7 @@ struct MesocycleListView: View {
 
     // MARK: - States
 
-    @AppStorage("postOnboardingAction") private var postOnboardingAction = ""
+    @AppStorage("postOnboardingAction") private var postOnboardingAction: AppTab = .today
     @State private var viewModel: MesocycleListViewModel
     @State private var showingCreate = false
 
@@ -71,8 +71,8 @@ struct MesocycleListView: View {
             await viewModel.load()
         }
         .onAppear {
-            if postOnboardingAction == "training" {
-                postOnboardingAction = ""
+            if postOnboardingAction == .training {
+                postOnboardingAction = .today
                 showingCreate = true
             }
         }
@@ -143,7 +143,7 @@ private struct MesocycleRowView: View {
                 Spacer(minLength: DS.Spacing.sm)
                 statusBadge
             }
-            Text("Week \(mesocycle.currentWeek) of \(mesocycle.durationWeeks)")
+            Text(String(localized: "Week \(mesocycle.currentWeek) of \(mesocycle.durationWeeks)"))
                 .font(.caption)
                 .foregroundStyle(.textSecondary)
         }

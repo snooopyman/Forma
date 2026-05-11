@@ -11,7 +11,7 @@ struct ProfileSetupView: View {
 
     // MARK: - States
 
-    @AppStorage("postOnboardingAction") private var postOnboardingAction = ""
+    @AppStorage("postOnboardingAction") private var postOnboardingAction: AppTab = .today
 
     // MARK: - Private Properties
 
@@ -289,7 +289,7 @@ struct ProfileSetupView: View {
 
             VStack(spacing: DS.Spacing.sm) {
                 Button {
-                    postOnboardingAction = "training"
+                    postOnboardingAction = .training
                     Task { await viewModel.save() }
                 } label: {
                     Label("Create training plan", systemImage: "figure.strengthtraining.traditional")
@@ -299,7 +299,7 @@ struct ProfileSetupView: View {
                 .disabled(viewModel.isSaving)
 
                 Button {
-                    postOnboardingAction = "nutrition"
+                    postOnboardingAction = .nutrition
                     Task { await viewModel.save() }
                 } label: {
                     Label("Set up nutrition", systemImage: "fork.knife")

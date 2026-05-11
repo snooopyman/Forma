@@ -9,9 +9,9 @@ import SwiftUI
 
 struct PlanOverviewView: View {
 
-    // MARK: - Private Properties
+    // MARK: - States
 
-    @AppStorage("postOnboardingAction") private var postOnboardingAction = ""
+    @AppStorage("postOnboardingAction") private var postOnboardingAction: AppTab = .today
     @State private var viewModel: PlanOverviewViewModel
     @State private var selectedMeal: Meal?
     @State private var showCreatePlan = false
@@ -82,8 +82,8 @@ struct PlanOverviewView: View {
         }
         .task { await viewModel.load() }
         .onAppear {
-            if postOnboardingAction == "nutrition" {
-                postOnboardingAction = ""
+            if postOnboardingAction == .nutrition {
+                postOnboardingAction = .today
                 showCreatePlan = true
             }
         }
