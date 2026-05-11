@@ -111,7 +111,10 @@ struct SettingsView: View {
                     Label(String(localized: "Apple Health"), systemImage: "heart.fill")
                         .foregroundStyle(.primary)
                     Spacer()
-                    if viewModel.isRequestingHealthKit {
+                    if viewModel.isHealthKitAuthorized {
+                        Image(systemName: "checkmark.circle.fill")
+                            .foregroundStyle(.success)
+                    } else if viewModel.isRequestingHealthKit {
                         ProgressView()
                             .controlSize(.small)
                     } else {
@@ -167,9 +170,9 @@ struct SettingsView: View {
     @ViewBuilder
     private var exportSection: some View {
         Section(String(localized: "Data")) {
-            if let json = viewModel.exportJSON {
+            if let url = viewModel.exportFileURL {
                 ShareLink(
-                    item: json,
+                    item: url,
                     preview: SharePreview(
                         String(localized: "Forma profile export"),
                         image: Image(systemName: "person.crop.circle")

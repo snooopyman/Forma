@@ -12,6 +12,7 @@ import OSLog
 
 protocol HealthKitServiceProtocol: Sendable {
     var isAvailable: Bool { get }
+    var isAuthorized: Bool { get }
     func requestAuthorization() async throws
     func fetchTodaySteps() async -> Int
     func fetchTodayActiveCalories() async -> Double
@@ -38,6 +39,11 @@ final class HealthKitService: HealthKitServiceProtocol, @unchecked Sendable {
     ]
 
     var isAvailable: Bool { HKHealthStore.isHealthDataAvailable() }
+
+    var isAuthorized: Bool {
+        guard isAvailable else { return false }
+        return store.authorizationStatus(for: HKQuantityType(.bodyMass)) == .sharingAuthorized
+    }
 
     func requestAuthorization() async throws {
         guard isAvailable else { return }
@@ -116,6 +122,7 @@ final class HealthKitService: HealthKitServiceProtocol, @unchecked Sendable {
 
 struct MockHealthKitService: HealthKitServiceProtocol {
     var isAvailable: Bool { true }
+    var isAuthorized: Bool { true }
     func requestAuthorization() async throws {}
     func fetchTodaySteps() async -> Int { 7_432 }
     func fetchTodayActiveCalories() async -> Double { 320 }

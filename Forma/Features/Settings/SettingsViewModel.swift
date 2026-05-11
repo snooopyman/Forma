@@ -24,11 +24,12 @@ final class SettingsViewModel {
     var cloudKitStatus: CKAccountStatus = .couldNotDetermine
     var isRequestingHealthKit = false
     var healthKitError: String?
-    var exportJSON: String?
+    var exportFileURL: URL?
 
     // MARK: - Computed Properties
 
     var isHealthKitAvailable: Bool { healthKitService.isAvailable }
+    var isHealthKitAuthorized: Bool { healthKitService.isAuthorized }
 
     var cloudKitStatusText: String {
         switch cloudKitStatus {
@@ -100,9 +101,10 @@ final class SettingsViewModel {
         )
         let encoder = JSONEncoder()
         encoder.outputFormatting = [.prettyPrinted, .sortedKeys]
-        guard let data = try? encoder.encode(dto),
-              let json = String(data: data, encoding: .utf8) else { return }
-        exportJSON = json
+        guard let data = try? encoder.encode(dto) else { return }
+        let url = FileManager.default.temporaryDirectory.appendingPathComponent("forma-profile.json")
+        try? data.write(to: url)
+        exportFileURL = url
     }
 
     private func checkCloudKitStatus() {
