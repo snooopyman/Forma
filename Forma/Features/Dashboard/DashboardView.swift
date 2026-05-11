@@ -13,6 +13,7 @@ struct DashboardView: View {
     
     @State private var viewModel: DashboardViewModel?
     @State private var showingCreateMesocycle = false
+    @State private var showingCreateNutritionPlan = false
     @State private var showingNewMeasurement = false
     @State private var showingSettings = false
     @State private var activeSession: WorkoutSession?
@@ -45,6 +46,9 @@ struct DashboardView: View {
         }
         .sheet(isPresented: $showingCreateMesocycle) {
             CreateMesocycleView { }
+        }
+        .sheet(isPresented: $showingCreateNutritionPlan) {
+            CreateNutritionPlanView(nutritionRepository: container.nutritionRepository) { }
         }
         .sheet(isPresented: $showingNewMeasurement) {
             NewMeasurementView(
@@ -369,15 +373,22 @@ struct DashboardView: View {
                         }
                     }
                 } else {
-                    HStack(spacing: DS.Spacing.sm) {
+                    VStack(spacing: DS.Spacing.sm) {
                         Image(systemName: "fork.knife.circle")
-                            .font(.title2)
+                            .font(.title)
                             .foregroundStyle(.textTertiary)
                         Text(String(localized: "No active nutrition plan"))
                             .font(.subheadline)
                             .foregroundStyle(.textSecondary)
-                        Spacer()
+                        Button {
+                            showingCreateNutritionPlan = true
+                        } label: {
+                            Text(String(localized: "Create nutrition plan"))
+                                .font(.subheadline.bold())
+                                .foregroundStyle(.accent)
+                        }
                     }
+                    .frame(maxWidth: .infinity)
                 }
             }
             .padding(DS.Spacing.lg)
