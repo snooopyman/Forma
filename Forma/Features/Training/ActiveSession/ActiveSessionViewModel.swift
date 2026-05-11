@@ -111,7 +111,7 @@ final class ActiveSessionViewModel {
         let weightText = weightInputs[exercise.id] ?? ""
         let repsText = repsInputs[exercise.id] ?? ""
 
-        guard let weight = Double(weightText), let reps = Int(repsText) else {
+        guard let weight = weightText.weightDouble, let reps = Int(repsText) else {
             errorMessage = String(localized: "Enter valid weight and reps")
             return
         }

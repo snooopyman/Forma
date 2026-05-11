@@ -14,3 +14,9 @@ extension Double {
             : formatted(.number.precision(.fractionLength(1)))
     }
 }
+
+extension String {
+    var weightDouble: Double? {
+        Double(replacingOccurrences(of: ",", with: "."))
+    }
+}

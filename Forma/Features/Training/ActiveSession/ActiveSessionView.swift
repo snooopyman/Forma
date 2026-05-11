@@ -418,7 +418,7 @@ struct ActiveSessionView: View {
     // MARK: - Private Functions
 
     private func adjustWeight(by delta: Double, for exercise: PlannedExercise) {
-        let current = Double(viewModel.weightInputs[exercise.id] ?? "0") ?? 0
+        let current = (viewModel.weightInputs[exercise.id] ?? "0").weightDouble ?? 0
         let newValue = max(0, current + delta)
         viewModel.weightInputs[exercise.id] = newValue.asWeight
     }
