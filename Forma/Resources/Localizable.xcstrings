@@ -129,6 +129,17 @@
         }
       }
     },
+    "All sets done" : {
+      "comment" : "Shown when all sets for the current exercise have been logged.",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Todas las series completadas"
+          }
+        }
+      }
+    },
     "Add" : {
       "comment" : "Generic confirm button to add an item.",
       "localizations" : {
@@ -1919,6 +1930,17 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Plan no activo"
+          }
+        }
+      }
+    },
+    "Next exercise" : {
+      "comment" : "Button to navigate to the next exercise after completing all sets.",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Siguiente ejercicio"
           }
         }
       }

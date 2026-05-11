@@ -295,6 +295,27 @@ struct ActiveSessionView: View {
             }
             .padding(DS.Spacing.md)
             .cardStyle()
+        } else if viewModel.canNavigateNext {
+            Button {
+                viewModel.navigateNext()
+            } label: {
+                Label(String(localized: "Next exercise"), systemImage: "arrow.right")
+                    .fontWeight(.semibold)
+                    .frame(maxWidth: .infinity, minHeight: DS.Sizing.minTapTarget)
+            }
+            .buttonStyle(.glassProminent)
+            .tint(.accent)
+        } else {
+            HStack(spacing: DS.Spacing.sm) {
+                Image(systemName: "checkmark.circle.fill")
+                    .foregroundStyle(.success)
+                Text(String(localized: "All sets done"))
+                    .font(.subheadline.weight(.medium))
+                    .foregroundStyle(.textSecondary)
+            }
+            .frame(maxWidth: .infinity)
+            .padding(DS.Spacing.md)
+            .cardStyle()
         }
     }
 
