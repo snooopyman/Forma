@@ -177,13 +177,10 @@ struct DashboardView: View {
             )
         } label: {
             Text(String(localized: "Resume mesocycle"))
-                .font(.subheadline.bold())
                 .frame(maxWidth: .infinity)
-                .padding(.vertical, DS.Spacing.sm)
-                .background(.accent)
-                .foregroundStyle(.textOnAccent)
-                .clipShape(RoundedRectangle(cornerRadius: DS.Radius.button))
         }
+        .buttonStyle(.glassProminent)
+        .tint(.accent)
     }
     
     @ViewBuilder
@@ -238,13 +235,10 @@ struct DashboardView: View {
                     activeSession = inProgress
                 } label: {
                     Text(String(localized: "Continue workout"))
-                        .font(.subheadline.bold())
                         .frame(maxWidth: .infinity)
-                        .padding(.vertical, DS.Spacing.sm)
-                        .background(.accent)
-                        .foregroundStyle(.textOnAccent)
-                        .clipShape(RoundedRectangle(cornerRadius: DS.Radius.button))
                 }
+                .buttonStyle(.glassProminent)
+                .tint(.accent)
             } else if !vm.isTodaySessionCompleted {
                 NavigationLink {
                     WorkoutDayDetailView(
@@ -255,13 +249,10 @@ struct DashboardView: View {
                     )
                 } label: {
                     Text(String(localized: "Start workout"))
-                        .font(.subheadline.bold())
                         .frame(maxWidth: .infinity)
-                        .padding(.vertical, DS.Spacing.sm)
-                        .background(.accent)
-                        .foregroundStyle(.textOnAccent)
-                        .clipShape(RoundedRectangle(cornerRadius: DS.Radius.button))
                 }
+                .buttonStyle(.glassProminent)
+                .tint(.accent)
             }
         }
     }
@@ -444,13 +435,11 @@ struct DashboardView: View {
                     .foregroundStyle(.error)
                 Text(String(localized: "Connect with Health"))
                     .font(.subheadline.bold())
-                    .foregroundStyle(.accent)
             }
             .frame(maxWidth: .infinity)
-            .padding(.vertical, DS.Spacing.sm)
-            .background(.accent.opacity(0.08))
-            .clipShape(RoundedRectangle(cornerRadius: DS.Radius.button))
         }
+        .buttonStyle(.glass)
+        .tint(.accent)
     }
     
     @ViewBuilder
@@ -510,13 +499,10 @@ struct DashboardView: View {
                     showingNewMeasurement = true
                 } label: {
                     Text(String(localized: "Log measurements"))
-                        .font(.subheadline.bold())
                         .frame(maxWidth: .infinity)
-                        .padding(.vertical, DS.Spacing.sm)
-                        .background(.accent)
-                        .foregroundStyle(.textOnAccent)
-                        .clipShape(RoundedRectangle(cornerRadius: DS.Radius.button))
                 }
+                .buttonStyle(.glassProminent)
+                .tint(.accent)
             }
             .padding(DS.Spacing.lg)
             .cardStyle()

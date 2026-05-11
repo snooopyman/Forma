@@ -14,14 +14,76 @@ Cuando propongas UI:
 
 ## Liquid Glass — reglas obligatorias (iOS 26)
 
+### `.glassEffect()` vs `.buttonStyle(.glass)` — distinción crítica
+
+Son dos conceptos distintos con reglas distintas:
+
+| | `.glassEffect()` | `.buttonStyle(.glass)` / `.buttonStyle(.glassProminent)` |
+|---|---|---|
+| **Para qué** | Contenedores, superficies, vistas custom | Botones interactivos |
+| **Dónde puede ir** | Solo navigation layer | También en CTAs standalone dentro del content layer |
+
+### Reglas de `.glassEffect()`
+
 - Glass **solo** en navigation layer: tab bars, toolbars, FABs, sheets, botones flotantes
 - **Nunca** en content layer: listas, cards, ScrollViews, fondos, texto
 - `.glassEffect()` siempre como **último** modificador de layout
 - Dos o más elementos glass adyacentes → obligatorio `GlassEffectContainer`
 - `TabView`, `NavigationStack`, `.sheet` ya tienen glass integrado → NO añadir `.glassEffect()` encima
 - `.buttonStyle(.glass)` y `.glassEffect()` son mutuamente excluyentes — nunca los dos a la vez
-- CTA primario: `.buttonStyle(.glassProminent)` con tint `accentColor`
-- Acción secundaria: `.buttonStyle(.glass)`
+
+### Reglas de botones con glass
+
+- **CTA primario:** `.buttonStyle(.glassProminent)` + `.tint(.accent)` — opaco, destaca visualmente
+- **Acción secundaria:** `.buttonStyle(.glass)` — translúcido, el fondo se ve a través
+- `.buttonStyle(.glass/.glassProminent)` puede usarse en CTAs standalone dentro de cards y secciones de contenido — no solo en navigation layer
+- **Nunca** glass en botones dentro de celdas de lista o filas de tabla (List rows, ForEach dentro de List)
+- Tintear **solo** para transmitir significado semántico (acción primaria, estado) — nunca decorativo
+- No tintear botones secundarios (`.glass`); reservar `.tint()` para CTAs con `.glassProminent`
+- `NavigationLink` acepta `.buttonStyle()` igual que `Button` — mismo patrón
+
+### Anatomía correcta de un CTA con glass
+
+```swift
+// ✅ Correcto — label limpio, estilo en el botón
+Button { action() } label: {
+    Text(String(localized: "Start workout"))
+        .frame(maxWidth: .infinity)
+}
+.buttonStyle(.glassProminent)
+.tint(.accent)
+
+// ✅ NavigationLink — mismo patrón
+NavigationLink { DestinationView() } label: {
+    Text(String(localized: "Resume mesocycle"))
+        .frame(maxWidth: .infinity)
+}
+.buttonStyle(.glassProminent)
+.tint(.accent)
+
+// ❌ Incorrecto — estilo manual pre-iOS 26
+Button { action() } label: {
+    Text("Start workout")
+        .font(.subheadline.bold())
+        .frame(maxWidth: .infinity)
+        .padding(.vertical, 8)
+        .background(.accent)
+        .foregroundStyle(.white)
+        .clipShape(RoundedRectangle(cornerRadius: 12))
+}
+```
+
+**Regla del label:** solo content (Text, Image, HStack, Label) + `.frame(maxWidth: .infinity)` si ocupa todo el ancho. Nunca `.padding()`, `.background()`, `.foregroundStyle()` de estilo, ni `.clipShape()` en el label — el `buttonStyle` los gestiona.
+
+### Modificadores opcionales para glass buttons
+
+```swift
+.controlSize(.mini | .small | .regular | .large | .extraLarge)  // tamaño
+.buttonBorderShape(.capsule | .circle | .roundedRectangle(radius:))  // forma
+```
+
+### Fondo de app
+
 - Fondo de app: `#F5F5F5` (nunca blanco puro) — el glass necesita contraste
 
 ---
