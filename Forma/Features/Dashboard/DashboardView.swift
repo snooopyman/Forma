@@ -10,13 +10,16 @@ import SwiftUI
 struct DashboardView: View {
     
     // MARK: - States
-    
+
     @State private var viewModel: DashboardViewModel?
     @State private var showingCreateMesocycle = false
     @State private var showingCreateNutritionPlan = false
     @State private var showingNewMeasurement = false
     @State private var showingSettings = false
     @State private var activeSession: WorkoutSession?
+
+    @AppStorage("com.armando.forma.dailyStepsGoal") private var dailyStepsGoal: Int = 10_000
+    @AppStorage("com.armando.forma.dailyExerciseGoal") private var dailyExerciseGoal: Int = 30
     
     // MARK: - Environment
     
@@ -65,6 +68,7 @@ struct DashboardView: View {
                     sessionService: container.workoutSessionService,
                     volumeCalculatorService: container.volumeCalculatorService,
                     restTimerActivityService: container.restTimerActivityService,
+                    healthKitService: container.healthKitService,
                     onDone: { activeSession = nil }
                 )
             }
@@ -108,7 +112,6 @@ struct DashboardView: View {
         }
         .refreshable {
             await vm.load()
-            await vm.refreshHealthKit()
         }
     }
     
@@ -444,32 +447,51 @@ struct DashboardView: View {
     
     @ViewBuilder
     private func healthKitMetrics(vm: DashboardViewModel) -> some View {
-        HStack {
+        let stepsProgress = dailyStepsGoal > 0
+            ? min(Double(vm.todaySteps) / Double(dailyStepsGoal), 1.0)
+            : 0.0
+        let exerciseProgress = dailyExerciseGoal > 0
+            ? min(vm.todayExerciseMinutes / Double(dailyExerciseGoal), 1.0)
+            : 0.0
+        HStack(alignment: .top) {
             healthKitMetric(
                 value: vm.todaySteps.formatted(),
+                goal: "/ \(dailyStepsGoal.formatted())",
                 label: String(localized: "Steps"),
                 icon: "shoeprints.fill",
-                color: .success
+                color: .success,
+                progress: stepsProgress
             )
             Divider()
             healthKitMetric(
-                value: "\(Int(vm.todayActiveCalories))",
+                value: vm.todayActiveCalories.formatted(.number.precision(.fractionLength(0))),
+                goal: "kcal",
                 label: String(localized: "Cal"),
                 icon: "flame.fill",
-                color: .error
+                color: .error,
+                progress: nil
             )
             Divider()
             healthKitMetric(
                 value: "\(Int(vm.todayExerciseMinutes))m",
+                goal: "/ \(dailyExerciseGoal)m",
                 label: String(localized: "Exercise"),
                 icon: "figure.run",
-                color: .accent
+                color: .accent,
+                progress: exerciseProgress
             )
         }
         .frame(maxWidth: .infinity)
     }
-    
-    private func healthKitMetric(value: String, label: String, icon: String, color: Color) -> some View {
+
+    private func healthKitMetric(
+        value: String,
+        goal: String,
+        label: String,
+        icon: String,
+        color: Color,
+        progress: Double?
+    ) -> some View {
         VStack(spacing: DS.Spacing.xs) {
             Image(systemName: icon)
                 .foregroundStyle(color)
@@ -477,6 +499,13 @@ struct DashboardView: View {
             Text(verbatim: value)
                 .font(.headline.monospacedDigit())
                 .foregroundStyle(.textPrimary)
+            Text(verbatim: goal)
+                .font(.caption2.monospacedDigit())
+                .foregroundStyle(.textTertiary)
+            ProgressView(value: progress ?? 0)
+                .tint(color)
+                .opacity(progress != nil ? 1 : 0)
+                .frame(maxWidth: .infinity)
             Text(label)
                 .font(.caption2)
                 .foregroundStyle(.textSecondary)

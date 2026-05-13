@@ -13,7 +13,7 @@ import OSLog
 final class DashboardViewModel {
     
     // MARK: - Private Properties
-    
+
     @ObservationIgnored private let healthKitAuthorizedKey = "com.armando.forma.healthKitAuthorized"
     @ObservationIgnored private let mesocycleRepo: MesocycleRepositoryProtocol
     @ObservationIgnored private let workoutSessionRepo: WorkoutSessionRepositoryProtocol
@@ -45,9 +45,9 @@ final class DashboardViewModel {
     var errorMessage: String?
     
     // MARK: - Computed Properties
-    
+
     var isHealthKitAvailable: Bool { healthKitService.isAvailable }
-    
+
     var greeting: String {
         let hour = Calendar.current.component(.hour, from: .now)
         if hour < 12 { return String(localized: "Good morning") }
@@ -115,11 +115,6 @@ final class DashboardViewModel {
         } catch {
             Logger.healthKit.error("HealthKit auth failed: \(error, privacy: .private)")
         }
-    }
-    
-    func refreshHealthKit() async {
-        guard healthKitAuthorized else { return }
-        await loadHealthKitData()
     }
     
     // MARK: - Private Functions

@@ -19,6 +19,7 @@ protocol HealthKitServiceProtocol: Sendable {
     func fetchTodayExerciseMinutes() async -> Double
     func fetchLatestWeight() async -> Double?
     func writeWeight(_ kg: Double, date: Date) async
+    func writeWorkout(activityType: HKWorkoutActivityType, start: Date, end: Date) async
 }
 
 // MARK: - Concrete
@@ -31,11 +32,13 @@ final class HealthKitService: HealthKitServiceProtocol, @unchecked Sendable {
         HKQuantityType(.stepCount),
         HKQuantityType(.activeEnergyBurned),
         HKQuantityType(.appleExerciseTime),
-        HKQuantityType(.bodyMass)
+        HKQuantityType(.bodyMass),
+        HKObjectType.workoutType()
     ]
 
     private let writeTypes: Set<HKSampleType> = [
-        HKQuantityType(.bodyMass)
+        HKQuantityType(.bodyMass),
+        HKObjectType.workoutType()
     ]
 
     var isAvailable: Bool { HKHealthStore.isHealthDataAvailable() }
@@ -59,7 +62,10 @@ final class HealthKitService: HealthKitServiceProtocol, @unchecked Sendable {
     }
 
     func fetchTodayExerciseMinutes() async -> Double {
-        await fetchTodaySum(for: .appleExerciseTime, unit: .minute())
+        async let appleExercise = fetchTodaySum(for: .appleExerciseTime, unit: .minute())
+        async let workoutMinutes = fetchTodayWorkoutMinutes()
+        let (exercise, workout) = await (appleExercise, workoutMinutes)
+        return max(exercise, workout)
     }
 
     func fetchLatestWeight() async -> Double? {
@@ -98,7 +104,66 @@ final class HealthKitService: HealthKitServiceProtocol, @unchecked Sendable {
         }
     }
 
+    func writeWorkout(activityType: HKWorkoutActivityType, start: Date, end: Date) async {
+        guard isAvailable else { return }
+        guard await !hasExternalOverlappingWorkout(start: start, end: end) else {
+            Logger.healthKit.info("Skipping writeWorkout — external workout already covers this session")
+            return
+        }
+        let config = HKWorkoutConfiguration()
+        config.activityType = activityType
+        let builder = HKWorkoutBuilder(healthStore: store, configuration: config, device: .local())
+        do {
+            try await builder.beginCollection(at: start)
+            try await builder.endCollection(at: end)
+            _ = try await builder.finishWorkout()
+        } catch {
+            Logger.healthKit.error("writeWorkout failed: \(error, privacy: .private)")
+        }
+    }
+
     // MARK: - Private Functions
+
+    private func fetchTodayWorkoutMinutes() async -> Double {
+        guard isAvailable else { return 0 }
+        let start = Calendar.current.startOfDay(for: .now)
+        let predicate = HKQuery.predicateForSamples(withStart: start, end: .now, options: .strictStartDate)
+        let ourBundleID = Bundle.main.bundleIdentifier ?? ""
+        return await withCheckedContinuation { continuation in
+            let query = HKSampleQuery(
+                sampleType: .workoutType(),
+                predicate: predicate,
+                limit: HKObjectQueryNoLimit,
+                sortDescriptors: nil
+            ) { _, samples, _ in
+                let minutes = (samples as? [HKWorkout])?
+                    .filter { $0.sourceRevision.source.bundleIdentifier == ourBundleID }
+                    .reduce(0.0) { $0 + $1.duration / 60 } ?? 0
+                continuation.resume(returning: minutes)
+            }
+            store.execute(query)
+        }
+    }
+
+    private func hasExternalOverlappingWorkout(start: Date, end: Date) async -> Bool {
+        guard isAvailable else { return false }
+        let predicate = HKQuery.predicateForSamples(withStart: start, end: end)
+        let ourBundleID = Bundle.main.bundleIdentifier ?? ""
+        return await withCheckedContinuation { continuation in
+            let query = HKSampleQuery(
+                sampleType: .workoutType(),
+                predicate: predicate,
+                limit: HKObjectQueryNoLimit,
+                sortDescriptors: nil
+            ) { _, samples, _ in
+                let hasExternal = (samples as? [HKWorkout])?.contains {
+                    $0.sourceRevision.source.bundleIdentifier != ourBundleID
+                } ?? false
+                continuation.resume(returning: hasExternal)
+            }
+            store.execute(query)
+        }
+    }
 
     private func fetchTodaySum(for identifier: HKQuantityTypeIdentifier, unit: HKUnit) async -> Double {
         guard isAvailable else { return 0 }
@@ -129,4 +194,5 @@ struct MockHealthKitService: HealthKitServiceProtocol {
     func fetchTodayExerciseMinutes() async -> Double { 45 }
     func fetchLatestWeight() async -> Double? { 78.5 }
     func writeWeight(_ kg: Double, date: Date) async {}
+    func writeWorkout(activityType: HKWorkoutActivityType, start: Date, end: Date) async {}
 }

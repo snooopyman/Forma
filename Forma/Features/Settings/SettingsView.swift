@@ -18,6 +18,10 @@ struct SettingsView: View {
 
     @State private var viewModel: SettingsViewModel
     @State private var showingEditProfile = false
+
+    @AppStorage("com.armando.forma.dailyStepsGoal") private var dailyStepsGoal: Int = 10_000
+    @AppStorage("com.armando.forma.dailyExerciseGoal") private var dailyExerciseGoal: Int = 30
+    @AppStorage("com.armando.forma.exportWorkoutsToHealth") private var exportWorkoutsToHealth: Bool = true
     
     // MARK: - Environment
     
@@ -40,6 +44,7 @@ struct SettingsView: View {
             Form {
                 profileSection
                 healthSection
+                activityGoalsSection
                 syncSection
                 exportSection
                 aboutSection
@@ -145,6 +150,35 @@ struct SettingsView: View {
         }
     }
     
+    @ViewBuilder
+    private var activityGoalsSection: some View {
+        if viewModel.isHealthKitAvailable {
+            Section(String(localized: "Activity Goals")) {
+                Stepper(value: $dailyStepsGoal, in: 1_000...50_000, step: 1_000) {
+                    HStack {
+                        Label(String(localized: "Daily steps"), systemImage: "shoeprints.fill")
+                        Spacer()
+                        Text(verbatim: dailyStepsGoal.formatted())
+                            .foregroundStyle(.textSecondary)
+                            .monospacedDigit()
+                    }
+                }
+                Stepper(value: $dailyExerciseGoal, in: 15...120, step: 15) {
+                    HStack {
+                        Label(String(localized: "Daily exercise"), systemImage: "figure.run")
+                        Spacer()
+                        Text(verbatim: "\(dailyExerciseGoal)m")
+                            .foregroundStyle(.textSecondary)
+                            .monospacedDigit()
+                    }
+                }
+                Toggle(isOn: $exportWorkoutsToHealth) {
+                    Label(String(localized: "Export workouts to Health"), systemImage: "heart.fill")
+                }
+            }
+        }
+    }
+
     private var syncSection: some View {
         Section(String(localized: "iCloud Sync")) {
             HStack {

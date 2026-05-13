@@ -96,6 +96,7 @@ struct WorkoutDayDetailView: View {
                 sessionService: container.workoutSessionService,
                 volumeCalculatorService: container.volumeCalculatorService,
                 restTimerActivityService: container.restTimerActivityService,
+                healthKitService: container.healthKitService,
                 onDone: { activeSession = nil }
             )
         }

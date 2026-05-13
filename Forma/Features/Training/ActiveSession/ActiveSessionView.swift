@@ -29,13 +29,15 @@ struct ActiveSessionView: View {
         sessionService: WorkoutSessionServiceProtocol,
         volumeCalculatorService: VolumeCalculatorServiceProtocol,
         restTimerActivityService: RestTimerActivityServiceProtocol,
+        healthKitService: HealthKitServiceProtocol,
         onDone: @escaping () -> Void
     ) {
         _viewModel = State(initialValue: ActiveSessionViewModel(
             session: session,
             workoutDay: workoutDay,
             sessionService: sessionService,
-            restTimerActivityService: restTimerActivityService
+            restTimerActivityService: restTimerActivityService,
+            healthKitService: healthKitService
         ))
         self.volumeCalculatorService = volumeCalculatorService
         self.onDone = onDone
@@ -77,6 +79,7 @@ struct ActiveSessionView: View {
                 PostWorkoutSummaryView(
                     session: viewModel.session,
                     volumeCalculatorService: volumeCalculatorService,
+                    wasExportedToHealth: viewModel.wasExportedToHealth,
                     onDone: onDone
                 )
             }
@@ -461,6 +464,7 @@ private struct ActiveSessionPreviewWrapper: View {
                 sessionService: container.workoutSessionService,
                 volumeCalculatorService: container.volumeCalculatorService,
                 restTimerActivityService: container.restTimerActivityService,
+                healthKitService: container.healthKitService,
                 onDone: {}
             )
         }

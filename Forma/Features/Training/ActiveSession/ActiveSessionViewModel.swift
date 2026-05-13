@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import HealthKit
 import os
 
 @Observable
@@ -19,6 +20,12 @@ final class ActiveSessionViewModel {
 
     @ObservationIgnored
     private let restTimerActivityService: RestTimerActivityServiceProtocol
+
+    @ObservationIgnored
+    private let healthKitService: HealthKitServiceProtocol
+
+    @ObservationIgnored
+    private let exportWorkoutsKey = "com.armando.forma.exportWorkoutsToHealth"
 
     @ObservationIgnored
     private var restTimerTask: Task<Void, Never>?
@@ -43,6 +50,7 @@ final class ActiveSessionViewModel {
     var restSecondsRemaining = 0
     var isResting = false
     var restJustEnded = false
+    var wasExportedToHealth = false
 
     // MARK: - Computed Properties
 
@@ -69,12 +77,14 @@ final class ActiveSessionViewModel {
         session: WorkoutSession,
         workoutDay: WorkoutDay,
         sessionService: WorkoutSessionServiceProtocol,
-        restTimerActivityService: RestTimerActivityServiceProtocol
+        restTimerActivityService: RestTimerActivityServiceProtocol,
+        healthKitService: HealthKitServiceProtocol
     ) {
         self.session = session
         self.workoutDay = workoutDay
         self.sessionService = sessionService
         self.restTimerActivityService = restTimerActivityService
+        self.healthKitService = healthKitService
     }
 
     // MARK: - Functions
@@ -147,6 +157,15 @@ final class ActiveSessionViewModel {
             try await sessionService.completeSession(session)
             restTimerTask?.cancel()
             await restTimerActivityService.endActivity()
+            let shouldExport = UserDefaults.standard.object(forKey: exportWorkoutsKey) as? Bool ?? true
+            if shouldExport, let end = session.completedAt {
+                await healthKitService.writeWorkout(
+                    activityType: hkActivityType(for: session.sessionType),
+                    start: session.startedAt,
+                    end: end
+                )
+                wasExportedToHealth = true
+            }
             isCompleted = true
         } catch {
             Logger.training.error("Failed to complete session: \(error, privacy: .private)")
@@ -189,6 +208,14 @@ final class ActiveSessionViewModel {
     }
 
     // MARK: - Private Functions
+
+    private func hkActivityType(for type: SessionType) -> HKWorkoutActivityType {
+        switch type {
+        case .planned, .freeStyle: return .traditionalStrengthTraining
+        case .cardio:              return .mixedCardio
+        case .mobility:            return .flexibility
+        }
+    }
 
     private func startRestTimer(seconds: Int) {
         restTimerTask?.cancel()

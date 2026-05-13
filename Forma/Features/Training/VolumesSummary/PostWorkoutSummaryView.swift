@@ -14,6 +14,7 @@ struct PostWorkoutSummaryView: View {
 
     let session: WorkoutSession
     let volumeCalculatorService: VolumeCalculatorServiceProtocol
+    let wasExportedToHealth: Bool
     let onDone: () -> Void
 
     // MARK: - Computed Properties
@@ -56,6 +57,15 @@ struct PostWorkoutSummaryView: View {
             Text(session.date.formatted(date: .long, time: .omitted))
                 .font(.subheadline)
                 .foregroundStyle(.textSecondary)
+            if wasExportedToHealth {
+                Label(String(localized: "Saved to Apple Health"), systemImage: "heart.fill")
+                    .font(.caption.weight(.medium))
+                    .foregroundStyle(.error)
+                    .padding(.horizontal, DS.Spacing.sm)
+                    .padding(.vertical, DS.Spacing.xs)
+                    .background(.error.opacity(0.12))
+                    .clipShape(Capsule())
+            }
         }
         .padding(.top, DS.Spacing.lg)
     }
@@ -173,6 +183,7 @@ private struct PostWorkoutSummaryPreviewWrapper: View {
                 PostWorkoutSummaryView(
                     session: session,
                     volumeCalculatorService: container.volumeCalculatorService,
+                    wasExportedToHealth: false,
                     onDone: {}
                 )
             }
