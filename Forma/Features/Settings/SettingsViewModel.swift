@@ -12,25 +12,25 @@ import OSLog
 @Observable
 @MainActor
 final class SettingsViewModel {
-
+    
     // MARK: - Private Properties
-
+    
     @ObservationIgnored
     private let healthKitService: HealthKitServiceProtocol
-
+    
     // MARK: - States
-
+    
     var profile: UserProfile?
     var cloudKitStatus: CKAccountStatus = .couldNotDetermine
     var isRequestingHealthKit = false
     var healthKitError: String?
     var exportFileURL: URL?
-
+    
     // MARK: - Computed Properties
-
+    
     var isHealthKitAvailable: Bool { healthKitService.isAvailable }
     var isHealthKitAuthorized: Bool { healthKitService.isAuthorized }
-
+    
     var cloudKitStatusText: String {
         switch cloudKitStatus {
         case .available:              return String(localized: "Syncing with iCloud")
@@ -41,7 +41,7 @@ final class SettingsViewModel {
         @unknown default:             return String(localized: "Unknown")
         }
     }
-
+    
     var cloudKitStatusIconName: String {
         switch cloudKitStatus {
         case .available:              return "checkmark.icloud.fill"
@@ -51,29 +51,25 @@ final class SettingsViewModel {
         default:                      return "icloud.fill"
         }
     }
-
+    
     var cloudKitIsHealthy: Bool { cloudKitStatus == .available }
-
-    var appVersion: String {
-        let version = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? "1.0"
-        let build = Bundle.main.infoDictionary?["CFBundleVersion"] as? String ?? "1"
-        return "\(version) (\(build))"
-    }
-
+    
+    var appVersion: String { Bundle.appVersion }
+    
     // MARK: - Initializers
-
+    
     init(healthKitService: HealthKitServiceProtocol) {
         self.healthKitService = healthKitService
     }
-
+    
     // MARK: - Functions
-
+    
     func load(userProfileRepository: UserProfileRepositoryProtocol) async {
         profile = try? await userProfileRepository.fetch()
         buildExportJSON()
         checkCloudKitStatus()
     }
-
+    
     func requestHealthKitAccess() async {
         isRequestingHealthKit = true
         defer { isRequestingHealthKit = false }
@@ -84,9 +80,9 @@ final class SettingsViewModel {
             Logger.healthKit.error("HealthKit auth error: \(error, privacy: .private)")
         }
     }
-
+    
     // MARK: - Private Functions
-
+    
     private func buildExportJSON() {
         guard let profile else { return }
         let dto = ProfileExportDTO(
@@ -106,7 +102,7 @@ final class SettingsViewModel {
         try? data.write(to: url)
         exportFileURL = url
     }
-
+    
     private func checkCloudKitStatus() {
         cloudKitStatus = FileManager.default.ubiquityIdentityToken != nil ? .available : .noAccount
     }

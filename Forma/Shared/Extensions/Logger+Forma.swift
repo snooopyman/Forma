@@ -9,7 +9,7 @@ import OSLog
 
 extension Logger {
     private static let subsystem = Bundle.main.bundleIdentifier ?? "com.armando.forma"
-
+    
     static let core      = Logger(subsystem: subsystem, category: "core")
     static let training  = Logger(subsystem: subsystem, category: "training")
     static let nutrition = Logger(subsystem: subsystem, category: "nutrition")
