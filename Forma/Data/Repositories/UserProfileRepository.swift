@@ -8,22 +8,31 @@
 import SwiftData
 
 final class UserProfileRepository: UserProfileRepositoryProtocol {
-
+    
     private let modelContext: ModelContext
-
+    
     init(modelContext: ModelContext) {
         self.modelContext = modelContext
     }
-
+    
     func fetch() async throws -> UserProfile? {
         let descriptor = FetchDescriptor<UserProfile>()
-        let results: [UserProfile] = try modelContext.fetch(descriptor)
-        return results.first
+        do {
+            let results: [UserProfile] = try modelContext.fetch(descriptor)
+            return results.first
+        } catch {
+            throw SettingsError.loadFailed
+        }
     }
-
+    
     func save(_ profile: UserProfile) async throws {
         modelContext.insert(profile)
-        try modelContext.save()
+        do {
+            try modelContext.save()
+        }
+        catch {
+            throw SettingsError.saveFailed
+        }
     }
 }
 
