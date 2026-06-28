@@ -130,19 +130,35 @@ final class DashboardViewModel {
     }
     
     private func loadWorkoutData(for mesocycle: Mesocycle) async {
-        todayWorkoutDay = resolveTodayWorkoutDay(from: mesocycle)
         weeklyPlannedDays = mesocycle.workoutDays.filter { !$0.isRestDay }.count
-        
-        if let day = todayWorkoutDay, !day.isRestDay {
-            let completed = (try? await workoutSessionRepo.fetchCompleted(for: day)) ?? []
-            isTodaySessionCompleted = completed.contains { Calendar.current.isDateInToday($0.date) }
-        }
-        
-        await loadWeeklySummary(for: mesocycle)
-    }
-    
-    private func loadWeeklySummary(for mesocycle: Mesocycle) async {
         let allSessions = (try? await workoutSessionRepo.fetchAll(for: mesocycle)) ?? []
+
+        if mesocycle.useFixedDays {
+            todayWorkoutDay = resolveTodayWorkoutDay(from: mesocycle)
+            if let day = todayWorkoutDay, !day.isRestDay {
+                let completed = (try? await workoutSessionRepo.fetchCompleted(for: day)) ?? []
+                isTodaySessionCompleted = completed.contains { Calendar.current.isDateInToday($0.date) }
+            }
+        } else {
+            resolveNonFixedWorkoutDay(for: mesocycle, allSessions: allSessions)
+        }
+
+        loadWeeklySummary(allSessions: allSessions)
+    }
+
+    private func resolveNonFixedWorkoutDay(for mesocycle: Mesocycle, allSessions: [WorkoutSession]) {
+        let range = currentWeekDateRange()
+        let completedThisWeek = allSessions.filter { $0.isCompleted && range.contains($0.date) }
+        let completedDayIDs = Set(completedThisWeek.compactMap { $0.workoutDay?.id })
+
+        todayWorkoutDay = mesocycle.workoutDays
+            .sorted { $0.order < $1.order }
+            .first { !completedDayIDs.contains($0.id) }
+
+        isTodaySessionCompleted = false
+    }
+
+    private func loadWeeklySummary(allSessions: [WorkoutSession]) {
         let range = currentWeekDateRange()
         weeklyCompletedSessions = allSessions.filter { $0.isCompleted && range.contains($0.date) }.count
     }
@@ -155,12 +171,8 @@ final class DashboardViewModel {
     }
     
     private func resolveTodayWorkoutDay(from mesocycle: Mesocycle) -> WorkoutDay? {
-        if mesocycle.useFixedDays {
-            let today = currentWeekdayEnum()
-            return mesocycle.workoutDays.first { $0.weekday == today }
-        } else {
-            return mesocycle.workoutDays.sorted { $0.order < $1.order }.first
-        }
+        let today = currentWeekdayEnum()
+        return mesocycle.workoutDays.first { $0.weekday == today }
     }
     
     private func currentWeekdayEnum() -> Weekday {

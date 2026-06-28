@@ -6,10 +6,11 @@
 //
 
 import SwiftUI
+import SwiftData
 import CloudKit
 
 struct SettingsView: View {
-    
+
     // MARK: - Private Properties
 
     private let userProfileRepository: UserProfileRepositoryProtocol
@@ -18,13 +19,18 @@ struct SettingsView: View {
 
     @State private var viewModel: SettingsViewModel
     @State private var showingEditProfile = false
+    #if DEBUG
+    @State private var showingLoadSampleDataAlert = false
+    @State private var showingClearDataAlert = false
+    #endif
+
+    // MARK: - Environment
+
+    @Environment(\.modelContext) private var modelContext
 
     @AppStorage("com.armando.forma.dailyStepsGoal") private var dailyStepsGoal: Int = 10_000
     @AppStorage("com.armando.forma.dailyExerciseGoal") private var dailyExerciseGoal: Int = 30
     @AppStorage("com.armando.forma.exportWorkoutsToHealth") private var exportWorkoutsToHealth: Bool = true
-    
-    // MARK: - Environment
-    
     @Environment(\.dismiss) private var dismiss
     
     // MARK: - Initializers
@@ -48,6 +54,9 @@ struct SettingsView: View {
                 syncSection
                 exportSection
                 aboutSection
+                #if DEBUG
+                developerSection
+                #endif
             }
             .navigationTitle(String(localized: "Settings"))
             .navigationBarTitleDisplayMode(.large)
@@ -65,6 +74,24 @@ struct SettingsView: View {
                     EditProfileView(profile: profile, repository: userProfileRepository)
                 }
             }
+            #if DEBUG
+            .alert(String(localized: "Load sample data?"), isPresented: $showingLoadSampleDataAlert) {
+                Button(String(localized: "Load"), role: .destructive) {
+                    PreviewSeedData.insert(into: modelContext)
+                }
+                Button(String(localized: "Cancel"), role: .cancel) {}
+            } message: {
+                Text(String(localized: "This will add sample data on top of existing records."))
+            }
+            .alert(String(localized: "Clear all data?"), isPresented: $showingClearDataAlert) {
+                Button(String(localized: "Clear"), role: .destructive) {
+                    clearAllData()
+                }
+                Button(String(localized: "Cancel"), role: .cancel) {}
+            } message: {
+                Text(String(localized: "This will permanently delete all data from this device."))
+            }
+            #endif
         }
     }
     
@@ -229,4 +256,45 @@ struct SettingsView: View {
             LabeledContent(String(localized: "Version"), value: viewModel.appVersion)
         }
     }
+
+    // MARK: - Private Functions
+
+    #if DEBUG
+    private func clearAllData() {
+        try? modelContext.delete(model: MealLog.self)
+        try? modelContext.delete(model: DailyNutritionLog.self)
+        try? modelContext.delete(model: MealOptionItem.self)
+        try? modelContext.delete(model: MealOption.self)
+        try? modelContext.delete(model: Meal.self)
+        try? modelContext.delete(model: NutritionPlan.self)
+        try? modelContext.delete(model: FoodItem.self)
+        try? modelContext.delete(model: LoggedSet.self)
+        try? modelContext.delete(model: WorkoutSession.self)
+        try? modelContext.delete(model: MuscleVolumeTarget.self)
+        try? modelContext.delete(model: PlannedExercise.self)
+        try? modelContext.delete(model: WorkoutDay.self)
+        try? modelContext.delete(model: Mesocycle.self)
+        try? modelContext.delete(model: Exercise.self)
+        try? modelContext.delete(model: BodyMeasurement.self)
+        try? modelContext.delete(model: ProgressPhoto.self)
+        try? modelContext.delete(model: UserProfile.self)
+    }
+    #endif
+
+    #if DEBUG
+    private var developerSection: some View {
+        Section("Developer") {
+            Button {
+                showingLoadSampleDataAlert = true
+            } label: {
+                Label("Load sample data", systemImage: "sparkles")
+            }
+            Button(role: .destructive) {
+                showingClearDataAlert = true
+            } label: {
+                Label("Clear all data", systemImage: "trash")
+            }
+        }
+    }
+    #endif
 }
