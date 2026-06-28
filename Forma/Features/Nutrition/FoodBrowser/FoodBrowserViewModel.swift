@@ -11,26 +11,26 @@ import OSLog
 @Observable
 @MainActor
 final class FoodBrowserViewModel {
-
+    
     // MARK: - Private Properties
-
+    
     @ObservationIgnored
     private let repository: FoodItemRepositoryProtocol
-
+    
     // MARK: - States
-
+    
     var searchText = ""
     var selectedCategory: String?
     var allItems: [FoodItem] = []
     var isLoading = false
     var errorMessage: String?
-
+    
     // MARK: - Computed Properties
-
+    
     var categories: [String] {
         Array(Set(allItems.map { $0.category })).sorted()
     }
-
+    
     var filteredItems: [FoodItem] {
         var items = allItems
         if let cat = selectedCategory {
@@ -41,22 +41,32 @@ final class FoodBrowserViewModel {
         }
         return items
     }
-
+    
     // MARK: - Initializers
-
+    
     init(repository: FoodItemRepositoryProtocol) {
         self.repository = repository
     }
-
+    
     // MARK: - Functions
-
+    
     func load() async {
         isLoading = true
         defer { isLoading = false }
         do {
             allItems = try await repository.fetchAll()
         } catch {
-            Logger.nutrition.error("Failed to load food items: \(error, privacy: .private)")
+            handleError(error)
+        }
+    }
+    
+    // MARK: - Private Functions
+    
+    private func handleError(_ error: Error) {
+        Logger.nutrition.error("Error: \(error, privacy: .private)")
+        if let nutritionError = error as? NutritionError {
+            errorMessage = nutritionError.errorDescription
+        } else {
             errorMessage = String(localized: "Something went wrong")
         }
     }

@@ -13,7 +13,7 @@ import OSLog
 final class DashboardViewModel {
     
     // MARK: - Private Properties
-
+    
     @ObservationIgnored private let healthKitAuthorizedKey = "com.armando.forma.healthKitAuthorized"
     @ObservationIgnored private let mesocycleRepo: MesocycleRepositoryProtocol
     @ObservationIgnored private let workoutSessionRepo: WorkoutSessionRepositoryProtocol
@@ -45,9 +45,9 @@ final class DashboardViewModel {
     var errorMessage: String?
     
     // MARK: - Computed Properties
-
+    
     var isHealthKitAvailable: Bool { healthKitService.isAvailable }
-
+    
     var greeting: String {
         let hour = Calendar.current.component(.hour, from: .now)
         if hour < 12 { return String(localized: "Good morning") }
@@ -94,14 +94,13 @@ final class DashboardViewModel {
             }
             
             showMeasurementReminder = shouldShowMeasurementReminder(latestMeasurement)
-
+            
             if UserDefaults.standard.bool(forKey: healthKitAuthorizedKey) {
                 healthKitAuthorized = true
                 await loadHealthKitData()
             }
         } catch {
-            Logger.core.error("Dashboard load failed: \(error, privacy: .private)")
-            errorMessage = String(localized: "Something went wrong")
+            handleError(error)
         }
     }
     
@@ -113,11 +112,24 @@ final class DashboardViewModel {
             UserDefaults.standard.set(true, forKey: healthKitAuthorizedKey)
             await loadHealthKitData()
         } catch {
-            Logger.healthKit.error("HealthKit auth failed: \(error, privacy: .private)")
+            Logger.healthKit.error("Error: \(error, privacy: .private)")
         }
     }
     
     // MARK: - Private Functions
+    
+    private func handleError(_ error: Error) {
+        Logger.core.error("Error: \(error, privacy: .private)")
+        if let trainingError = error as? TrainingError {
+            errorMessage = trainingError.errorDescription
+        } else if let nutritionError = error as? NutritionError {
+            errorMessage = nutritionError.errorDescription
+        } else if let progressError = error as? ProgressError {
+            errorMessage = progressError.errorDescription
+        } else {
+            errorMessage = String(localized: "Something went wrong")
+        }
+    }
     
     private func loadNutrition() async throws {
         guard let plan = try await nutritionRepo.fetchActivePlan() else {
@@ -132,7 +144,7 @@ final class DashboardViewModel {
     private func loadWorkoutData(for mesocycle: Mesocycle) async {
         weeklyPlannedDays = mesocycle.workoutDays.filter { !$0.isRestDay }.count
         let allSessions = (try? await workoutSessionRepo.fetchAll(for: mesocycle)) ?? []
-
+        
         if mesocycle.useFixedDays {
             todayWorkoutDay = resolveTodayWorkoutDay(from: mesocycle)
             if let day = todayWorkoutDay, !day.isRestDay {
@@ -142,22 +154,22 @@ final class DashboardViewModel {
         } else {
             resolveNonFixedWorkoutDay(for: mesocycle, allSessions: allSessions)
         }
-
+        
         loadWeeklySummary(allSessions: allSessions)
     }
-
+    
     private func resolveNonFixedWorkoutDay(for mesocycle: Mesocycle, allSessions: [WorkoutSession]) {
         let range = currentWeekDateRange()
         let completedThisWeek = allSessions.filter { $0.isCompleted && range.contains($0.date) }
         let completedDayIDs = Set(completedThisWeek.compactMap { $0.workoutDay?.id })
-
+        
         todayWorkoutDay = mesocycle.workoutDays
             .sorted { $0.order < $1.order }
             .first { !completedDayIDs.contains($0.id) }
-
+        
         isTodaySessionCompleted = false
     }
-
+    
     private func loadWeeklySummary(allSessions: [WorkoutSession]) {
         let range = currentWeekDateRange()
         weeklyCompletedSessions = allSessions.filter { $0.isCompleted && range.contains($0.date) }.count

@@ -76,12 +76,20 @@ final class SettingsViewModel {
         do {
             try await healthKitService.requestAuthorization()
         } catch {
-            healthKitError = error.localizedDescription
-            Logger.healthKit.error("HealthKit auth error: \(error, privacy: .private)")
+            handleError(error)
         }
     }
     
     // MARK: - Private Functions
+    
+    private func handleError(_ error: Error) {
+        Logger.healthKit.error("Error: \(error, privacy: .private)")
+        if let settingsError = error as? SettingsError {
+            healthKitError = settingsError.errorDescription
+        } else {
+            healthKitError = error.localizedDescription
+        }
+    }
     
     private func buildExportJSON() {
         guard let profile else { return }

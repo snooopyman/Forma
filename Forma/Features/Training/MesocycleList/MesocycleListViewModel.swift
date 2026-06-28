@@ -11,32 +11,32 @@ import os
 @Observable
 @MainActor
 final class MesocycleListViewModel {
-
+    
     // MARK: - Private Properties
-
+    
     @ObservationIgnored
     private let mesocycleRepository: MesocycleRepositoryProtocol
-
+    
     // MARK: - Properties
-
+    
     var mesocycles: [Mesocycle] = []
     var isLoading = false
     var errorMessage: String?
-
+    
     // MARK: - Computed Properties
-
+    
     var activeMesocycle: Mesocycle? {
         mesocycles.first { $0.isActive }
     }
-
+    
     // MARK: - Initializers
-
+    
     init(mesocycleRepository: MesocycleRepositoryProtocol) {
         self.mesocycleRepository = mesocycleRepository
     }
-
+    
     // MARK: - Functions
-
+    
     func load() async {
         guard !isLoading else { return }
         isLoading = true
@@ -44,27 +44,35 @@ final class MesocycleListViewModel {
         do {
             mesocycles = try await mesocycleRepository.fetchAll()
         } catch {
-            Logger.training.error("Failed to load mesocycles: \(error, privacy: .private)")
-            errorMessage = String(localized: "Something went wrong")
+            handleError(error)
         }
     }
-
+    
     func delete(_ mesocycle: Mesocycle) async {
         do {
             try await mesocycleRepository.delete(mesocycle)
             mesocycles.removeAll { $0.id == mesocycle.id }
         } catch {
-            Logger.training.error("Failed to delete mesocycle: \(error, privacy: .private)")
-            errorMessage = String(localized: "Something went wrong")
+            handleError(error)
         }
     }
-
+    
     func setActive(_ mesocycle: Mesocycle) async {
         do {
             try await mesocycleRepository.setActive(mesocycle)
             await load()
         } catch {
-            Logger.training.error("Failed to set active: \(error, privacy: .private)")
+            handleError(error)
+        }
+    }
+    
+    // MARK: - Private Functions
+    
+    private func handleError(_ error: Error) {
+        Logger.training.error("Error: \(error, privacy: .private)")
+        if let trainingError = error as? TrainingError {
+            errorMessage = trainingError.errorDescription
+        } else {
             errorMessage = String(localized: "Something went wrong")
         }
     }

@@ -11,23 +11,23 @@ import OSLog
 @Observable
 @MainActor
 final class NewMeasurementViewModel {
-
+    
     // MARK: - Private Properties
-
+    
     @ObservationIgnored
     private let repository: BodyMeasurementRepositoryProtocol
-
+    
     @ObservationIgnored
     private let profileRepository: UserProfileRepositoryProtocol
-
+    
     @ObservationIgnored
     private let healthKitService: HealthKitServiceProtocol
-
+    
     @ObservationIgnored
     private let existingMeasurement: BodyMeasurement?
-
+    
     // MARK: - States
-
+    
     var date: Date
     var weightText = ""
     var heightText = ""
@@ -40,25 +40,25 @@ final class NewMeasurementViewModel {
     var notes = ""
     var isSaving = false
     var errorMessage: String?
-
+    
     // MARK: - Properties
-
+    
     let onSaved: @MainActor () -> Void
-
+    
     var isEditing: Bool { existingMeasurement != nil }
-
+    
     // MARK: - Computed Properties
-
+    
     var canSave: Bool {
         (Double(weightText.replacingOccurrences(of: ",", with: ".")) ?? 0) > 0
     }
-
+    
     private var resolvedHeightCm: Double {
         Double(heightText.replacingOccurrences(of: ",", with: ".")) ?? 170
     }
-
+    
     // MARK: - Initializers
-
+    
     init(
         repository: BodyMeasurementRepositoryProtocol,
         profileRepository: UserProfileRepositoryProtocol,
@@ -71,7 +71,7 @@ final class NewMeasurementViewModel {
         self.healthKitService = healthKitService
         self.existingMeasurement = editing
         self.onSaved = onSaved
-
+        
         if let m = editing {
             self.date = m.date
             self.weightText = m.weightKg.formatted(.number.precision(.fractionLength(1)))
@@ -87,21 +87,21 @@ final class NewMeasurementViewModel {
             self.date = .now
         }
     }
-
+    
     // MARK: - Functions
-
+    
     func loadProfileHeight() async {
         guard heightText.isEmpty else { return }
         let profile = try? await profileRepository.fetch()
         let h = profile?.heightCm ?? 170
         heightText = h.formatted(.number.precision(.fractionLength(0)))
-
+        
         if weightText.isEmpty, existingMeasurement == nil,
            let hkWeight = await healthKitService.fetchLatestWeight() {
             weightText = hkWeight.formatted(.number.precision(.fractionLength(1)))
         }
     }
-
+    
     func save() async {
         guard canSave else { return }
         isSaving = true
@@ -141,13 +141,21 @@ final class NewMeasurementViewModel {
             Logger.progress.info("Saved measurement: \(weight, privacy: .public) kg")
             onSaved()
         } catch {
-            Logger.progress.error("Failed to save measurement: \(error, privacy: .private)")
+            handleError(error)
+        }
+    }
+    
+    // MARK: - Private Functions
+    
+    private func handleError(_ error: Error) {
+        Logger.progress.error("Error: \(error, privacy: .private)")
+        if let progressError = error as? ProgressError {
+            errorMessage = progressError.errorDescription
+        } else {
             errorMessage = String(localized: "Something went wrong")
         }
     }
-
-    // MARK: - Private Functions
-
+    
     private func parseOptional(_ text: String) -> Double? {
         let cleaned = text.replacingOccurrences(of: ",", with: ".")
         guard !cleaned.isEmpty, let value = Double(cleaned), value > 0 else { return nil }

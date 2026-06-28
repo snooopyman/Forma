@@ -11,31 +11,31 @@ import os
 @Observable
 @MainActor
 final class MesocycleDetailViewModel {
-
+    
     // MARK: - Private Properties
-
+    
     @ObservationIgnored
     private let mesocycleRepository: MesocycleRepositoryProtocol
-
+    
     @ObservationIgnored
     private let sessionRepository: WorkoutSessionRepositoryProtocol
-
+    
     // MARK: - Properties
-
+    
     let mesocycle: Mesocycle
     var sessions: [WorkoutSession] = []
     var inProgressSession: WorkoutSession?
     var isLoading = false
     var errorMessage: String?
-
+    
     // MARK: - Computed Properties
-
+    
     var sortedWorkoutDays: [WorkoutDay] {
         mesocycle.workoutDays.sorted { $0.order < $1.order }
     }
-
+    
     // MARK: - Initializers
-
+    
     init(
         mesocycle: Mesocycle,
         mesocycleRepository: MesocycleRepositoryProtocol,
@@ -45,9 +45,9 @@ final class MesocycleDetailViewModel {
         self.mesocycleRepository = mesocycleRepository
         self.sessionRepository = sessionRepository
     }
-
+    
     // MARK: - Functions
-
+    
     func load() async {
         isLoading = true
         defer { isLoading = false }
@@ -55,42 +55,38 @@ final class MesocycleDetailViewModel {
             sessions = try await sessionRepository.fetchAll(for: mesocycle)
             inProgressSession = try await sessionRepository.fetchInProgress()
         } catch {
-            Logger.training.error("MesocycleDetail load error: \(error, privacy: .private)")
-            errorMessage = String(localized: "Something went wrong")
+            handleError(error)
         }
     }
-
+    
     func activate() async {
         do {
             try await mesocycleRepository.setActive(mesocycle)
         } catch {
-            Logger.training.error("Failed to activate mesocycle: \(error, privacy: .private)")
-            errorMessage = String(localized: "Something went wrong")
+            handleError(error)
         }
     }
-
+    
     func pause() async {
         do {
             try await mesocycleRepository.pause(mesocycle)
         } catch {
-            Logger.training.error("Failed to pause mesocycle: \(error, privacy: .private)")
-            errorMessage = String(localized: "Something went wrong")
+            handleError(error)
         }
     }
-
+    
     func resume() async {
         do {
             try await mesocycleRepository.resume(mesocycle)
         } catch {
-            Logger.training.error("Failed to resume mesocycle: \(error, privacy: .private)")
-            errorMessage = String(localized: "Something went wrong")
+            handleError(error)
         }
     }
-
+    
     func completedSessionCount(for day: WorkoutDay) -> Int {
         sessions.filter { $0.workoutDay?.id == day.id && $0.isCompleted }.count
     }
-
+    
     func addWorkoutDay(name: String, isRestDay: Bool, weekday: Weekday?) async {
         let order = mesocycle.workoutDays.count
         let day = WorkoutDay(
@@ -102,7 +98,17 @@ final class MesocycleDetailViewModel {
         do {
             try await mesocycleRepository.addWorkoutDay(day, to: mesocycle)
         } catch {
-            Logger.training.error("Failed to add workout day: \(error, privacy: .private)")
+            handleError(error)
+        }
+    }
+    
+    // MARK: - Private Functions
+    
+    private func handleError(_ error: Error) {
+        Logger.training.error("Error: \(error, privacy: .private)")
+        if let trainingError = error as? TrainingError {
+            errorMessage = trainingError.errorDescription
+        } else {
             errorMessage = String(localized: "Something went wrong")
         }
     }

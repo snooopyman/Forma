@@ -19,14 +19,14 @@ struct DraftMeal: Identifiable {
 @Observable
 @MainActor
 final class CreateNutritionPlanViewModel {
-
+    
     // MARK: - Private Properties
-
+    
     @ObservationIgnored
     private let nutritionRepository: NutritionRepositoryProtocol
-
+    
     // MARK: - States
-
+    
     var planName = ""
     var caloriesText = ""
     var proteinText = ""
@@ -35,22 +35,22 @@ final class CreateNutritionPlanViewModel {
     var draftMeals: [DraftMeal] = []
     var isSaving = false
     var errorMessage: String?
-
+    
     // MARK: - Computed Properties
-
+    
     var isValid: Bool {
         !planName.trimmingCharacters(in: .whitespaces).isEmpty
-            && Int(caloriesText) != nil
-            && Double(proteinText) != nil
-            && Double(carbsText) != nil
-            && Double(fatText) != nil
+        && Int(caloriesText) != nil
+        && Double(proteinText) != nil
+        && Double(carbsText) != nil
+        && Double(fatText) != nil
     }
-
+    
     var requiredMeals: [DraftMeal] { draftMeals.filter { $0.isRequired } }
     var optionalMeals: [DraftMeal] { draftMeals.filter { !$0.isRequired } }
-
+    
     // MARK: - Initializers
-
+    
     init(nutritionRepository: NutritionRepositoryProtocol) {
         self.nutritionRepository = nutritionRepository
         draftMeals = [
@@ -59,19 +59,19 @@ final class CreateNutritionPlanViewModel {
             DraftMeal(name: String(localized: "Dinner"), mealType: .dinner, isRequired: true),
         ]
     }
-
+    
     // MARK: - Functions
-
+    
     func addMeal(_ draft: DraftMeal) {
         draftMeals.append(draft)
     }
-
+    
     func removeOptionalMeal(at offsets: IndexSet) {
         let optionalIndices = draftMeals.indices.filter { !draftMeals[$0].isRequired }
         let toRemove = IndexSet(offsets.map { optionalIndices[$0] })
         draftMeals.remove(atOffsets: toRemove)
     }
-
+    
     func save() async {
         guard let calories = Int(caloriesText),
               let protein = Double(proteinText),
@@ -96,7 +96,17 @@ final class CreateNutritionPlanViewModel {
             try await nutritionRepository.setActivePlan(plan)
             Logger.nutrition.info("Created plan: \(plan.name, privacy: .public)")
         } catch {
-            Logger.nutrition.error("Failed to create plan: \(error, privacy: .private)")
+            handleError(error)
+        }
+    }
+    
+    // MARK: - Private Functions
+    
+    private func handleError(_ error: Error) {
+        Logger.nutrition.error("Error: \(error, privacy: .private)")
+        if let nutritionError = error as? NutritionError {
+            errorMessage = nutritionError.errorDescription
+        } else {
             errorMessage = String(localized: "Something went wrong")
         }
     }

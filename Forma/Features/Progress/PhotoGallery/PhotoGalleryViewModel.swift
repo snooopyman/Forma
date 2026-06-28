@@ -11,25 +11,25 @@ import OSLog
 @Observable
 @MainActor
 final class PhotoGalleryViewModel {
-
+    
     // MARK: - Private Properties
-
+    
     @ObservationIgnored
     private let repository: ProgressPhotoRepositoryProtocol
-
+    
     // MARK: - States
-
+    
     var photos: [ProgressPhoto] = []
     var isLoading = false
     var errorMessage: String?
-
+    
     // MARK: - Computed Properties
-
+    
     var groupedPhotos: [(header: String, photos: [ProgressPhoto])] {
         var groups: [(header: String, photos: [ProgressPhoto])] = []
         var currentHeader = ""
         var currentPhotos: [ProgressPhoto] = []
-
+        
         for photo in photos {
             let header = photo.date.formatted(.dateTime.month(.wide).year())
             if header != currentHeader {
@@ -46,33 +46,42 @@ final class PhotoGalleryViewModel {
         }
         return groups
     }
-
+    
     // MARK: - Initializers
-
+    
     init(repository: ProgressPhotoRepositoryProtocol) {
         self.repository = repository
     }
-
+    
     // MARK: - Functions
-
+    
     func load() async {
         isLoading = true
         defer { isLoading = false }
         do {
             photos = try await repository.fetchAll()
         } catch {
-            Logger.progress.error("Failed to load photos: \(error, privacy: .private)")
-            errorMessage = String(localized: "Something went wrong")
+            handleError(error)
         }
     }
-
+    
     func delete(_ photo: ProgressPhoto) async {
         do {
             try await repository.delete(photo)
         } catch {
-            Logger.progress.error("Failed to delete photo: \(error, privacy: .private)")
-            errorMessage = String(localized: "Something went wrong")
+            handleError(error)
         }
         await load()
+    }
+    
+    // MARK: - Private Functions
+    
+    private func handleError(_ error: Error) {
+        Logger.progress.error("Error: \(error, privacy: .private)")
+        if let progressError = error as? ProgressError {
+            errorMessage = progressError.errorDescription
+        } else {
+            errorMessage = String(localized: "Something went wrong")
+        }
     }
 }

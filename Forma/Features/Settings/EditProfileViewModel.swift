@@ -11,17 +11,17 @@ import OSLog
 @Observable
 @MainActor
 final class EditProfileViewModel {
-
+    
     // MARK: - Private Properties
-
+    
     @ObservationIgnored
     private let repository: UserProfileRepositoryProtocol
-
+    
     @ObservationIgnored
     private let profile: UserProfile
-
+    
     // MARK: - States
-
+    
     var name: String
     var birthDate: Date
     var heightCm: Double
@@ -31,19 +31,19 @@ final class EditProfileViewModel {
     var isSaving = false
     var saveSucceeded = false
     var errorMessage: String?
-
+    
     // MARK: - Computed Properties
-
+    
     var canSave: Bool { !name.trimmingCharacters(in: .whitespaces).isEmpty }
-
+    
     var birthDateRange: ClosedRange<Date> {
         let min = Calendar.current.date(byAdding: .year, value: -100, to: .now) ?? .now
         let max = Calendar.current.date(byAdding: .year, value: -10, to: .now) ?? .now
         return min...max
     }
-
+    
     // MARK: - Initializers
-
+    
     init(profile: UserProfile, repository: UserProfileRepositoryProtocol) {
         self.profile = profile
         self.repository = repository
@@ -54,9 +54,9 @@ final class EditProfileViewModel {
         self.activityLevel = profile.activityLevel
         self.weightUnit = profile.weightUnit
     }
-
+    
     // MARK: - Functions
-
+    
     func save() async {
         guard canSave else { return }
         isSaving = true
@@ -72,8 +72,18 @@ final class EditProfileViewModel {
             Logger.core.info("Profile updated")
             saveSucceeded = true
         } catch {
+            handleError(error)
+        }
+    }
+    
+    // MARK: - Private Functions
+    
+    private func handleError(_ error: Error) {
+        Logger.core.error("Error: \(error, privacy: .private)")
+        if let settingsError = error as? SettingsError {
+            errorMessage = settingsError.errorDescription
+        } else {
             errorMessage = String(localized: "Something went wrong")
-            Logger.core.error("Profile save error: \(error, privacy: .private)")
         }
     }
 }
