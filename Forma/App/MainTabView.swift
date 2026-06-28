@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-enum AppTab: String {
+enum AppTab: String, Hashable {
     case today
     case training
     case nutrition
@@ -15,18 +15,18 @@ enum AppTab: String {
 }
 
 struct MainTabView: View {
-
+    
     // MARK: - States
-
+    
     @AppStorage("postOnboardingAction") private var postOnboardingAction: AppTab = .today
     @AppStorage("selectedTab") private var selectedTab: AppTab = .today
-
+    
     // MARK: - Environment
-
+    
     @Environment(AppContainer.self) private var container
-
+    
     // MARK: - Body
-
+    
     var body: some View {
         TabView(selection: $selectedTab) {
             Tab("Today", systemImage: "house.fill", value: AppTab.today) {
@@ -50,6 +50,8 @@ struct MainTabView: View {
                 }
             }
         }
+        .tabViewStyle(.sidebarAdaptable)
+        .tabBarMinimizeBehavior(.onScrollDown)
         .onAppear {
             if postOnboardingAction != .today {
                 selectedTab = postOnboardingAction
