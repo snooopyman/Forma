@@ -10,64 +10,64 @@ import os
 
 @Observable
 @MainActor
-final class MesocycleListViewModel {
-    
+final class MesocycleListViewModel: MesocycleListViewModelProtocol {
+
     // MARK: - Private Properties
-    
+
     @ObservationIgnored
-    private let mesocycleRepository: MesocycleRepositoryProtocol
-    
-    // MARK: - Properties
-    
+    private let interactor: MesocycleListInteractorProtocol
+
+    // MARK: - States
+
     var mesocycles: [Mesocycle] = []
     var isLoading = false
     var errorMessage: String?
-    
+
     // MARK: - Computed Properties
-    
+
     var activeMesocycle: Mesocycle? {
         mesocycles.first { $0.isActive }
     }
-    
+
     // MARK: - Initializers
-    
-    init(mesocycleRepository: MesocycleRepositoryProtocol) {
-        self.mesocycleRepository = mesocycleRepository
+
+    init(interactor: MesocycleListInteractorProtocol) {
+        self.interactor = interactor
     }
-    
+
     // MARK: - Functions
-    
+
     func load() async {
         guard !isLoading else { return }
         isLoading = true
         defer { isLoading = false }
         do {
-            mesocycles = try await mesocycleRepository.fetchAll()
+            mesocycles = try await interactor.fetchMesocycles()
         } catch {
             handleError(error)
         }
     }
-    
+
     func delete(_ mesocycle: Mesocycle) async {
         do {
-            try await mesocycleRepository.delete(mesocycle)
+            try await interactor.deleteMesocycle(mesocycle)
             mesocycles.removeAll { $0.id == mesocycle.id }
         } catch {
             handleError(error)
         }
     }
-    
+
     func setActive(_ mesocycle: Mesocycle) async {
         do {
-            try await mesocycleRepository.setActive(mesocycle)
+            try await interactor.setActiveMesocycle(mesocycle)
             await load()
         } catch {
             handleError(error)
         }
     }
-    
+
     // MARK: - Private Functions
-    
+
     private func handleError(_ error: Error) {
         Logger.training.error("Error: \(error, privacy: .private)")
         if let trainingError = error as? TrainingError {

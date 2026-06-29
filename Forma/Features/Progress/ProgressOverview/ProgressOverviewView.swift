@@ -9,33 +9,25 @@ import SwiftUI
 
 struct ProgressOverviewView: View {
 
-    // MARK: - States
-
-    @State private var viewModel: ProgressOverviewViewModel
-    @State private var showNewMeasurement = false
-    @State private var editingMeasurement: BodyMeasurement?
-
     // MARK: - Environment
 
     @Environment(AppContainer.self) private var container
+    @Environment(\.progressOverviewViewModel) private var viewModel
 
-    // MARK: - Initializers
+    // MARK: - States
 
-    init(repository: BodyMeasurementRepositoryProtocol) {
-        _viewModel = State(initialValue: ProgressOverviewViewModel(repository: repository))
-    }
+    @State private var showNewMeasurement = false
+    @State private var editingMeasurement: BodyMeasurement?
 
     // MARK: - Body
 
     var body: some View {
         Group {
-            if viewModel.isLoading && viewModel.measurements.isEmpty {
+            if let viewModel {
+                mainContent(viewModel)
+            } else {
                 ProgressView()
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
-            } else if viewModel.measurements.isEmpty {
-                emptyView
-            } else {
-                contentView
             }
         }
         .navigationTitle(String(localized: "Progress"))
@@ -55,7 +47,7 @@ struct ProgressOverviewView: View {
                 profileRepository: container.userProfileRepository,
                 healthKitService: container.healthKitService
             ) {
-                Task { await viewModel.load() }
+                Task { await viewModel?.load() }
             }
         }
         .sheet(item: $editingMeasurement) { measurement in
@@ -65,7 +57,25 @@ struct ProgressOverviewView: View {
                 healthKitService: container.healthKitService,
                 editing: measurement
             ) {
-                Task { await viewModel.load() }
+                Task { await viewModel?.load() }
+            }
+        }
+        .task { await viewModel?.load() }
+        .refreshable { await viewModel?.load() }
+    }
+
+    // MARK: - Private Views
+
+    @ViewBuilder
+    private func mainContent(_ viewModel: any ProgressOverviewViewModelProtocol) -> some View {
+        Group {
+            if viewModel.isLoading && viewModel.measurements.isEmpty {
+                ProgressView()
+                    .frame(maxWidth: .infinity, maxHeight: .infinity)
+            } else if viewModel.measurements.isEmpty {
+                emptyView
+            } else {
+                contentView(viewModel)
             }
         }
         .alert(
@@ -79,22 +89,18 @@ struct ProgressOverviewView: View {
         } message: {
             if let msg = viewModel.errorMessage { Text(msg) }
         }
-        .task { await viewModel.load() }
-        .refreshable { await viewModel.load() }
     }
 
-    // MARK: - Private Views
-
     @ViewBuilder
-    private var contentView: some View {
+    private func contentView(_ viewModel: any ProgressOverviewViewModelProtocol) -> some View {
         ScrollView {
             VStack(spacing: DS.Spacing.xl) {
                 if let latest = viewModel.latest {
-                    latestMetricsCard(latest)
+                    latestMetricsCard(latest, viewModel: viewModel)
                 }
                 BodyChartsView(measurements: viewModel.measurements)
                 photosCard
-                historySection
+                historySection(viewModel)
             }
             .padding(DS.Spacing.lg)
         }
@@ -102,7 +108,7 @@ struct ProgressOverviewView: View {
     }
 
     @ViewBuilder
-    private func latestMetricsCard(_ m: BodyMeasurement) -> some View {
+    private func latestMetricsCard(_ m: BodyMeasurement, viewModel: any ProgressOverviewViewModelProtocol) -> some View {
         VStack(alignment: .leading, spacing: DS.Spacing.md) {
             Text(String(localized: "Latest check-in"))
                 .font(.headline)
@@ -205,14 +211,14 @@ struct ProgressOverviewView: View {
     }
 
     @ViewBuilder
-    private var historySection: some View {
+    private func historySection(_ viewModel: any ProgressOverviewViewModelProtocol) -> some View {
         VStack(alignment: .leading, spacing: DS.Spacing.sm) {
             Text(String(localized: "History"))
                 .font(.headline)
                 .foregroundStyle(.textPrimary)
                 .padding(.horizontal, DS.Spacing.xs)
 
-            ForEach(groupedHistory, id: \.header) { group in
+            ForEach(groupedHistory(viewModel), id: \.header) { group in
                 Text(group.header)
                     .font(.subheadline.weight(.semibold))
                     .foregroundStyle(.textSecondary)
@@ -290,7 +296,7 @@ struct ProgressOverviewView: View {
 
     // MARK: - Private Functions
 
-    private var groupedHistory: [MeasurementGroup] {
+    private func groupedHistory(_ viewModel: any ProgressOverviewViewModelProtocol) -> [MeasurementGroup] {
         let all = viewModel.measurements
         var groups: [MeasurementGroup] = []
         var currentHeader = ""
@@ -416,9 +422,22 @@ private struct MeasurementRowView: View {
     }
 }
 
-#Preview(traits: .previewContainer()) {
-    @Previewable @Environment(AppContainer.self) var container
-    NavigationStack {
-        ProgressOverviewView(repository: container.bodyMeasurementRepository)
-    }
+#Preview("Empty") {
+    NavigationStack { ProgressOverviewView() }
+        .environment(\.progressOverviewViewModel, MockProgressOverviewViewModel.empty)
+}
+
+#Preview("With data") {
+    NavigationStack { ProgressOverviewView() }
+        .environment(\.progressOverviewViewModel, MockProgressOverviewViewModel.withData)
+}
+
+#Preview("Loading") {
+    NavigationStack { ProgressOverviewView() }
+        .environment(\.progressOverviewViewModel, MockProgressOverviewViewModel.loading)
+}
+
+#Preview("Error") {
+    NavigationStack { ProgressOverviewView() }
+        .environment(\.progressOverviewViewModel, MockProgressOverviewViewModel.withError)
 }

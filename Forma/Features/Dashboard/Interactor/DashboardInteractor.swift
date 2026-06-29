@@ -36,8 +36,12 @@ final class DashboardInteractor: DashboardInteractorProtocol {
         self.healthKitService = healthKitService
     }
     
+    // MARK: - Computed Properties
+
+    var isHealthKitAvailable: Bool { healthKitService.isAvailable }
+
     // MARK: - Functions
-    
+
     func loadDashboardData() async throws -> DashboardSnapshot {
         let mesocycle = try await mesocycleRepo.fetchActive()
         let inProgress = try await sessionRepo.fetchInProgress()

@@ -10,7 +10,7 @@ import os
 
 @Observable
 @MainActor
-final class WorkoutDayDetailViewModel {
+final class WorkoutDayDetailViewModel: AnyObject {
     
     // MARK: - Private Properties
     

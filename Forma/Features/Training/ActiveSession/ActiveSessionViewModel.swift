@@ -11,94 +11,84 @@ import os
 
 @Observable
 @MainActor
-final class ActiveSessionViewModel {
-    
+final class ActiveSessionViewModel: ActiveSessionViewModelProtocol {
+
     // MARK: - Private Properties
-    
+
     @ObservationIgnored
-    private let sessionService: WorkoutSessionServiceProtocol
-    
-    @ObservationIgnored
-    private let restTimerActivityService: RestTimerActivityServiceProtocol
-    
-    @ObservationIgnored
-    private let healthKitService: HealthKitServiceProtocol
-    
+    private let interactor: ActiveSessionInteractorProtocol
+
     @ObservationIgnored
     private let exportWorkoutsKey = "com.armando.forma.exportWorkoutsToHealth"
-    
+
     @ObservationIgnored
     private var restTimerTask: Task<Void, Never>?
-    
+
     // MARK: - Properties
-    
+
     let session: WorkoutSession
     let workoutDay: WorkoutDay
-    
+
     var currentExerciseIndex = 0
     var isCompleting = false
     var showFinishConfirmation = false
     var showDiscardConfirmation = false
     var isCompleted = false
     var errorMessage: String?
-    
+
     // Keyed by PlannedExercise.id
     var weightInputs: [UUID: String] = [:]
     var repsInputs: [UUID: String] = [:]
     var rirInputs: [UUID: String] = [:]
-    
+
     var restSecondsRemaining = 0
     var isResting = false
     var restJustEnded = false
     var wasExportedToHealth = false
-    
+
     // MARK: - Computed Properties
-    
+
     var sortedExercises: [PlannedExercise] {
         workoutDay.plannedExercises.sorted { $0.order < $1.order }
     }
-    
+
     var currentExercise: PlannedExercise? {
         guard !sortedExercises.isEmpty,
               currentExerciseIndex < sortedExercises.count else { return nil }
         return sortedExercises[currentExerciseIndex]
     }
-    
+
     var elapsedTime: TimeInterval {
         Date.now.timeIntervalSince(session.startedAt)
     }
-    
+
     var canNavigatePrevious: Bool { currentExerciseIndex > 0 }
     var canNavigateNext: Bool { currentExerciseIndex < sortedExercises.count - 1 }
-    
+
     // MARK: - Initializers
-    
+
     init(
         session: WorkoutSession,
         workoutDay: WorkoutDay,
-        sessionService: WorkoutSessionServiceProtocol,
-        restTimerActivityService: RestTimerActivityServiceProtocol,
-        healthKitService: HealthKitServiceProtocol
+        interactor: ActiveSessionInteractorProtocol
     ) {
         self.session = session
         self.workoutDay = workoutDay
-        self.sessionService = sessionService
-        self.restTimerActivityService = restTimerActivityService
-        self.healthKitService = healthKitService
+        self.interactor = interactor
     }
-    
+
     // MARK: - Functions
-    
+
     func loggedSets(for exercise: PlannedExercise) -> [LoggedSet] {
         session.loggedSets
             .filter { $0.plannedExercise?.id == exercise.id }
             .sorted { $0.order < $1.order }
     }
-    
+
     func nextSetNumber(for exercise: PlannedExercise) -> Int {
         loggedSets(for: exercise).count + 1
     }
-    
+
     func setRowState(setNumber: Int, for exercise: PlannedExercise) -> SetRowState {
         let logged = loggedSets(for: exercise)
         let completedCount = logged.count
@@ -106,58 +96,58 @@ final class ActiveSessionViewModel {
         if setNumber == completedCount + 1 { return .active }
         return .pending
     }
-    
+
     func navigatePrevious() {
         guard canNavigatePrevious else { return }
         currentExerciseIndex -= 1
     }
-    
+
     func navigateNext() {
         guard canNavigateNext else { return }
         currentExerciseIndex += 1
     }
-    
+
     func logSet(for exercise: PlannedExercise) async {
         let weightText = weightInputs[exercise.id] ?? ""
         let repsText = repsInputs[exercise.id] ?? ""
-        
+
         guard let weight = weightText.weightDouble, let reps = Int(repsText) else {
             errorMessage = String(localized: "Enter valid weight and reps")
             return
         }
-        
+
         let rirText = rirInputs[exercise.id] ?? ""
         let rir = Int(rirText)
         let order = nextSetNumber(for: exercise)
         let name = exercise.exercise?.name ?? ""
-        
+
         let input = SetInput(exerciseName: name, weightKg: weight, reps: reps, rirActual: rir)
         do {
-            _ = try await sessionService.logSet(input, order: order, to: session, plannedExercise: exercise)
+            _ = try await interactor.logSet(input, order: order, to: session, plannedExercise: exercise)
             startRestTimer(seconds: exercise.restSeconds)
         } catch {
             handleError(error)
         }
     }
-    
+
     func deleteSet(_ set: LoggedSet) async {
         do {
-            try await sessionService.deleteSet(set, from: session)
+            try await interactor.deleteSet(set, from: session)
         } catch {
             handleError(error)
         }
     }
-    
+
     func completeSession() async {
         isCompleting = true
         defer { isCompleting = false }
         do {
-            try await sessionService.completeSession(session)
+            try await interactor.completeSession(session)
             restTimerTask?.cancel()
-            await restTimerActivityService.endActivity()
+            await interactor.endRestActivity()
             let shouldExport = UserDefaults.standard.object(forKey: exportWorkoutsKey) as? Bool ?? true
             if shouldExport, let end = session.completedAt {
-                await healthKitService.writeWorkout(
+                await interactor.writeWorkout(
                     activityType: hkActivityType(for: session.sessionType),
                     start: session.startedAt,
                     end: end
@@ -169,25 +159,23 @@ final class ActiveSessionViewModel {
             handleError(error)
         }
     }
-    
+
     func discardSession() async {
         do {
             restTimerTask?.cancel()
-            await restTimerActivityService.endActivity()
-            try await sessionService.discardSession(session)
+            await interactor.endRestActivity()
+            try await interactor.discardSession(session)
             isCompleted = true
         } catch {
             handleError(error)
         }
     }
-    
+
     func loadLastWeight(for exercise: PlannedExercise) async {
         guard weightInputs[exercise.id] == nil,
               let name = exercise.exercise?.name else { return }
         do {
-            let lastSets = try await sessionService.fetchLastSets(
-                for: workoutDay, exerciseName: name
-            )
+            let lastSets = try await interactor.fetchLastSets(for: workoutDay, exerciseName: name)
             if let lastSet = lastSets.first {
                 weightInputs[exercise.id] = lastSet.weightKg.asWeight
             }
@@ -195,16 +183,16 @@ final class ActiveSessionViewModel {
             Logger.training.error("Error: \(error, privacy: .private)")
         }
     }
-    
+
     func skipRest() {
         restTimerTask?.cancel()
         restSecondsRemaining = 0
         isResting = false
-        Task { await restTimerActivityService.endActivity() }
+        Task { await interactor.endRestActivity() }
     }
-    
+
     // MARK: - Private Functions
-    
+
     private func handleError(_ error: Error) {
         Logger.training.error("Error: \(error, privacy: .private)")
         if let trainingError = error as? TrainingError {
@@ -213,7 +201,7 @@ final class ActiveSessionViewModel {
             errorMessage = String(localized: "Something went wrong")
         }
     }
-    
+
     private func hkActivityType(for type: SessionType) -> HKWorkoutActivityType {
         switch type {
         case .planned, .freeStyle: return .traditionalStrengthTraining
@@ -221,19 +209,19 @@ final class ActiveSessionViewModel {
         case .mobility:            return .flexibility
         }
     }
-    
+
     private func startRestTimer(seconds: Int) {
         restTimerTask?.cancel()
         guard seconds > 0 else { return }
         restSecondsRemaining = seconds
         isResting = true
-        
+
         let exerciseName = currentExercise?.exercise?.name ?? ""
-        
+
         restTimerTask = Task { [weak self] in
             guard let self else { return }
-            await restTimerActivityService.startActivity(exerciseName: exerciseName, seconds: seconds)
-            
+            await interactor.startRestActivity(exerciseName: exerciseName, seconds: seconds)
+
             for remaining in stride(from: seconds - 1, through: 0, by: -1) {
                 try? await Task.sleep(for: .seconds(1))
                 guard !Task.isCancelled else { break }
@@ -242,7 +230,7 @@ final class ActiveSessionViewModel {
             if !Task.isCancelled {
                 isResting = false
                 restJustEnded = true
-                await restTimerActivityService.endActivity()
+                await interactor.endRestActivity()
             }
         }
     }

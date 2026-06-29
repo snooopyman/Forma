@@ -9,38 +9,27 @@ import SwiftUI
 
 struct PlanOverviewView: View {
 
-    // MARK: - States
-
-    @AppStorage("postOnboardingAction") private var postOnboardingAction: AppTab = .today
-    @State private var viewModel: PlanOverviewViewModel
-    @State private var selectedMeal: Meal?
-    @State private var showCreatePlan = false
-    @State private var showEditPlan = false
-
     // MARK: - Environment
 
     @Environment(AppContainer.self) private var container
+    @Environment(\.planOverviewViewModel) private var viewModel
 
-    // MARK: - Initializers
+    // MARK: - States
 
-    init(nutritionRepository: NutritionRepositoryProtocol, macroService: MacroTrackingServiceProtocol) {
-        _viewModel = State(initialValue: PlanOverviewViewModel(
-            nutritionRepository: nutritionRepository,
-            macroService: macroService
-        ))
-    }
+    @AppStorage("postOnboardingAction") private var postOnboardingAction: AppTab = .today
+    @State private var selectedMeal: Meal?
+    @State private var showCreatePlan = false
+    @State private var showEditPlan = false
 
     // MARK: - Body
 
     var body: some View {
         Group {
-            if viewModel.isLoading && viewModel.plan == nil {
+            if let viewModel {
+                mainContent(viewModel)
+            } else {
                 ProgressView()
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
-            } else if viewModel.plan == nil {
-                emptyView
-            } else {
-                contentView
             }
         }
         .navigationTitle(String(localized: "Nutrition"))
@@ -52,7 +41,7 @@ struct PlanOverviewView: View {
                     Image(systemName: "magnifyingglass")
                 }
             }
-            if viewModel.plan != nil {
+            if viewModel?.plan != nil {
                 ToolbarItem(placement: .topBarTrailing) {
                     Button {
                         showEditPlan = true
@@ -66,8 +55,47 @@ struct PlanOverviewView: View {
             MealDetailView(
                 meal: meal,
                 nutritionRepository: container.nutritionRepository,
-                onLogged: { Task { await viewModel.load() } }
+                onLogged: { Task { await viewModel?.load() } }
             )
+        }
+        .task { await viewModel?.load() }
+        .onAppear {
+            if postOnboardingAction == .nutrition {
+                postOnboardingAction = .today
+                showCreatePlan = true
+            }
+        }
+        .refreshable { await viewModel?.load() }
+        .sheet(isPresented: $showCreatePlan) {
+            CreateNutritionPlanView(nutritionRepository: container.nutritionRepository) {
+                Task { await viewModel?.load() }
+            }
+        }
+        .sheet(isPresented: $showEditPlan) {
+            if let plan = viewModel?.plan {
+                EditNutritionPlanView(
+                    plan: plan,
+                    nutritionRepository: container.nutritionRepository
+                ) {
+                    Task { await viewModel?.load() }
+                }
+            }
+        }
+    }
+
+    // MARK: - Private Views
+
+    @ViewBuilder
+    private func mainContent(_ viewModel: any PlanOverviewViewModelProtocol) -> some View {
+        Group {
+            if viewModel.isLoading && viewModel.plan == nil {
+                ProgressView()
+                    .frame(maxWidth: .infinity, maxHeight: .infinity)
+            } else if viewModel.plan == nil {
+                emptyView
+            } else {
+                contentView(viewModel)
+            }
         }
         .alert(
             String(localized: "Error"),
@@ -80,41 +108,16 @@ struct PlanOverviewView: View {
         } message: {
             if let msg = viewModel.errorMessage { Text(msg) }
         }
-        .task { await viewModel.load() }
-        .onAppear {
-            if postOnboardingAction == .nutrition {
-                postOnboardingAction = .today
-                showCreatePlan = true
-            }
-        }
-        .refreshable { await viewModel.load() }
-        .sheet(isPresented: $showCreatePlan) {
-            CreateNutritionPlanView(nutritionRepository: container.nutritionRepository) {
-                Task { await viewModel.load() }
-            }
-        }
-        .sheet(isPresented: $showEditPlan) {
-            if let plan = viewModel.plan {
-                EditNutritionPlanView(
-                    plan: plan,
-                    nutritionRepository: container.nutritionRepository
-                ) {
-                    Task { await viewModel.load() }
-                }
-            }
-        }
     }
 
-    // MARK: - Private Views
-
     @ViewBuilder
-    private var contentView: some View {
+    private func contentView(_ viewModel: any PlanOverviewViewModelProtocol) -> some View {
         ScrollView {
             VStack(spacing: DS.Spacing.xl) {
                 if let summary = viewModel.summary {
                     macroHeader(summary: summary)
                 }
-                mealsSection
+                mealsSection(viewModel)
             }
             .padding(DS.Spacing.lg)
         }
@@ -187,7 +190,7 @@ struct PlanOverviewView: View {
     }
 
     @ViewBuilder
-    private var mealsSection: some View {
+    private func mealsSection(_ viewModel: any PlanOverviewViewModelProtocol) -> some View {
         VStack(alignment: .leading, spacing: DS.Spacing.sm) {
             Text(String(localized: "Today's meals"))
                 .font(.headline)
@@ -335,12 +338,24 @@ private struct MealRowView: View {
     }
 }
 
-#Preview(traits: .previewContainer()) {
-    @Previewable @Environment(AppContainer.self) var container
-    NavigationStack {
-        PlanOverviewView(
-            nutritionRepository: container.nutritionRepository,
-            macroService: container.macroTrackingService
-        )
-    }
+// MARK: - Previews
+
+#Preview("Empty") {
+    NavigationStack { PlanOverviewView() }
+        .environment(\.planOverviewViewModel, MockPlanOverviewViewModel.empty)
+}
+
+#Preview("With data") {
+    NavigationStack { PlanOverviewView() }
+        .environment(\.planOverviewViewModel, MockPlanOverviewViewModel.withData)
+}
+
+#Preview("Loading") {
+    NavigationStack { PlanOverviewView() }
+        .environment(\.planOverviewViewModel, MockPlanOverviewViewModel.loading)
+}
+
+#Preview("Error") {
+    NavigationStack { PlanOverviewView() }
+        .environment(\.planOverviewViewModel, MockPlanOverviewViewModel.withError)
 }

@@ -12,8 +12,11 @@ struct ActiveSessionView: View {
 
     // MARK: - Private Properties
 
-    private let volumeCalculatorService: VolumeCalculatorServiceProtocol
     private let onDone: () -> Void
+
+    // MARK: - Environment
+
+    @Environment(AppContainer.self) private var container
 
     // MARK: - States
 
@@ -26,20 +29,14 @@ struct ActiveSessionView: View {
     init(
         session: WorkoutSession,
         workoutDay: WorkoutDay,
-        sessionService: WorkoutSessionServiceProtocol,
-        volumeCalculatorService: VolumeCalculatorServiceProtocol,
-        restTimerActivityService: RestTimerActivityServiceProtocol,
-        healthKitService: HealthKitServiceProtocol,
+        interactor: ActiveSessionInteractorProtocol,
         onDone: @escaping () -> Void
     ) {
         _viewModel = State(initialValue: ActiveSessionViewModel(
             session: session,
             workoutDay: workoutDay,
-            sessionService: sessionService,
-            restTimerActivityService: restTimerActivityService,
-            healthKitService: healthKitService
+            interactor: interactor
         ))
-        self.volumeCalculatorService = volumeCalculatorService
         self.onDone = onDone
     }
 
@@ -78,7 +75,7 @@ struct ActiveSessionView: View {
             .navigationDestination(isPresented: $showingSummary) {
                 PostWorkoutSummaryView(
                     session: viewModel.session,
-                    volumeCalculatorService: volumeCalculatorService,
+                    volumeCalculatorService: container.volumeCalculatorService,
                     wasExportedToHealth: viewModel.wasExportedToHealth,
                     onDone: onDone
                 )
@@ -461,10 +458,11 @@ private struct ActiveSessionPreviewWrapper: View {
             ActiveSessionView(
                 session: session,
                 workoutDay: day,
-                sessionService: container.workoutSessionService,
-                volumeCalculatorService: container.volumeCalculatorService,
-                restTimerActivityService: container.restTimerActivityService,
-                healthKitService: container.healthKitService,
+                interactor: ActiveSessionInteractor(
+                    sessionService: container.workoutSessionService,
+                    restTimerActivityService: container.restTimerActivityService,
+                    healthKitService: container.healthKitService
+                ),
                 onDone: {}
             )
         }

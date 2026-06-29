@@ -8,10 +8,14 @@
 import SwiftUI
 
 struct DashboardView: View {
-    
+
+    // MARK: - Environment
+
+    @Environment(AppContainer.self) private var container
+    @Environment(\.dashboardViewModel) private var viewModel
+
     // MARK: - States
 
-    @State private var viewModel: DashboardViewModel?
     @State private var showingCreateMesocycle = false
     @State private var showingCreateNutritionPlan = false
     @State private var showingNewMeasurement = false
@@ -20,13 +24,9 @@ struct DashboardView: View {
 
     @AppStorage("com.armando.forma.dailyStepsGoal") private var dailyStepsGoal: Int = 10_000
     @AppStorage("com.armando.forma.dailyExerciseGoal") private var dailyExerciseGoal: Int = 30
-    
-    // MARK: - Environment
-    
-    @Environment(AppContainer.self) private var container
-    
+
     // MARK: - Body
-    
+
     var body: some View {
         Group {
             if let vm = viewModel {
@@ -36,16 +36,7 @@ struct DashboardView: View {
             }
         }
         .task {
-            let vm = DashboardViewModel(
-                mesocycleRepo: container.mesocycleRepository,
-                workoutSessionRepo: container.workoutSessionRepository,
-                nutritionRepo: container.nutritionRepository,
-                bodyMeasurementRepo: container.bodyMeasurementRepository,
-                macroTrackingService: container.macroTrackingService,
-                healthKitService: container.healthKitService
-            )
-            viewModel = vm
-            await vm.load()
+            await viewModel?.load()
         }
         .sheet(isPresented: $showingCreateMesocycle) {
             CreateMesocycleView { }
@@ -65,10 +56,11 @@ struct DashboardView: View {
                 ActiveSessionView(
                     session: session,
                     workoutDay: day,
-                    sessionService: container.workoutSessionService,
-                    volumeCalculatorService: container.volumeCalculatorService,
-                    restTimerActivityService: container.restTimerActivityService,
-                    healthKitService: container.healthKitService,
+                    interactor: ActiveSessionInteractor(
+                        sessionService: container.workoutSessionService,
+                        restTimerActivityService: container.restTimerActivityService,
+                        healthKitService: container.healthKitService
+                    ),
                     onDone: { activeSession = nil }
                 )
             }
@@ -78,7 +70,7 @@ struct DashboardView: View {
     // MARK: - Private Views
     
     @ViewBuilder
-    private func content(vm: DashboardViewModel) -> some View {
+    private func content(vm: any DashboardViewModelProtocol) -> some View {
         ScrollView {
             LazyVStack(spacing: DS.Spacing.lg) {
                 headerSection(vm: vm)
@@ -116,7 +108,7 @@ struct DashboardView: View {
     }
     
     @ViewBuilder
-    private func headerSection(vm: DashboardViewModel) -> some View {
+    private func headerSection(vm: any DashboardViewModelProtocol) -> some View {
         Text(vm.todayFormatted)
             .font(.subheadline)
             .foregroundStyle(.textSecondary)
@@ -125,7 +117,7 @@ struct DashboardView: View {
     }
     
     @ViewBuilder
-    private func workoutCard(vm: DashboardViewModel) -> some View {
+    private func workoutCard(vm: any DashboardViewModelProtocol) -> some View {
         VStack(alignment: .leading, spacing: DS.Spacing.xs) {
             Label(String(localized: "Training"), systemImage: "figure.strengthtraining.traditional")
                 .font(.headline)
@@ -218,7 +210,7 @@ struct DashboardView: View {
     }
     
     @ViewBuilder
-    private func workoutDayContent(vm: DashboardViewModel, day: WorkoutDay) -> some View {
+    private func workoutDayContent(vm: any DashboardViewModelProtocol, day: WorkoutDay) -> some View {
         VStack(alignment: .leading, spacing: DS.Spacing.sm) {
             HStack {
                 VStack(alignment: .leading, spacing: DS.Spacing.xs) {
@@ -261,7 +253,7 @@ struct DashboardView: View {
     }
     
     @ViewBuilder
-    private func sessionStatusBadge(vm: DashboardViewModel) -> some View {
+    private func sessionStatusBadge(vm: any DashboardViewModelProtocol) -> some View {
         if vm.inProgressSession != nil {
             statusBadge(label: String(localized: "In progress"), color: .warning, icon: "bolt.fill")
         } else if vm.isTodaySessionCompleted {
@@ -317,7 +309,7 @@ struct DashboardView: View {
     }
     
     @ViewBuilder
-    private func macroCard(vm: DashboardViewModel) -> some View {
+    private func macroCard(vm: any DashboardViewModelProtocol) -> some View {
         VStack(alignment: .leading, spacing: DS.Spacing.xs) {
             Label(String(localized: "Nutrition"), systemImage: "fork.knife")
                 .font(.headline)
@@ -406,7 +398,7 @@ struct DashboardView: View {
     }
     
     @ViewBuilder
-    private func healthKitCard(vm: DashboardViewModel) -> some View {
+    private func healthKitCard(vm: any DashboardViewModelProtocol) -> some View {
         VStack(alignment: .leading, spacing: DS.Spacing.xs) {
             Label(String(localized: "Activity"), systemImage: "heart.fill")
                 .font(.headline)
@@ -429,7 +421,7 @@ struct DashboardView: View {
     }
     
     @ViewBuilder
-    private func connectHealthKitButton(vm: DashboardViewModel) -> some View {
+    private func connectHealthKitButton(vm: any DashboardViewModelProtocol) -> some View {
         Button {
             Task { await vm.requestHealthKitAccess() }
         } label: {
@@ -446,7 +438,7 @@ struct DashboardView: View {
     }
     
     @ViewBuilder
-    private func healthKitMetrics(vm: DashboardViewModel) -> some View {
+    private func healthKitMetrics(vm: any DashboardViewModelProtocol) -> some View {
         let stepsProgress = dailyStepsGoal > 0
             ? min(Double(vm.todaySteps) / Double(dailyStepsGoal), 1.0)
             : 0.0
@@ -539,7 +531,7 @@ struct DashboardView: View {
     }
     
     @ViewBuilder
-    private func weeklySummaryCard(vm: DashboardViewModel) -> some View {
+    private func weeklySummaryCard(vm: any DashboardViewModelProtocol) -> some View {
         VStack(alignment: .leading, spacing: DS.Spacing.xs) {
             Label(String(localized: "This week"), systemImage: "calendar")
                 .font(.headline)
@@ -580,8 +572,22 @@ struct DashboardView: View {
     }
 }
 
-#Preview(traits: .previewContainer(.withData)) {
-    NavigationStack {
-        DashboardView()
-    }
+#Preview("Empty") {
+    NavigationStack { DashboardView() }
+        .environment(\.dashboardViewModel, MockDashboardViewModel.empty)
+}
+
+#Preview("With data") {
+    NavigationStack { DashboardView() }
+        .environment(\.dashboardViewModel, MockDashboardViewModel.withData)
+}
+
+#Preview("Loading") {
+    NavigationStack { DashboardView() }
+        .environment(\.dashboardViewModel, MockDashboardViewModel.loading)
+}
+
+#Preview("Error") {
+    NavigationStack { DashboardView() }
+        .environment(\.dashboardViewModel, MockDashboardViewModel.withError)
 }

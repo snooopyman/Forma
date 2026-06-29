@@ -8,34 +8,26 @@
 import SwiftUI
 
 struct MesocycleListView: View {
-
-    // MARK: - States
-
-    @AppStorage("postOnboardingAction") private var postOnboardingAction: AppTab = .today
-    @State private var viewModel: MesocycleListViewModel
-    @State private var showingCreate = false
-
+    
     // MARK: - Environment
-
+    
     @Environment(AppContainer.self) private var container
-
-    // MARK: - Initializers
-
-    init(mesocycleRepository: MesocycleRepositoryProtocol) {
-        _viewModel = State(initialValue: MesocycleListViewModel(mesocycleRepository: mesocycleRepository))
-    }
-
+    @Environment(\.mesocycleListViewModel) private var viewModel
+    
+    // MARK: - States
+    
+    @AppStorage("postOnboardingAction") private var postOnboardingAction: AppTab = .today
+    @State private var showingCreate = false
+    
     // MARK: - Body
-
+    
     var body: some View {
         Group {
-            if viewModel.isLoading && viewModel.mesocycles.isEmpty {
+            if let viewModel {
+                mainContent(viewModel)
+            } else {
                 ProgressView()
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
-            } else if viewModel.mesocycles.isEmpty {
-                emptyView
-            } else {
-                contentView
             }
         }
         .navigationTitle(String(localized: "Training"))
@@ -50,7 +42,35 @@ struct MesocycleListView: View {
         }
         .sheet(isPresented: $showingCreate) {
             CreateMesocycleView {
-                Task { await viewModel.load() }
+                Task { await viewModel?.load() }
+            }
+        }
+        .task {
+            await viewModel?.load()
+        }
+        .onAppear {
+            if postOnboardingAction == .training {
+                postOnboardingAction = .today
+                showingCreate = true
+            }
+        }
+        .refreshable {
+            await viewModel?.load()
+        }
+    }
+    
+    // MARK: - Private Views
+    
+    @ViewBuilder
+    private func mainContent(_ viewModel: any MesocycleListViewModelProtocol) -> some View {
+        Group {
+            if viewModel.isLoading && viewModel.mesocycles.isEmpty {
+                ProgressView()
+                    .frame(maxWidth: .infinity, maxHeight: .infinity)
+            } else if viewModel.mesocycles.isEmpty {
+                emptyView
+            } else {
+                contentView(viewModel)
             }
         }
         .alert(
@@ -67,24 +87,10 @@ struct MesocycleListView: View {
         } message: {
             if let msg = viewModel.errorMessage { Text(msg) }
         }
-        .task {
-            await viewModel.load()
-        }
-        .onAppear {
-            if postOnboardingAction == .training {
-                postOnboardingAction = .today
-                showingCreate = true
-            }
-        }
-        .refreshable {
-            await viewModel.load()
-        }
     }
-
-    // MARK: - Private Views
-
+    
     @ViewBuilder
-    private var contentView: some View {
+    private func contentView(_ viewModel: any MesocycleListViewModelProtocol) -> some View {
         List {
             ForEach(viewModel.mesocycles) { mesocycle in
                 NavigationLink(value: mesocycle) {
@@ -117,7 +123,7 @@ struct MesocycleListView: View {
             )
         }
     }
-
+    
     private var emptyView: some View {
         ContentUnavailableView {
             Label(String(localized: "No mesocycles yet"), systemImage: "figure.strengthtraining.traditional")
@@ -140,7 +146,7 @@ struct MesocycleListView: View {
 
 private struct MesocycleRowView: View {
     let mesocycle: Mesocycle
-
+    
     var body: some View {
         VStack(alignment: .leading, spacing: DS.Spacing.xs) {
             HStack(alignment: .top) {
@@ -158,7 +164,7 @@ private struct MesocycleRowView: View {
         }
         .padding(.vertical, DS.Spacing.xs)
     }
-
+    
     @ViewBuilder
     private var statusBadge: some View {
         if mesocycle.isActive {
@@ -175,19 +181,22 @@ private struct MesocycleRowView: View {
 
 // MARK: - Previews
 
-private struct MesocycleListPreviewWrapper: View {
-    @Environment(AppContainer.self) private var container
-    var body: some View {
-        NavigationStack {
-            MesocycleListView(mesocycleRepository: container.mesocycleRepository)
-        }
-    }
+#Preview("Empty") {
+    NavigationStack { MesocycleListView() }
+        .environment(\.mesocycleListViewModel, MockMesocycleListViewModel.empty)
 }
 
-#Preview(traits: .previewContainer(.withData)) {
-    MesocycleListPreviewWrapper()
+#Preview("With data") {
+    NavigationStack { MesocycleListView() }
+        .environment(\.mesocycleListViewModel, MockMesocycleListViewModel.withData)
 }
 
-#Preview("Vacío", traits: .previewContainer(.empty)) {
-    MesocycleListPreviewWrapper()
+#Preview("Loading") {
+    NavigationStack { MesocycleListView() }
+        .environment(\.mesocycleListViewModel, MockMesocycleListViewModel.loading)
+}
+
+#Preview("Error") {
+    NavigationStack { MesocycleListView() }
+        .environment(\.mesocycleListViewModel, MockMesocycleListViewModel.withError)
 }

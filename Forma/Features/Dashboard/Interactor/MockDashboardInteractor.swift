@@ -9,6 +9,10 @@ import Foundation
 
 final class MockDashboardInteractor: DashboardInteractorProtocol {
 
+    // MARK: - Computed Properties
+
+    var isHealthKitAvailable: Bool { false }
+
     // MARK: - Stub Data
 
     var stubbedSnapshot = DashboardSnapshot(

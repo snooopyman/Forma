@@ -27,6 +27,7 @@ struct HealthSnapshot: Sendable {
 
 
 protocol DashboardInteractorProtocol: Sendable {
+    var isHealthKitAvailable: Bool { get }
     func loadDashboardData() async throws -> DashboardSnapshot
     func requestHealthKitAccess() async throws
     func refreshHealthData() async -> HealthSnapshot

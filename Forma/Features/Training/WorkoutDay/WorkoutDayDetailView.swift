@@ -9,24 +9,24 @@ import SwiftUI
 import SwiftData
 
 struct WorkoutDayDetailView: View {
-
+    
     // MARK: - Private Properties
-
+    
     private let mesocycleRepository: MesocycleRepositoryProtocol
-
+    
     // MARK: - States
-
+    
     @State private var viewModel: WorkoutDayDetailViewModel
     @State private var activeSession: WorkoutSession?
     @State private var showingAddExercise = false
     @State private var editingExercise: PlannedExercise?
-
+    
     // MARK: - Environment
-
+    
     @Environment(AppContainer.self) private var container
-
+    
     // MARK: - Initializers
-
+    
     init(
         workoutDay: WorkoutDay,
         mesocycleRepository: MesocycleRepositoryProtocol,
@@ -41,9 +41,9 @@ struct WorkoutDayDetailView: View {
             sessionRepository: sessionRepository
         ))
     }
-
+    
     // MARK: - Body
-
+    
     var body: some View {
         Group {
             if viewModel.isLoading {
@@ -93,10 +93,11 @@ struct WorkoutDayDetailView: View {
             ActiveSessionView(
                 session: session,
                 workoutDay: viewModel.workoutDay,
-                sessionService: container.workoutSessionService,
-                volumeCalculatorService: container.volumeCalculatorService,
-                restTimerActivityService: container.restTimerActivityService,
-                healthKitService: container.healthKitService,
+                interactor: ActiveSessionInteractor(
+                    sessionService: container.workoutSessionService,
+                    restTimerActivityService: container.restTimerActivityService,
+                    healthKitService: container.healthKitService
+                ),
                 onDone: { activeSession = nil }
             )
         }
@@ -104,9 +105,9 @@ struct WorkoutDayDetailView: View {
             await viewModel.load()
         }
     }
-
+    
     // MARK: - Private Views
-
+    
     @ViewBuilder
     private var contentView: some View {
         if viewModel.workoutDay.isRestDay {
@@ -115,17 +116,17 @@ struct WorkoutDayDetailView: View {
             exercisesListView
         }
     }
-
+    
     private var restDayView: some View {
         ContentUnavailableView(
             String(localized: "Rest day"),
             systemImage: "moon.zzz.fill",
             description: viewModel.workoutDay.restDayActivity.isEmpty
-                ? nil
-                : Text(viewModel.workoutDay.restDayActivity)
+            ? nil
+            : Text(viewModel.workoutDay.restDayActivity)
         )
     }
-
+    
     @ViewBuilder
     private var exercisesListView: some View {
         if viewModel.sortedExercises.isEmpty {
@@ -167,7 +168,7 @@ struct WorkoutDayDetailView: View {
             }
         }
     }
-
+    
     private var startButton: some View {
         Button {
             Task {
@@ -193,7 +194,7 @@ struct WorkoutDayDetailView: View {
         .tint(.accent)
         .disabled(viewModel.isStarting)
     }
-
+    
     private func resumeButton(session: WorkoutSession) -> some View {
         Button {
             activeSession = session
@@ -211,7 +212,7 @@ struct WorkoutDayDetailView: View {
 
 private struct PlannedExerciseRowView: View {
     let planned: PlannedExercise
-
+    
     var body: some View {
         VStack(alignment: .leading, spacing: DS.Spacing.sm) {
             HStack(alignment: .top) {
@@ -233,7 +234,7 @@ private struct PlannedExerciseRowView: View {
                 }
                 .font(.caption)
                 .foregroundStyle(.textSecondary)
-
+                
                 Label {
                     Text(verbatim: "RIR \(planned.rirTarget)")
                 } icon: {
@@ -241,7 +242,7 @@ private struct PlannedExerciseRowView: View {
                 }
                 .font(.caption)
                 .foregroundStyle(.textSecondary)
-
+                
                 Label {
                     Text(verbatim: "\(planned.restSeconds)s")
                 } icon: {
@@ -260,7 +261,7 @@ private struct PlannedExerciseRowView: View {
 private struct WorkoutDayDetailPreviewWrapper: View {
     @Environment(AppContainer.self) private var container
     @Query private var days: [WorkoutDay]
-
+    
     var body: some View {
         if let day = days.first(where: { !$0.isRestDay }) {
             NavigationStack {
