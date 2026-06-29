@@ -1,0 +1,60 @@
+{
+  "sourceLanguage" : "en",
+  "strings" : {
+    "ERROR_LOAD_FAILED" : {
+      "comment" : "Error when loading nutrition data fails",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Could not load nutrition data"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No se pudieron cargar los datos de nutrición"
+          }
+        }
+      }
+    },
+    "ERROR_SAVE_FAILED" : {
+      "comment" : "Error when saving nutrition changes fails",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Could not save changes"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No se pudieron guardar los cambios"
+          }
+        }
+      }
+    },
+    "ERROR_DELETE_FAILED" : {
+      "comment" : "Error when deleting a nutrition item fails",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Could not delete item"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No se pudo eliminar el elemento"
+          }
+        }
+      }
+    }
+  },
+  "version" : "1.0"
+}

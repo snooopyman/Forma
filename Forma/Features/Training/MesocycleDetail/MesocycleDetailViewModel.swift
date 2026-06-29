@@ -109,7 +109,7 @@ final class MesocycleDetailViewModel {
         if let trainingError = error as? TrainingError {
             errorMessage = trainingError.errorDescription
         } else {
-            errorMessage = String(localized: "Something went wrong")
+            errorMessage = L10n.Error.generic
         }
     }
 }

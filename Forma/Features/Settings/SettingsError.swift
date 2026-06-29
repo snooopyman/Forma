@@ -13,8 +13,8 @@ enum SettingsError: LocalizedError, Equatable {
     
     var errorDescription: String? {
         switch self {
-        case .loadFailed: String(localized: "Could not load profile")
-        case .saveFailed: String(localized: "Could not save profile")
+        case .loadFailed: L10n.Settings.Error.loadFailed
+        case .saveFailed: L10n.Settings.Error.saveFailed
         }
     }
 }

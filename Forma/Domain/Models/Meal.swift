@@ -60,11 +60,11 @@ enum MealType: String, Codable, CaseIterable {
 
     var localizedName: String {
         switch self {
-        case .breakfast:   return String(localized: "Breakfast")
-        case .lunch:       return String(localized: "Lunch")
-        case .dinner:      return String(localized: "Dinner")
-        case .snack:       return String(localized: "Snack")
-        case .postWorkout: return String(localized: "Post-workout")
+        case .breakfast:   return L10n.Nutrition.Meal.breakfast
+        case .lunch:       return L10n.Nutrition.Meal.lunch
+        case .dinner:      return L10n.Nutrition.Meal.dinner
+        case .snack:       return L10n.Nutrition.Meal.snack
+        case .postWorkout: return L10n.Nutrition.Meal.postWorkout
         }
     }
 }

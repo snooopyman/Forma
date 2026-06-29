@@ -32,7 +32,7 @@ final class MockDashboardViewModel: DashboardViewModelProtocol {
     // MARK: - Computed Properties
 
     var isHealthKitAvailable: Bool { false }
-    var greeting: String { String(localized: "Good morning") }
+    var greeting: String { L10n.Dashboard.goodMorning }
     var todayFormatted: String { Date.now.formatted(.dateTime.weekday(.wide).day().month(.wide)) }
 
     // MARK: - Functions
@@ -61,7 +61,7 @@ extension MockDashboardViewModel {
 
     static var withError: MockDashboardViewModel {
         let vm = MockDashboardViewModel()
-        vm.errorMessage = String(localized: "Something went wrong")
+        vm.errorMessage = L10n.Error.generic
         return vm
     }
 }

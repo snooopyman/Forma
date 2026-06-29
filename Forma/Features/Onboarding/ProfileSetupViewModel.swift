@@ -94,7 +94,7 @@ final class ProfileSetupViewModel {
         if let settingsError = error as? SettingsError {
             errorMessage = settingsError.errorDescription
         } else {
-            errorMessage = String(localized: "Something went wrong")
+            errorMessage = L10n.Error.generic
         }
     }
 }

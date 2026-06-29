@@ -112,7 +112,7 @@ final class ActiveSessionViewModel: ActiveSessionViewModelProtocol {
         let repsText = repsInputs[exercise.id] ?? ""
 
         guard let weight = weightText.weightDouble, let reps = Int(repsText) else {
-            errorMessage = String(localized: "Enter valid weight and reps")
+            errorMessage = L10n.Training.Session.invalidSetInput
             return
         }
 
@@ -198,7 +198,7 @@ final class ActiveSessionViewModel: ActiveSessionViewModelProtocol {
         if let trainingError = error as? TrainingError {
             errorMessage = trainingError.errorDescription
         } else {
-            errorMessage = String(localized: "Something went wrong")
+            errorMessage = L10n.Error.generic
         }
     }
 

@@ -54,9 +54,9 @@ final class CreateNutritionPlanViewModel {
     init(nutritionRepository: NutritionRepositoryProtocol) {
         self.nutritionRepository = nutritionRepository
         draftMeals = [
-            DraftMeal(name: String(localized: "Breakfast"), mealType: .breakfast, isRequired: true),
-            DraftMeal(name: String(localized: "Lunch"), mealType: .lunch, isRequired: true),
-            DraftMeal(name: String(localized: "Dinner"), mealType: .dinner, isRequired: true),
+            DraftMeal(name: L10n.Nutrition.Meal.breakfast, mealType: .breakfast, isRequired: true),
+            DraftMeal(name: L10n.Nutrition.Meal.lunch, mealType: .lunch, isRequired: true),
+            DraftMeal(name: L10n.Nutrition.Meal.dinner, mealType: .dinner, isRequired: true),
         ]
     }
     
@@ -107,7 +107,7 @@ final class CreateNutritionPlanViewModel {
         if let nutritionError = error as? NutritionError {
             errorMessage = nutritionError.errorDescription
         } else {
-            errorMessage = String(localized: "Something went wrong")
+            errorMessage = L10n.Error.generic
         }
     }
 }

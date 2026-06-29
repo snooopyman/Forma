@@ -67,7 +67,7 @@ final class FoodBrowserViewModel {
         if let nutritionError = error as? NutritionError {
             errorMessage = nutritionError.errorDescription
         } else {
-            errorMessage = String(localized: "Something went wrong")
+            errorMessage = L10n.Error.generic
         }
     }
 }

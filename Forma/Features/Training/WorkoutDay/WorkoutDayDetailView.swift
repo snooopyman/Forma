@@ -176,7 +176,7 @@ struct WorkoutDayDetailView: View {
                     let session = try await viewModel.startSession()
                     activeSession = session
                 } catch {
-                    viewModel.errorMessage = String(localized: "Something went wrong")
+                    viewModel.errorMessage = L10n.Error.generic
                 }
             }
         } label: {

@@ -57,7 +57,7 @@ extension MockProgressOverviewViewModel {
 
     static var withError: MockProgressOverviewViewModel {
         let vm = MockProgressOverviewViewModel()
-        vm.errorMessage = String(localized: "Could not load progress data")
+        vm.errorMessage = L10n.Progress.Error.loadFailed
         return vm
     }
 }

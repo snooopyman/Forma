@@ -65,17 +65,17 @@ enum MacroType: String, Codable, CaseIterable {
 
     var localizedName: String {
         switch self {
-        case .protein: return String(localized: "Protein")
-        case .carbs:   return String(localized: "Carbs")
-        case .fat:     return String(localized: "Fat")
+        case .protein: return L10n.MacroType.protein
+        case .carbs:   return L10n.MacroType.carbs
+        case .fat:     return L10n.MacroType.fat
         }
     }
 
     var abbreviation: String {
         switch self {
-        case .protein: return String(localized: "Protein abbreviation")
-        case .carbs:   return String(localized: "Carbs abbreviation")
-        case .fat:     return String(localized: "Fat abbreviation")
+        case .protein: return L10n.MacroType.Abbreviation.protein
+        case .carbs:   return L10n.MacroType.Abbreviation.carbs
+        case .fat:     return L10n.MacroType.Abbreviation.fat
         }
     }
 

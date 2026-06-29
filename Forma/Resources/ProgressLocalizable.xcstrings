@@ -1,0 +1,60 @@
+{
+  "sourceLanguage" : "en",
+  "strings" : {
+    "ERROR_LOAD_FAILED" : {
+      "comment" : "Error when loading progress data fails",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Could not load progress data"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No se pudieron cargar los datos de progreso"
+          }
+        }
+      }
+    },
+    "ERROR_SAVE_FAILED" : {
+      "comment" : "Error when saving a measurement fails",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Could not save measurement"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No se pudo guardar la medición"
+          }
+        }
+      }
+    },
+    "ERROR_DELETE_FAILED" : {
+      "comment" : "Error when deleting a measurement fails",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Could not delete measurement"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No se pudo eliminar la medición"
+          }
+        }
+      }
+    }
+  },
+  "version" : "1.0"
+}

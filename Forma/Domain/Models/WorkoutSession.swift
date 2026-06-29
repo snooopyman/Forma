@@ -55,10 +55,10 @@ enum SessionType: String, Codable, CaseIterable {
 
     var localizedName: String {
         switch self {
-        case .planned:   return String(localized: "Planned")
-        case .freeStyle: return String(localized: "Free style")
-        case .cardio:    return String(localized: "Cardio")
-        case .mobility:  return String(localized: "Mobility")
+        case .planned:   return L10n.WorkoutSession.planned
+        case .freeStyle: return L10n.WorkoutSession.freeStyle
+        case .cardio:    return L10n.WorkoutSession.cardio
+        case .mobility:  return L10n.WorkoutSession.mobility
         }
     }
 }

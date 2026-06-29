@@ -33,12 +33,12 @@ final class SettingsViewModel {
     
     var cloudKitStatusText: String {
         switch cloudKitStatus {
-        case .available:              return String(localized: "Syncing with iCloud")
-        case .noAccount:              return String(localized: "No iCloud account")
-        case .restricted:             return String(localized: "iCloud restricted")
-        case .temporarilyUnavailable: return String(localized: "Temporarily unavailable")
-        case .couldNotDetermine:      return String(localized: "Checking…")
-        @unknown default:             return String(localized: "Unknown")
+        case .available:              return L10n.Settings.ICloud.syncing
+        case .noAccount:              return L10n.Settings.ICloud.noAccount
+        case .restricted:             return L10n.Settings.ICloud.restricted
+        case .temporarilyUnavailable: return L10n.Settings.ICloud.temporarilyUnavailable
+        case .couldNotDetermine:      return L10n.Settings.ICloud.checking
+        @unknown default:             return L10n.Settings.ICloud.unknown
         }
     }
     

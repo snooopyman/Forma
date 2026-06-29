@@ -94,7 +94,7 @@ struct CreateMesocycleView: View {
             onSaved()
             dismiss()
         } catch {
-            errorMessage = String(localized: "Something went wrong")
+            errorMessage = L10n.Error.generic
         }
     }
 }

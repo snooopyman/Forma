@@ -152,7 +152,7 @@ final class NewMeasurementViewModel {
         if let progressError = error as? ProgressError {
             errorMessage = progressError.errorDescription
         } else {
-            errorMessage = String(localized: "Something went wrong")
+            errorMessage = L10n.Error.generic
         }
     }
     

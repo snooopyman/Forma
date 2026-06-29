@@ -50,7 +50,7 @@ extension MockMesocycleListViewModel {
 
     static var withError: MockMesocycleListViewModel {
         let vm = MockMesocycleListViewModel()
-        vm.errorMessage = String(localized: "Could not load training data")
+        vm.errorMessage = L10n.Training.Error.loadFailed
         return vm
     }
 }

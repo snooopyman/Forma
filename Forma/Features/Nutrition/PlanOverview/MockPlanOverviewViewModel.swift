@@ -46,7 +46,7 @@ extension MockPlanOverviewViewModel {
 
     static var withError: MockPlanOverviewViewModel {
         let vm = MockPlanOverviewViewModel()
-        vm.errorMessage = String(localized: "Could not load nutrition data")
+        vm.errorMessage = L10n.Nutrition.Error.loadFailed
         return vm
     }
 }

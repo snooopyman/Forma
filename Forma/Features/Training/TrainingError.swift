@@ -18,13 +18,13 @@ enum TrainingError: LocalizedError, Equatable {
     
     var errorDescription: String? {
         switch self {
-        case .loadFailed:      String(localized: "Could not load training data")
-        case .saveFailed:      String(localized: "Could not save changes")
-        case .deleteFailed:    String(localized: "Could not delete item")
-        case .setActiveFailed: String(localized: "Could not set active mesocycle")
-        case .sessionNotFound: String(localized: "Session not found")
-        case .logSetFailed:    String(localized: "Could not log set")
-        case .finishFailed:    String(localized: "Could not finish session")
+        case .loadFailed:      return L10n.Training.Error.loadFailed
+        case .saveFailed:      return L10n.Training.Error.saveFailed
+        case .deleteFailed:    return L10n.Training.Error.deleteFailed
+        case .setActiveFailed: return L10n.Training.Error.setActiveFailed
+        case .sessionNotFound: return L10n.Training.Error.sessionNotFound
+        case .logSetFailed:    return L10n.Training.Error.logSetFailed
+        case .finishFailed:    return L10n.Training.Error.finishFailed
         }
     }
 }

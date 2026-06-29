@@ -14,9 +14,9 @@ enum ProgressError: LocalizedError, Equatable {
     
     var errorDescription: String? {
         switch self {
-        case .loadFailed:   String(localized: "Could not load progress data")
-        case .saveFailed:   String(localized: "Could not save measurement")
-        case .deleteFailed: String(localized: "Could not delete measurement")
+        case .loadFailed:   L10n.Progress.Error.loadFailed
+        case .saveFailed:   L10n.Progress.Error.saveFailed
+        case .deleteFailed: L10n.Progress.Error.deleteFailed
         }
     }
 }

@@ -51,8 +51,8 @@ enum BiologicalSex: String, Codable, CaseIterable {
 
     var localizedName: String {
         switch self {
-        case .male:   return String(localized: "Male")
-        case .female: return String(localized: "Female")
+        case .male:   return L10n.BiologicalSex.male
+        case .female: return L10n.BiologicalSex.female
         }
     }
 }
@@ -66,21 +66,21 @@ enum ActivityLevel: String, Codable, CaseIterable {
 
     var localizedName: String {
         switch self {
-        case .sedentary:        return String(localized: "Sedentary")
-        case .lightlyActive:    return String(localized: "Lightly active")
-        case .moderatelyActive: return String(localized: "Moderately active")
-        case .veryActive:       return String(localized: "Very active")
-        case .extraActive:      return String(localized: "Extra active")
+        case .sedentary:        return L10n.ActivityLevel.sedentary
+        case .lightlyActive:    return L10n.ActivityLevel.lightlyActive
+        case .moderatelyActive: return L10n.ActivityLevel.moderatelyActive
+        case .veryActive:       return L10n.ActivityLevel.veryActive
+        case .extraActive:      return L10n.ActivityLevel.extraActive
         }
     }
 
     var description: String {
         switch self {
-        case .sedentary:        return String(localized: "Little or no exercise")
-        case .lightlyActive:    return String(localized: "Light exercise 1–3 days/week")
-        case .moderatelyActive: return String(localized: "Moderate exercise 3–5 days/week")
-        case .veryActive:       return String(localized: "Hard exercise 6–7 days/week")
-        case .extraActive:      return String(localized: "Very hard exercise or physical job")
+        case .sedentary:        return L10n.ActivityLevel.Description.sedentary
+        case .lightlyActive:    return L10n.ActivityLevel.Description.lightlyActive
+        case .moderatelyActive: return L10n.ActivityLevel.Description.moderatelyActive
+        case .veryActive:       return L10n.ActivityLevel.Description.veryActive
+        case .extraActive:      return L10n.ActivityLevel.Description.extraActive
         }
     }
 

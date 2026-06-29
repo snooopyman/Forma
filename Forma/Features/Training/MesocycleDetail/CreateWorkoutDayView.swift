@@ -97,7 +97,7 @@ struct CreateWorkoutDayView: View {
             try await mesocycleRepository.addWorkoutDay(day, to: mesocycle)
             dismiss()
         } catch {
-            errorMessage = String(localized: "Something went wrong")
+            errorMessage = L10n.Error.generic
         }
     }
 }

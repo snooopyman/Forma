@@ -1,0 +1,204 @@
+{
+  "sourceLanguage" : "en",
+  "strings" : {
+    "SESSION_START" : {
+      "comment" : "Button to start a workout session",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Start workout"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Iniciar entreno"
+          }
+        }
+      }
+    },
+    "SESSION_FINISH" : {
+      "comment" : "Button to finish the current workout session",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Finish workout"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Finalizar entreno"
+          }
+        }
+      }
+    },
+    "SESSION_REST_TIMER" : {
+      "comment" : "Label for the rest timer between sets",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Rest timer"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Temporizador de descanso"
+          }
+        }
+      }
+    },
+    "SESSION_INVALID_INPUT" : {
+      "comment" : "Validation error when logging a set with missing weight or reps",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Enter valid weight and reps"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Introduce un peso y repeticiones válidos"
+          }
+        }
+      }
+    },
+    "ERROR_LOAD_FAILED" : {
+      "comment" : "Error when loading training data fails",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Could not load training data"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No se pudieron cargar los datos de entrenamiento"
+          }
+        }
+      }
+    },
+    "ERROR_SAVE_FAILED" : {
+      "comment" : "Error when saving training changes fails",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Could not save changes"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No se pudieron guardar los cambios"
+          }
+        }
+      }
+    },
+    "ERROR_DELETE_FAILED" : {
+      "comment" : "Error when deleting a training item fails",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Could not delete item"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No se pudo eliminar el elemento"
+          }
+        }
+      }
+    },
+    "ERROR_SET_ACTIVE_FAILED" : {
+      "comment" : "Error when setting an active mesocycle fails",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Could not set active mesocycle"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No se pudo activar el mesociclo"
+          }
+        }
+      }
+    },
+    "ERROR_SESSION_NOT_FOUND" : {
+      "comment" : "Error when the workout session cannot be found",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Session not found"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sesión no encontrada"
+          }
+        }
+      }
+    },
+    "ERROR_LOG_SET_FAILED" : {
+      "comment" : "Error when logging a set fails",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Could not log set"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No se pudo registrar la serie"
+          }
+        }
+      }
+    },
+    "ERROR_FINISH_FAILED" : {
+      "comment" : "Error when finishing a workout session fails",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Could not finish session"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No se pudo finalizar la sesión"
+          }
+        }
+      }
+    }
+  },
+  "version" : "1.0"
+}

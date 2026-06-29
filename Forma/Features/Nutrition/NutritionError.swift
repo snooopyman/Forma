@@ -14,9 +14,9 @@ enum NutritionError: LocalizedError, Equatable {
     
     var errorDescription: String? {
         switch self {
-        case .loadFailed:   String(localized: "Could not load nutrition data")
-        case .saveFailed:   String(localized: "Could not save changes")
-        case .deleteFailed: String(localized: "Could not delete item")
+        case .loadFailed:   L10n.Nutrition.Error.loadFailed
+        case .saveFailed:   L10n.Nutrition.Error.saveFailed
+        case .deleteFailed: L10n.Nutrition.Error.deleteFailed
         }
     }
 }

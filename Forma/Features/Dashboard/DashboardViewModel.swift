@@ -41,9 +41,9 @@ final class DashboardViewModel: DashboardViewModelProtocol {
 
     var greeting: String {
         let hour = Calendar.current.component(.hour, from: .now)
-        if hour < 12 { return String(localized: "Good morning") }
-        if hour < 18 { return String(localized: "Good afternoon") }
-        return String(localized: "Good evening")
+        if hour < 12 { return L10n.Dashboard.goodMorning }
+        if hour < 18 { return L10n.Dashboard.goodAfternoon }
+        return L10n.Dashboard.goodEvening
     }
 
     var todayFormatted: String {
@@ -105,7 +105,7 @@ final class DashboardViewModel: DashboardViewModelProtocol {
         } else if let progressError = error as? ProgressError {
             errorMessage = progressError.errorDescription
         } else {
-            errorMessage = String(localized: "Something went wrong")
+            errorMessage = L10n.Error.generic
         }
     }
 

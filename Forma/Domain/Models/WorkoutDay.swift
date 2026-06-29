@@ -46,25 +46,25 @@ enum Weekday: Int, Codable, CaseIterable {
 
     var localizedName: String {
         switch self {
-        case .monday:    return String(localized: "Monday")
-        case .tuesday:   return String(localized: "Tuesday")
-        case .wednesday: return String(localized: "Wednesday")
-        case .thursday:  return String(localized: "Thursday")
-        case .friday:    return String(localized: "Friday")
-        case .saturday:  return String(localized: "Saturday")
-        case .sunday:    return String(localized: "Sunday")
+        case .monday:    return L10n.Weekday.monday
+        case .tuesday:   return L10n.Weekday.tuesday
+        case .wednesday: return L10n.Weekday.wednesday
+        case .thursday:  return L10n.Weekday.thursday
+        case .friday:    return L10n.Weekday.friday
+        case .saturday:  return L10n.Weekday.saturday
+        case .sunday:    return L10n.Weekday.sunday
         }
     }
 
     var shortName: String {
         switch self {
-        case .monday:    return String(localized: "Mon")
-        case .tuesday:   return String(localized: "Tue")
-        case .wednesday: return String(localized: "Wed")
-        case .thursday:  return String(localized: "Thu")
-        case .friday:    return String(localized: "Fri")
-        case .saturday:  return String(localized: "Sat")
-        case .sunday:    return String(localized: "Sun")
+        case .monday:    return L10n.Weekday.monShort
+        case .tuesday:   return L10n.Weekday.tueShort
+        case .wednesday: return L10n.Weekday.wedShort
+        case .thursday:  return L10n.Weekday.thuShort
+        case .friday:    return L10n.Weekday.friShort
+        case .saturday:  return L10n.Weekday.satShort
+        case .sunday:    return L10n.Weekday.sunShort
         }
     }
 }

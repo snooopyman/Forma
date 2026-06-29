@@ -34,16 +34,16 @@ struct MainTabView: View {
 
     var body: some View {
         TabView(selection: $selectedTab) {
-            Tab(String(localized: "Today"), systemImage: "house.fill", value: AppTab.today) {
+            Tab(L10n.Tab.today, systemImage: "house.fill", value: AppTab.today) {
                 NavigationStack { DashboardView() }
             }
-            Tab(String(localized: "Training"), systemImage: "figure.strengthtraining.traditional", value: AppTab.training) {
+            Tab(L10n.Tab.training, systemImage: "figure.strengthtraining.traditional", value: AppTab.training) {
                 NavigationStack { MesocycleListView() }
             }
-            Tab(String(localized: "Nutrition"), systemImage: "fork.knife", value: AppTab.nutrition) {
+            Tab(L10n.Tab.nutrition, systemImage: "fork.knife", value: AppTab.nutrition) {
                 NavigationStack { PlanOverviewView() }
             }
-            Tab(String(localized: "Progress"), systemImage: "chart.line.uptrend.xyaxis", value: AppTab.progress) {
+            Tab(L10n.Tab.progress, systemImage: "chart.line.uptrend.xyaxis", value: AppTab.progress) {
                 NavigationStack { ProgressOverviewView() }
             }
         }
