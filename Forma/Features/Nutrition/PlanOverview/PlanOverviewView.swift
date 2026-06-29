@@ -8,21 +8,21 @@
 import SwiftUI
 
 struct PlanOverviewView: View {
-
+    
     // MARK: - Environment
-
+    
     @Environment(AppContainer.self) private var container
     @Environment(\.planOverviewViewModel) private var viewModel
-
+    
     // MARK: - States
-
+    
     @AppStorage("postOnboardingAction") private var postOnboardingAction: AppTab = .today
     @State private var selectedMeal: Meal?
     @State private var showCreatePlan = false
     @State private var showEditPlan = false
-
+    
     // MARK: - Body
-
+    
     var body: some View {
         Group {
             if let viewModel {
@@ -82,9 +82,9 @@ struct PlanOverviewView: View {
             }
         }
     }
-
+    
     // MARK: - Private Views
-
+    
     @ViewBuilder
     private func mainContent(_ viewModel: any PlanOverviewViewModelProtocol) -> some View {
         Group {
@@ -109,7 +109,7 @@ struct PlanOverviewView: View {
             if let msg = viewModel.errorMessage { Text(msg) }
         }
     }
-
+    
     @ViewBuilder
     private func contentView(_ viewModel: any PlanOverviewViewModelProtocol) -> some View {
         ScrollView {
@@ -123,7 +123,7 @@ struct PlanOverviewView: View {
         }
         .background(.backgroundPrimary)
     }
-
+    
     @ViewBuilder
     private func macroHeader(summary: DailyMacroSummary) -> some View {
         HStack(spacing: DS.Spacing.xl) {
@@ -135,7 +135,7 @@ struct PlanOverviewView: View {
                 fatCurrent: summary.consumedFatG,
                 fatGoal: summary.targetFatG
             )
-
+            
             VStack(alignment: .leading, spacing: DS.Spacing.sm) {
                 macroRow(
                     label: String(localized: "Calories"),
@@ -171,7 +171,7 @@ struct PlanOverviewView: View {
         .padding(DS.Spacing.lg)
         .cardStyle()
     }
-
+    
     @ViewBuilder
     private func macroRow(label: String, current: Double, goal: Double, unit: String, color: Color) -> some View {
         VStack(alignment: .leading, spacing: 2) {
@@ -188,7 +188,7 @@ struct PlanOverviewView: View {
             }
         }
     }
-
+    
     @ViewBuilder
     private func mealsSection(_ viewModel: any PlanOverviewViewModelProtocol) -> some View {
         VStack(alignment: .leading, spacing: DS.Spacing.sm) {
@@ -196,14 +196,14 @@ struct PlanOverviewView: View {
                 .font(.headline)
                 .foregroundStyle(.textPrimary)
                 .padding(.horizontal, DS.Spacing.xs)
-
+            
             ForEach(viewModel.sortedMeals) { meal in
                 MealRowView(meal: meal, mealLog: viewModel.mealLog(for: meal))
                     .onTapGesture { selectedMeal = meal }
             }
         }
     }
-
+    
     private var emptyView: some View {
         ContentUnavailableView {
             Label(String(localized: "No active plan"), systemImage: "fork.knife")
@@ -225,17 +225,17 @@ struct PlanOverviewView: View {
 // MARK: - MealRowView
 
 private struct MealRowView: View {
-
+    
     let meal: Meal
     let mealLog: MealLog?
-
+    
     private var isLogged: Bool { mealLog != nil }
-
+    
     private var preferredOption: MealOption? {
         meal.options.first { $0.optionNumber == meal.preferredOptionNumber }
-            ?? meal.options.sorted { $0.optionNumber < $1.optionNumber }.first
+        ?? meal.options.sorted { $0.optionNumber < $1.optionNumber }.first
     }
-
+    
     var body: some View {
         VStack(alignment: .leading, spacing: DS.Spacing.md) {
             headerRow
@@ -259,14 +259,14 @@ private struct MealRowView: View {
         .padding(DS.Spacing.md)
         .cardStyle()
     }
-
+    
     @ViewBuilder
     private var headerRow: some View {
         HStack(alignment: .top, spacing: DS.Spacing.md) {
             Image(systemName: isLogged ? "checkmark.circle.fill" : "circle")
                 .font(.title3)
                 .foregroundStyle(isLogged ? Color.success : Color.borderSubtle)
-
+            
             VStack(alignment: .leading, spacing: 2) {
                 Text(meal.name)
                     .font(.body.weight(.semibold))
@@ -275,9 +275,9 @@ private struct MealRowView: View {
                     .font(.caption)
                     .foregroundStyle(.textSecondary)
             }
-
+            
             Spacer()
-
+            
             if let option = preferredOption, option.totalCalories > 0 {
                 Text(verbatim: "\(option.totalCalories.formatted(.number.precision(.fractionLength(0)))) kcal")
                     .font(.subheadline.weight(.semibold))
@@ -285,7 +285,7 @@ private struct MealRowView: View {
             }
         }
     }
-
+    
     @ViewBuilder
     private func foodItemsLine(option: MealOption) -> some View {
         let sorted = option.items.sorted { ($0.foodItem?.mainMacro.sortOrder ?? 3) < ($1.foodItem?.mainMacro.sortOrder ?? 3) }
@@ -301,7 +301,7 @@ private struct MealRowView: View {
             .foregroundStyle(.textSecondary)
             .lineLimit(2)
     }
-
+    
     @ViewBuilder
     private func macroRow(option: MealOption) -> some View {
         HStack(spacing: 0) {
@@ -323,7 +323,7 @@ private struct MealRowView: View {
         }
         .padding(.top, DS.Spacing.xs)
     }
-
+    
     @ViewBuilder
     private func macroStat(label: String, value: Double, color: Color) -> some View {
         VStack(spacing: 2) {

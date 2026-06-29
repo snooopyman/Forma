@@ -10,19 +10,19 @@ import Foundation
 @testable import Forma
 
 extension ProgressOverviewTests {
-
+    
     @Suite("ViewModel Tests")
     @MainActor
     struct ViewModelTests {
-
+        
         let sut: ProgressOverviewViewModel
         let spy: SpyProgressInteractor
-
+        
         init() {
             spy = SpyProgressInteractor()
             sut = ProgressOverviewViewModel(interactor: spy)
         }
-
+        
         @Test("load() calls fetchMeasurements and populates measurements")
         func loadSuccess() async {
             spy.stubbedMeasurements = Self.sampleMeasurements
@@ -32,7 +32,7 @@ extension ProgressOverviewTests {
             #expect(sut.isLoading == false)
             #expect(sut.errorMessage == nil)
         }
-
+        
         @Test("load() sets errorMessage on failure")
         func loadFailure() async {
             spy.shouldThrowError = true
@@ -42,7 +42,7 @@ extension ProgressOverviewTests {
             #expect(sut.measurements.isEmpty)
             #expect(sut.isLoading == false)
         }
-
+        
         @Test("latest returns first measurement")
         func latest() async throws {
             spy.stubbedMeasurements = Self.sampleMeasurements
@@ -50,7 +50,7 @@ extension ProgressOverviewTests {
             let first = try #require(sut.measurements.first)
             #expect(sut.latest?.id == first.id)
         }
-
+        
         @Test("weightDelta computes difference between first two measurements")
         func weightDelta() async {
             spy.stubbedMeasurements = Self.sampleMeasurements
@@ -58,7 +58,7 @@ extension ProgressOverviewTests {
             let expected = sut.measurements[0].weightKg - sut.measurements[1].weightKg
             #expect(sut.weightDelta == expected)
         }
-
+        
         @Test("delete() calls interactor and reloads")
         func deleteSuccess() async throws {
             spy.stubbedMeasurements = Self.sampleMeasurements
@@ -68,7 +68,7 @@ extension ProgressOverviewTests {
             #expect(spy.deleteMeasurementWasCalled == true)
             #expect(spy.lastDeletedMeasurement?.id == target.id)
         }
-
+        
         @Test("delete() sets errorMessage on failure")
         func deleteFailure() async throws {
             spy.stubbedMeasurements = Self.sampleMeasurements
@@ -79,7 +79,7 @@ extension ProgressOverviewTests {
             await sut.delete(target)
             #expect(sut.errorMessage == ProgressError.deleteFailed.errorDescription)
         }
-
+        
         @Test(
             "handleError maps progress errors correctly",
             arguments: [
@@ -109,7 +109,7 @@ private extension ProgressOverviewTests.ViewModelTests {
             biologicalSex: .male
         )
     ]
-
+    
     struct ErrorCase: CustomTestStringConvertible {
         let error: ProgressError
         let expected: String
