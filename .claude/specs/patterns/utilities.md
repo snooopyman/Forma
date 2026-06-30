@@ -1,4 +1,4 @@
-# Utilities — Concurrencia, Localización, Secrets, Git
+# Utilities — Concurrencia, Localización, Logging, Secrets, Git
 
 Patrones transversales de Forma.
 
@@ -39,22 +39,40 @@ func loadInitialData() async {
 }
 ```
 
-### Con cancelación
+### Con cancelación — patrón real (`ActiveSessionViewModel.startRestTimer`)
 
 ```swift
 @ObservationIgnored
-private var loadTask: Task<Void, Never>?
+private var restTimerTask: Task<Void, Never>?
 
-func startLoading() {
-    loadTask?.cancel()
-    loadTask = Task { @MainActor in
-        guard !Task.isCancelled else { return }
-        await loadData()
+private func startRestTimer(seconds: Int) {
+    restTimerTask?.cancel()
+    guard seconds > 0 else { return }
+    restSecondsRemaining = seconds
+    isResting = true
+
+    restTimerTask = Task { [weak self] in
+        guard let self else { return }
+        await interactor.startRestActivity(exerciseName: exerciseName, seconds: seconds)
+        for remaining in stride(from: seconds - 1, through: 0, by: -1) {
+            try? await Task.sleep(for: .seconds(1))
+            guard !Task.isCancelled else { break }
+            restSecondsRemaining = remaining
+        }
+        if !Task.isCancelled {
+            isResting = false
+            restJustEnded = true
+            await interactor.endRestActivity()
+        }
     }
 }
 ```
 
-### Paginación
+`[weak self]` porque la clase es `final class` con el `Task` guardado como propiedad — sin `weak self` el `Task` retendría al ViewModel indefinidamente mientras corre.
+
+### Paginación — patrón ilustrativo, todavía sin uso real en Forma
+
+Ninguna pantalla de Forma implementa paginación hoy (confirmado: no hay `loadMore`/`hasMorePages`/`isLoadingMore` en el código). Si una lista larga (ej. `FoodBrowserView` con el catálogo de ~250 alimentos) lo necesitara en el futuro, el patrón a seguir:
 
 ```swift
 var items: [Item] = []
@@ -72,27 +90,13 @@ func loadMore() async {
 
     let nextPage = currentPage + 1
     do {
-        let response = try await repository.fetch(page: nextPage)
+        let response = try await interactor.fetch(page: nextPage)
         items.append(contentsOf: response.items)
         currentPage = nextPage
         hasMorePages = response.hasMore
     } catch {
         handleError(error)
     }
-}
-```
-
-```swift
-// View — threshold de 3 items antes del final
-ForEach(viewModel.items) { item in
-    ItemRow(item: item)
-        .task {
-            let threshold = max(0, viewModel.items.count - 3)
-            if let index = viewModel.items.firstIndex(of: item),
-               index >= threshold {
-                await viewModel.loadMore()
-            }
-        }
 }
 ```
 
@@ -122,25 +126,47 @@ Text("Iniciar entreno")
 Text("training.session.start.button")
 ```
 
-### Enum L10n type-safe — para features con muchas keys
+### Enum L10n type-safe — `Shared/Localization/L10n.swift`
+
+Estructura real, verificada contra el código (no es solo `Common`/`Training` — cubre todos los módulos con errores tipados):
 
 ```swift
 enum L10n {
     enum Common {
-        static let ok     = String(localized: "OK")
+        static let ok = String(localized: "OK")
         static let cancel = String(localized: "Cancel")
-        static let save   = String(localized: "Save")
+        static let save = String(localized: "Save")
+        // done, delete, loading, retry
     }
+    enum Error {
+        nonisolated static let generic = String(localized: "Something went wrong")
+    }
+    enum Tab { /* today, training, nutrition, progress */ }
+    enum Dashboard { /* goodMorning, goodAfternoon, goodEvening */ }
     enum Training {
-        enum Button {
-            static let start  = String(localized: "Start workout")
-            static let finish = String(localized: "Finish workout")
+        enum Session {
+            static let start = String(localized: .TrainingLocalizable.sessionStart)
+            static let finish = String(localized: .TrainingLocalizable.sessionFinish)
+            // restTimer, invalidSetInput
+        }
+        enum Error {
+            nonisolated static let loadFailed = String(localized: .TrainingLocalizable.errorLoadFailed)
+            // saveFailed, deleteFailed, setActiveFailed, sessionNotFound, logSetFailed, finishFailed
         }
     }
+    enum Nutrition { enum Meal { /* breakfast, lunch, dinner, snack, postWorkout */ }, enum Error { /* ... */ } }
+    enum Progress { enum Error { /* ... */ } }
+    enum Settings { enum ICloud { /* syncing, noAccount, restricted, ... */ }, enum Error { /* ... */ } }
+    // + WorkoutSession, Weekday, BiologicalSex, ActivityLevel, MacroType
 }
 
-Text(L10n.Training.Button.start)
+Text(L10n.Training.Session.start)
 ```
+
+Notas:
+- Las claves de error (`loadFailed`, `saveFailed`, etc.) son `nonisolated static let` — necesario porque se leen desde `errorDescription` de enums de error (`TrainingError`, `NutritionError`...) que pueden evaluarse fuera de `@MainActor`.
+- Algunas claves usan `String(localized: .TrainingLocalizable.sessionStart)` — referencias generadas automáticamente al catálogo de `Localizable.xcstrings` (`LocalizedStringResource` con extensión por tabla), no siempre un literal `String(localized: "...")` directo.
+- El sub-enum bajo `Training` se llama `Session`, no `Button`.
 
 ### Pluralización — String Catalog, nunca manual
 
@@ -166,7 +192,29 @@ static func setCount(_ n: Int) -> String {
 
 ---
 
-## 3. Secrets — para proyectos con API propia (no aplica en Forma MVP)
+## 3. Logging — `Logger+Forma.swift`
+
+```swift
+extension Logger {
+    private static let subsystem = Bundle.main.bundleIdentifier ?? "com.armando.forma"
+
+    static let core      = Logger(subsystem: subsystem, category: "core")
+    static let training  = Logger(subsystem: subsystem, category: "training")
+    static let nutrition = Logger(subsystem: subsystem, category: "nutrition")
+    static let progress  = Logger(subsystem: subsystem, category: "progress")
+    static let healthKit = Logger(subsystem: subsystem, category: "healthkit")
+    static let sync      = Logger(subsystem: subsystem, category: "sync")
+}
+
+Logger.training.error("Error: \(error, privacy: .private)")
+Logger.healthKit.error("Error: \(error, privacy: .private)")
+```
+
+Las 6 categorías reales son `core`, `training`, `nutrition`, `progress`, `healthKit` (categoría string en minúsculas `"healthkit"`), `sync` — no existe categoría `network`. **Nunca `print()` en código de producción.**
+
+---
+
+## 4. Secrets — para proyectos con API propia (no aplica en Forma MVP)
 
 ```
 Secrets.xcconfig (gitignoreado) → Info.plist → Bundle → Keychain
@@ -227,12 +275,14 @@ final class KeychainService: Sendable {
 
 ---
 
-## 4. Git — flujo de trabajo Forma
+## 5. Git — flujo de trabajo Forma
 
 ### Formato de commit
 
+`git log` real del proyecto usa Conventional Commits simple, **sin** corchetes ni scope entre paréntesis:
+
 ```
-[tipo](scope): descripción en inglés
+tipo: descripción en inglés
 ```
 
 | Tipo | Uso |
@@ -246,9 +296,9 @@ final class KeychainService: Sendable {
 | `style` | Formato de código |
 
 ```bash
-[feat](Training): Add active workout session recording
-[fix](Nutrition): Fix macro calculation for partial meals
-[refactor](Core): Extract AppContainer to separate file
+feat: add interactors, mocks and implementation
+fix: non-fixed mesocycle day resolution and add debug data tools
+feat: add Spy doubles and ViewModel/Interactor test suites
 ```
 
 ### Versioning semántico
@@ -263,7 +313,7 @@ final class KeychainService: Sendable {
 
 ---
 
-## 5. Errores comunes — tabla de referencia
+## 6. Errores comunes — tabla de referencia
 
 | Error | Incorrecto | Correcto |
 |-------|-----------|----------|
@@ -279,8 +329,9 @@ final class KeychainService: Sendable {
 | Valores numéricos | `.padding(16)` | `.padding(DS.Spacing.lg)` |
 | Colores | `.foregroundStyle(.blue)` | `.foregroundStyle(.accent)` |
 | print | `print("Error: \(e)")` | `Logger.core.error(...)` |
-| SwiftData en View | `@Query var items` en Feature View | via Repository → ViewModel |
-| ModelContext en VM | `@Environment(\.modelContext)` en ViewModel | via Repository |
+| SwiftData en View | `@Query var items` en Feature View | via Repository → Interactor → ViewModel |
+| ModelContext en VM/Interactor | `@Environment(\.modelContext)` en ViewModel | via Repository |
+| Repositorio en ViewModel | `init(repository: XRepositoryProtocol)` en un ViewModel | el ViewModel recibe el Interactor; el Interactor recibe el repositorio |
 | Formatter legacy | `DateFormatter()`, `String(format:)` | `.formatted()` APIs |
 | Test framework | `XCTest`, `XCTAssert` | `Swift Testing`, `#expect` |
 | App Group omitido | setup solo cuando se añade widget | setup desde el primer commit |

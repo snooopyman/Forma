@@ -32,9 +32,9 @@
 [Explícito es mejor que implícito]
 
 ## Capas afectadas
-- [ ] Domain (nuevo modelo / propiedad @Transient)
+- [ ] Domain (nuevo modelo / propiedad computada)
 - [ ] Data (repository, service o HealthKitService)
-- [ ] Features (ViewModel + View)
+- [ ] Features (Interactor + ViewModel + View — ver `.claude/specs/decisions/002-arquitectura-mvvm.md`)
 - [ ] Shared (DesignSystem, Extensions)
 - [ ] Resources (Localizable.xcstrings)
 

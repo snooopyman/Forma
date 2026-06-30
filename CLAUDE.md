@@ -15,50 +15,68 @@ App iOS nativa de fitness personal que centraliza en un solo lugar los tres pila
 - Sin librerías de terceros — cero dependencias externas
 - Concurrencia: async/await siempre. Nunca GCD, nunca DispatchQueue, nunca callbacks @escaping
 
-## Arquitectura — Tier 3 (Medium)
-MVVM con `@Observable`. ViewModels dependen de protocolos de repositorio → testeables con mocks.
-Repositorios abstraen SwiftData. `@Environment` para inyección de dependencias.
-Servicios concretos para HealthKit, CloudKit status y métricas calculadas.
+## Arquitectura — MVVM + Interactor
+View → ViewModel → Interactor Protocol → Repository Protocol / Service Protocol → SwiftData Model / HealthKit / CloudKit
 
-Flujo de datos: View → ViewModel → Repository Protocol → SwiftData Model / HealthKit / CloudKit
+- **ViewModel** (`@MainActor @Observable final class`): solo estado de presentación. Nunca llama a un repositorio o servicio directamente — siempre a través de su Interactor.
+- **Interactor** (`final class`, `Sendable`, sin `@MainActor`): orquesta una o varias llamadas a repositorios/servicios y devuelve datos ya listos para la vista (ej. un snapshot `Sendable`). Es donde vive la lógica de "qué llamar y en qué orden", no la UI.
+- **Repository / Service**: igual que antes — abstraen SwiftData, HealthKit, etc.
+
+`AppContainer` (`Forma/App/AppContainer.swift`) expone únicamente tipos protocolo (`MesocycleRepositoryProtocol`, `HealthKitServiceProtocol`, etc.), nunca tipos concretos — eso es lo que permite construir Interactors con mocks en Previews y tests.
+
+**Cobertura del patrón:** 15 de 17 features tienen ViewModel + Interactor (`BodyChartsView` y `PostWorkoutSummaryView` son la excepción — vistas de solo lectura sobre datos ya cargados por su padre). De esas 15, 5 añaden además `ViewModelProtocol` + `MockViewModel`: las 4 pantallas raíz de cada tab (Dashboard, MesocycleList, PlanOverview, ProgressOverview) — construidas una vez en `MainTabView` e inyectadas vía `@Entry`/`@Environment` — y `ActiveSession`, que tiene `ViewModelProtocol`+`MockViewModel` pero NO usa `@Entry`/`@Environment`: la View construye `ActiveSessionViewModel` directamente vía `@State` en su `init`. El resto de pantallas (CreatePlan, EditPlan, FoodBrowser, MealDetail, Onboarding, NewMeasurement, PhotoGallery, EditProfile, Settings, MesocycleDetail, WorkoutDay) construyen su ViewModel+Interactor directamente en el `init` de la View, sin protocolo de ViewModel.
 
 ## Estructura de carpetas
 ```
 Forma/
+├── FormaApp.swift                  ← entry point (no está dentro de App/)
 ├── App/
-│   ├── FormaApp.swift
-│   └── AppContainer.swift          ← ModelContainer + DI setup
+│   ├── AppRootView.swift           ← gate onboarding/perfil → MainTabView
+│   ├── AppContainer.swift          ← DI: repos + services como protocolos
+│   ├── FormaModelContainer.swift   ← ModelContainer + App Group + CloudKit
+│   ├── FormaSchema.swift           ← lista de @Model para el ModelContainer
+│   └── MainTabView.swift           ← TabView raíz + construcción de VMs tab-root
 ├── Features/
 │   ├── Dashboard/
 │   │   ├── DashboardView.swift
-│   │   └── DashboardViewModel.swift
+│   │   ├── DashboardViewModel.swift
+│   │   ├── DashboardViewModelProtocol.swift
+│   │   ├── MockDashboardViewModel.swift
+│   │   └── Interactor/
+│   │       ├── DashboardInteractor.swift
+│   │       ├── DashboardInteractorProtocol.swift
+│   │       └── MockDashboardInteractor.swift
 │   ├── Training/
 │   │   ├── MesocycleList/
 │   │   ├── MesocycleDetail/
 │   │   ├── WorkoutDay/
 │   │   ├── ActiveSession/
-│   │   └── VolumesSummary/
+│   │   └── VolumesSummary/          ← sin ViewModel (solo lectura)
 │   ├── Nutrition/
 │   │   ├── PlanOverview/
 │   │   ├── MealDetail/
-│   │   └── FoodBrowser/
+│   │   ├── FoodBrowser/
+│   │   ├── CreatePlan/
+│   │   └── EditPlan/
 │   ├── Progress/
 │   │   ├── ProgressOverview/
-│   │   ├── BodyCharts/
+│   │   ├── BodyCharts/              ← sin ViewModel (solo lectura)
 │   │   ├── NewMeasurement/
 │   │   └── PhotoGallery/
 │   ├── Onboarding/
 │   └── Settings/
+│       (cada feature con ViewModel sigue el patrón {Feature}/Interactor/ de arriba)
 ├── Domain/
 │   ├── Models/                     ← SwiftData @Model classes
-│   └── Repositories/               ← protocolos
+│   └── Repositories/               ← protocolos (`Sendable`)
 ├── Data/
 │   ├── Repositories/               ← implementaciones concretas
 │   └── Services/                   ← HealthKit, Metrics, VolumeCalculator
 ├── Shared/
-│   ├── DesignSystem/               ← DesignTokens.swift, colores, tipografía, componentes
+│   ├── DesignSystem/               ← DesignTokens.swift, componentes
 │   ├── Extensions/
-│   └── Utilities/
+│   ├── Localization/                ← L10n.swift (enum type-safe)
+│   └── Utilities/                   ← reservado, vacío por ahora
 └── Resources/
     ├── Assets.xcassets
     └── Localizable.xcstrings
@@ -110,7 +128,7 @@ Tokens de color, Liquid Glass y SF Symbols completos → `.claude/specs/design/C
 - `PlannedExercise` — ejercicio con cadencia `"1-0-3"`, RIR, descanso, notas
 - `WorkoutSession` — sesión real, `sessionType: planned/freeStyle/cardio/mobility`
 - `LoggedSet` — serie registrada con peso, reps, RIR real
-- `BodyMeasurement` — medición semanal; `bodyFatPercent` y `bmi` son `@Transient` (calculados)
+- `BodyMeasurement` — medición semanal; `bodyFatPercent` y `bmi` son propiedades computadas (no se persisten, no usan `@Transient` explícito — SwiftData ya excluye computed properties sin storage)
 - `NutritionPlan` — plan activo con macros objetivo
 - `Meal` — comida con `mealType` enum; `postEntreno` se oculta en días de descanso
 - `MealOption` — opción intercambiable (1/2/3) por comida
@@ -127,7 +145,7 @@ Tokens de color, Liquid Glass y SF Symbols completos → `.claude/specs/design/C
 - No hardcodear valores numéricos de layout — siempre `DS.Radius.*` o `DS.Spacing.*`
 - No hardcodear strings en español directamente en vistas — siempre claves EN en `Localizable.xcstrings`
 - No añadir `.glassEffect()` sobre `TabView` o `NavigationStack`
-- No almacenar `bodyFatPercent` ni `bmi` — son propiedades `@Transient` calculadas
+- No almacenar `bodyFatPercent` ni `bmi` — son propiedades computadas, nunca campos guardados
 - No instalar librerías de terceros
 - No crear abstracciones para uso único — tres líneas similares no justifican un helper
 
@@ -142,7 +160,7 @@ Tokens de color, Liquid Glass y SF Symbols completos → `.claude/specs/design/C
 Registro de una serie durante sesión activa → `LoggedSet` persiste en SwiftData → Live Activity del timer se actualiza → al finalizar sesión, `WorkoutSession` se completa.
 
 ## Sincronización
-CloudKit usa el Apple ID de iCloud del dispositivo como identidad. Sin login propio, sin Sign in with Apple. `NSPersistentCloudKitContainer` gestiona todo automáticamente. La app funciona 100% offline; CloudKit sync es eventual y nunca bloquea operaciones locales.
+CloudKit usa el Apple ID de iCloud del dispositivo como identidad. Sin login propio, sin Sign in with Apple. SwiftData (`ModelConfiguration(cloudKitDatabase:)` sobre el contenedor `iCloud.com.armando.forma`, configurado en `FormaModelContainer.swift`) gestiona la sincronización automáticamente. La app funciona 100% offline; CloudKit sync es eventual y nunca bloquea operaciones locales. En el simulador no hay `cloudKitDatabase` configurado (limitación de entitlements) — solo persistencia local.
 
 ## Flujo de trabajo
 | Situación | Flujo |
@@ -158,10 +176,11 @@ CloudKit usa el Apple ID de iCloud del dispositivo como identidad. Sin login pro
 - Apple Watch app (V1.1)
 - Widgets (V1.1)
 - App Intents / Siri (V1.1)
-- Fotos de progreso y comparador (V1.1)
-- HKWorkout al finalizar sesión (V1.1)
-- Resumen de volumen semanal con rangos MEV/MRV (V1.1)
+- Comparador de fotos antes/después (V1.1) — la galería de fotos de progreso ya existe (`PhotoGalleryView`), el comparador lado a lado no
+- Resumen de volumen semanal con rangos MEV/MRV (V1.1) — `MuscleVolumeTarget` ya tiene `mevSets`/`mrvSets`, pero `VolumeCalculatorService` solo calcula volumen por sesión, no compara contra esos rangos
 - Importar desde Excel/CSV (V1.1)
 - Soporte iPad layout maestro-detalle (V2)
 - Modelo cliente-entrenador (descartado permanentemente)
 - Backend propio (descartado permanentemente)
+
+**Ya implementado pese a estar listado como V1.1 en el PRD original:** exportar `HKWorkout` a Apple Salud al finalizar sesión (`ActiveSessionViewModel.completeSession()` → `HealthKitService.writeWorkout`, con toggle "Export workouts to Health" en Settings).

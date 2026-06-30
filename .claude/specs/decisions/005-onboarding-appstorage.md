@@ -9,12 +9,16 @@ El onboarding solo se muestra la primera vez. Necesitamos persistir un flag bool
 
 ## Decisión
 
-`@AppStorage("onboardingCompleted")` — el wrapper moderno de SwiftUI sobre UserDefaults. Este flag **no es un dato del usuario** (no describe su perfil, historial ni preferencias de fitness) — es estado de navegación de la app. No tiene sentido sincronizarlo vía CloudKit ni mezclarlo con `UserProfile` en SwiftData.
+`@AppStorage("tourCompleted")` — el wrapper moderno de SwiftUI sobre UserDefaults. Este flag **no es un dato del usuario** (no describe su perfil, historial ni preferencias de fitness) — es estado de navegación de la app. No tiene sentido sincronizarlo vía CloudKit ni mezclarlo con `UserProfile` en SwiftData.
 
 ```swift
-// En FormaApp.swift o AppContainer
-@AppStorage("onboardingCompleted") private var onboardingCompleted = false
+// Forma/Features/Onboarding/OnboardingView.swift y Forma/App/AppRootView.swift
+@AppStorage("tourCompleted") private var tourCompleted = false
 ```
+
+`AppRootView` usa este flag junto con una comprobación de si existe ya un `UserProfile` en SwiftData (`@Query private var profiles: [UserProfile]`) para decidir entre tres pantallas: `OnboardingView` (tour no visto), `ProfileSetupView` (tour visto pero sin perfil) o `MainTabView` (ambos completados). La existencia del perfil — no un segundo flag de AppStorage — es lo que marca que el setup de perfil terminó.
+
+Hay otros dos `@AppStorage` relacionados con la navegación post-onboarding, no con el flag de completado: `postOnboardingAction` (a qué tab navegar tras terminar) y `selectedTab` (tab activo del `TabView`), ambos en `Forma/App/MainTabView.swift`.
 
 ## Consecuencias
 

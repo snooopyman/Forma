@@ -11,11 +11,12 @@ Sin esto:
 ## Flujo principal — HKWorkout Export
 
 1. El usuario completa un entreno pulsando "Finish workout" y confirmando
-2. `ActiveSessionViewModel.completeSession()` llama a `sessionService.completeSession(session)` → `session.completedAt` se establece
-3. A continuación llama a `healthKitService.writeWorkout(activityType:start:end:)`
-4. `HealthKitService` crea un `HKWorkoutBuilder`, abre colección, la cierra y llama a `finishWorkout()`
-5. El entrenamiento aparece en Apple Salud como "Fuerza tradicional" (o Cardio / Flexibilidad según tipo)
-6. Los anillos de Actividad del día se actualizan con la duración del entreno
+2. `ActiveSessionViewModel.completeSession()` llama a `interactor.completeSession(session)` (capa Interactor, no al repositorio/servicio directamente) → `session.completedAt` se establece
+3. Si el toggle "Export workouts to Health" está activo, llama a `interactor.writeWorkout(activityType:start:end:)`, que delega en `healthKitService.writeWorkout(activityType:start:end:)`
+4. `HealthKitService.writeWorkout` primero comprueba `isAvailable`, y si ya existe un `HKWorkout` externo (de otra app) que se solapa con el rango de tiempo, no escribe nada (evita duplicar anillos de Actividad cuando, por ejemplo, el usuario ya registró el entreno con otra app)
+5. Si no hay solape, crea un `HKWorkoutBuilder`, abre colección, la cierra y llama a `finishWorkout()`
+6. El entrenamiento aparece en Apple Salud como "Fuerza tradicional" (o Cardio / Flexibilidad según tipo)
+7. Los anillos de Actividad del día se actualizan con la duración del entreno
 
 ## Flujo principal — Dashboard contextual
 
@@ -37,7 +38,8 @@ Sin esto:
 - **Sin plan nutricional activo** → La columna de Calorías muestra solo el número y "kcal", sin barra de progreso
 - **ProgressView con 0 pasos** → Barra vacía, sin crasheo. `min(..., 1.0)` previene overflow
 - **Toggle "Export workouts to Health" desactivado** → `completeSession()` omite `writeWorkout`. No se crea ningún `HKWorkout`
-- **Usuarios con Apple Watch** → desactivar el toggle evita duplicados en la app Salud (los anillos son seguros igualmente porque iOS deduplica tiempos solapados)
+- **Ya existe un `HKWorkout` externo solapado en ese rango de tiempo** → `HealthKitService.writeWorkout` lo detecta (`hasExternalOverlappingWorkout`) y no crea uno nuevo, evitando duplicar el entreno en Salud
+- **Usuarios con Apple Watch** → desactivar el toggle evita duplicados en la app Salud; además, aunque el toggle esté activo, la comprobación de solape evita duplicar si el Watch ya registró el mismo entreno
 
 ## Casos edge
 
@@ -48,6 +50,7 @@ Sin esto:
 - [x] Steps > goal → `min(..., 1.0)` en los computed properties
 - [x] `dailyExerciseGoal = 0` → guard análogo en `exerciseProgress` retorna 0
 - [x] Toggle OFF → `UserDefaults.standard.object(forKey:) as? Bool ?? true` — default ON si la clave no existe aún
+- [x] Entreno duplicado (Watch u otra app ya registró el mismo rango) → `HealthKitService.writeWorkout` comprueba solape con `hasExternalOverlappingWorkout` antes de crear el `HKWorkoutBuilder`
 - [ ] Sincronización CloudKit: los `WorkoutSession` ya se sincronizan; el `HKWorkout` es independiente y vive en HealthKit, no en SwiftData
 
 ## Criterios de aceptación
@@ -78,10 +81,10 @@ Sin esto:
 
 ## Capas afectadas
 
-- [x] Data → `HealthKitService` (nuevo método `writeWorkout`, `HKObjectType.workoutType()` en writeTypes)
-- [x] Features/Training/ActiveSession → `ActiveSessionViewModel` (nueva dependencia + llamada), `ActiveSessionView` (nuevo parámetro)
+- [x] Data → `HealthKitService` (`writeWorkout`, con guard de solape `hasExternalOverlappingWorkout`)
+- [x] Features/Training/ActiveSession → `ActiveSessionInteractor` (llama a `HealthKitServiceProtocol.writeWorkout`), `ActiveSessionViewModel.completeSession()` (lee el toggle y llama al interactor), `ActiveSessionView`
 - [x] Features/Dashboard → `DashboardView` (metas y progress bars via `@AppStorage`, VM solo expone datos brutos)
-- [x] Features/Training/WorkoutDay → `WorkoutDayDetailView` (propagación de `healthKitService` a `ActiveSessionView`)
+- [x] Features/Training/WorkoutDay → `WorkoutDayDetailView` (propagación de dependencias hasta `ActiveSessionView`)
 
 ## Preguntas abiertas
 

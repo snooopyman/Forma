@@ -9,9 +9,9 @@ La app necesita sincronización entre dispositivos Apple del mismo usuario. Las 
 
 ## Decisión
 
-`NSPersistentCloudKitContainer` con SwiftData. CloudKit usa el Apple ID de iCloud del dispositivo como identidad de forma automática y transparente — sin pantalla de login, sin servidor.
+SwiftData con `ModelConfiguration(cloudKitDatabase:)` (ver ADR 001 — no se usa `NSPersistentCloudKitContainer`, esa es la API de CoreData). CloudKit usa el Apple ID de iCloud del dispositivo como identidad de forma automática y transparente — sin pantalla de login, sin servidor.
 
-Contenedor: `iCloud.com.armando.forma`
+Contenedor: `iCloud.com.armando.forma`, configurado en `Forma/App/FormaModelContainer.swift`. Solo se activa fuera del simulador (en simulador no hay `cloudKitDatabase`, por entitlements).
 
 ## Consecuencias
 

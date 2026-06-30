@@ -1,6 +1,6 @@
 # Forma — Plan de Desarrollo
 
-Estado actual: → **Fase 12**
+Estado actual: → **Fase 13** (Tests, en progreso) — Fase 15 (Polish + Accesibilidad) aún no iniciada
 
 ---
 
@@ -12,12 +12,12 @@ Estado actual: → **Fase 12**
 - [x] Borrar boilerplate Xcode (ContentView, Item)
 - [x] FormaApp.swift limpio (Forma/FormaApp.swift)
 - [x] Estructura de carpetas creada en disco
-- [x] Configurado: iOS 26.4, Swift 6.0, Strict Concurrency = Complete
+- [x] Configurado: iOS 26.0 (target Forma) / 26.4 (default proyecto), Swift 6.0 — Strict Concurrency Complete llegó después, en Fase 14
 
 ---
 
 ## Fase 1 — Design System ✅
-- [x] Color+DesignSystem.swift — extensión Color con todos los tokens + muscle groups
+- [x] Colores en Asset Catalog (`Resources/Assets.xcassets/Colors/`, 15 colorsets light/dark) + `MuscleGroup.swift` con color por grupo — no se creó un fichero `Color+DesignSystem.swift` separado, los colores se referencian directamente desde el catálogo
 - [x] ViewModifiers: `.cardStyle()`, `.primaryButtonLabel()`
 - [x] MacroRingView
 - [x] MuscleGroupBadge
@@ -70,7 +70,7 @@ Estado actual: → **Fase 12**
 - [x] RestTimerAttributes (ActivityAttributes)
 - [x] Lock Screen layout
 - [x] Dynamic Island compact + expanded + minimal
-- [x] Countdown con Task + háptica básica (3 pulsos → Fase 12)
+- [x] Countdown con `Task` + `Task.sleep` (no `AsyncStream`) — háptica básica implementada (`.sensoryFeedback`), la secuencia de 3 pulsos al finalizar queda para Fase 15
 
 ---
 
@@ -113,11 +113,11 @@ Estado actual: → **Fase 12**
 ---
 
 ## Fase 9 — Onboarding ✅
-- [x] WelcomeView
-- [x] Perfil de usuario (nombre, fecha, altura, sexo)
+- [x] `OnboardingView` (tour de bienvenida) — no existe un fichero `WelcomeView.swift` separado
+- [x] `ProfileSetupView` + `ProfileSetupViewModel` + `ProfileSetupInteractor` — perfil de usuario (nombre, fecha, altura, sexo)
 - [x] Nivel de actividad
 - [x] Permisos HealthKit
-- [x] @AppStorage("onboardingCompleted")
+- [x] `@AppStorage("tourCompleted")` (ver `.claude/specs/decisions/005-onboarding-appstorage.md`)
 - [x] Enlace a crear mesociclo y plan nutricional
 
 ---
@@ -132,31 +132,53 @@ Estado actual: → **Fase 12**
 - [x] SettingsView (sheet global)
 - [x] Perfil de usuario (edición)
 - [x] Permisos HealthKit
-- [x] CloudKit — verificar NSPersistentCloudKitContainer con FormaModelContainer
+- [x] CloudKit — verificar `ModelConfiguration.cloudKitDatabase` con `FormaModelContainer`
 - [x] Estado de sync CloudKit
 - [x] Exportar datos (perfil en JSON via ShareLink)
 - [x] NSHealthShareUsageDescription + NSHealthUpdateUsageDescription en Info.plist
 
 ---
 
-## Fase 12 — Polish + Accesibilidad
-- [ ] accessibilityLabel en todos los interactivos
-- [ ] accessibilityHidden en decorativos
-- [ ] accessibilityReduceMotion en todas las animaciones
-- [ ] VoiceOver pass — flujo sesión activa
-- [ ] Haptics en todos los puntos definidos
-- [ ] Bold Text pass — pantalla sesión activa
+## Fase 12 — Capa Interactor + errores tipados + protocolos de ViewModel ✅
+*No estaba planificada como fase propia originalmente — se hizo como bloque de retrofit (commits `041cdd2`, `3a15320`, `74a1051`, `8e7578d`) antes de Fase 13. Se documenta aquí a posteriori para que el plan refleje lo que realmente pasó.*
+- [x] Errores de dominio tipados por módulo: `TrainingError`, `NutritionError`, `ProgressError`, `SettingsError`
+- [x] Capa Interactor (`Features/{Módulo}/Interactor/`) en las 16 features con ViewModel — el ViewModel ya no llama a repositorios/servicios directamente
+- [x] `AppContainer` expone solo tipos protocolo (repos y services), nunca tipos concretos
+- [x] `handleError` por ViewModel, mapeando el error tipado del módulo a `errorMessage`
+- [x] `ViewModelProtocol` + `MockViewModel` + inyección por `@Environment`/`@Entry` en las 4 pantallas tab-root (Dashboard, MesocycleList, PlanOverview, ProgressOverview) y en ActiveSession — el resto de pantallas usa ViewModel+Interactor sin protocolo
 
 ---
 
-## Fase 13 — Tests
-- [ ] FormaTests target con Swift Testing
-- [ ] Spies para todos los repository protocols (FormaTests/Shared/Spies/)
-- [ ] MesocycleTests+ViewModel, WorkoutSessionTests+ViewModel
-- [ ] ActiveSessionViewModel tests (flujo crítico)
+## Fase 13 — Tests (en progreso)
+- [x] FormaTests target con Swift Testing
+- [x] Spies para BodyMeasurement, Mesocycle, Nutrition y WorkoutSession repository protocols (FormaTests/Shared/Spies/)
+- [ ] Spies + tests para FoodItem, ProgressPhoto y UserProfile repositories
+- [x] `MesocycleListTests+ViewModel`, `MesocycleListTests+Interactor`
+- [x] `ActiveSessionTests+ViewModel`, `ActiveSessionTests+Interactor` (flujo crítico)
+- [x] `PlanOverviewTests+ViewModel/+Interactor`, `ProgressOverviewTests+ViewModel/+Interactor`
+- [ ] Tests para Dashboard, Onboarding, Settings, Nutrition (CreatePlan/EditPlan/FoodBrowser/MealDetail), Progress (BodyCharts/NewMeasurement/PhotoGallery), Training (MesocycleDetail/VolumesSummary/WorkoutDay)
 - [ ] BodyMetricsService tests
 - [ ] VolumeCalculatorService tests
-- [ ] Cobertura ≥ 70% en lógica de negocio
+- [ ] Cobertura ≥ 70% en lógica de negocio — no medida formalmente todavía (25 ficheros de test, 81 `@Test` en total)
+
+---
+
+## Fase 14 — Concurrencia estricta + Localización type-safe ✅
+- [x] `L10n.swift` — enum type-safe de claves de localización (`Shared/Localization/`)
+- [x] `SWIFT_STRICT_CONCURRENCY = complete` a nivel de proyecto
+- [x] `SWIFT_APPROACHABLE_CONCURRENCY = YES`
+- [x] `SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor`
+- Nota: `FormaLiveActivityExtension` sigue en `SWIFT_VERSION = 5.0` — no se ha migrado el widget extension a Swift 6 todavía
+
+---
+
+## Fase 15 — Polish + Accesibilidad (pendiente)
+- [ ] accessibilityLabel en todos los interactivos — hoy solo presente en ProgressOverview, PhotoGallery y ProfileSetup (6 usos totales)
+- [ ] accessibilityHidden en decorativos
+- [ ] accessibilityReduceMotion en todas las animaciones — no usado todavía en ningún sitio
+- [ ] VoiceOver pass — flujo sesión activa
+- [ ] Haptics en todos los puntos definidos — hoy solo implementados en ActiveSession (`.sensoryFeedback(.impact)` al iniciar descanso, `.sensoryFeedback(.success)` al terminar)
+- [ ] Bold Text pass — pantalla sesión activa
 
 ---
 

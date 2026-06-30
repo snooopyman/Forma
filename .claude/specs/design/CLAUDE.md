@@ -93,23 +93,41 @@ Button { action() } label: {
 Todos los valores de layout viven en `Shared/DesignSystem/DesignTokens.swift` bajo el namespace `DS`.
 **Nunca hardcodear valores numéricos** en vistas — siempre tokens semánticos.
 
+`DS.Radius` define primero una escala cruda (`xs/sm/md/lg/xl`) y luego alias semánticos sobre esa misma escala — usar siempre el alias semántico en vistas:
+
+| Token | Valor | Alias de | Uso |
+|-------|-------|----------|-----|
+| `DS.Radius.card` | 16 | `xl` | Cards de contenido, contenedores de sección |
+| `DS.Radius.button` | 12 | `lg` | Botones interactivos, CTAs, option pickers |
+| `DS.Radius.setRow` | 10 | `md` | Filas de serie en sesión activa |
+| `DS.Radius.chip` | 8 | `sm` | Badges de músculo, macro pills, status chips |
+| `DS.Radius.inner` | 4 | `xs` | Elementos anidados dentro de cards |
+
+| Token | Valor |
+|-------|-------|
+| `DS.Spacing.xs` | 4 |
+| `DS.Spacing.sm` | 8 |
+| `DS.Spacing.md` | 12 |
+| `DS.Spacing.lg` | 16 |
+| `DS.Spacing.xl` | 24 |
+| `DS.Spacing.xxl` | 32 |
+
 | Token | Valor | Uso |
 |-------|-------|-----|
-| `DS.Radius.card` | 16 | Cards de contenido, contenedores de sección |
-| `DS.Radius.button` | 12 | Botones interactivos, CTAs, option pickers |
-| `DS.Radius.setRow` | 10 | Filas de serie en sesión activa |
-| `DS.Radius.chip` | 8 | Badges de músculo, macro pills, status chips |
-| `DS.Radius.inner` | 4 | Elementos anidados dentro de cards |
-| `DS.Sizing.macroRingOuter` | 140 | Anillo exterior de macros |
+| `DS.Sizing.macroRingOuter` | 140 | Anillo exterior de macros (`MacroRingView`) |
+| `DS.Sizing.macroRingMiddle` | 110 | Anillo intermedio de macros |
+| `DS.Sizing.macroRingInner` | 80 | Anillo interior de macros |
+| `DS.Sizing.sparklineHeight` | 40 | Altura del sparkline en `MetricTrendCard` |
 | `DS.Sizing.restTimerRing` | 180 | Anillo del temporizador de descanso |
-| `DS.Sizing.minTapTarget` | 44 | Área mínima de tap (HIG) |
+| `DS.Sizing.minTapTarget` | 44 | Área mínima de tap (HIG) — usado en `ViewModifiers.swift` y `ExerciseSetRow.swift` |
+
+`DS` solo define estos tres sub-namespaces (`Radius`, `Spacing`, `Sizing`) — no existe `DS.Opacity`, `DS.Animation` ni `DS.IconSize`.
 
 ---
 
 ## Tokens de color
 
-Todos los colores vienen de `Color+DesignSystem.swift` — nunca valores RGB literales en vistas.
-La app soporta light y dark mode completo. Todos los tokens son adaptativos vía Asset Catalog.
+Los colores viven directamente en el Asset Catalog (`Forma/Resources/Assets.xcassets/Colors/`, 15 colorsets light/dark) y se referencian como `Color`/`ShapeStyle` del sistema (ej. `.accent`, `.backgroundCard`) — **no existe un fichero `Color+DesignSystem.swift`**, los nombres de abajo son los nombres exactos de los colorsets. Nunca valores RGB literales en vistas. La app soporta light y dark mode completo. Todos los tokens son adaptativos vía Asset Catalog.
 
 | Token | Light | Dark | Uso |
 |-------|-------|------|-----|
@@ -131,21 +149,22 @@ La app soporta light y dark mode completo. Todos los tokens son adaptativos vía
 
 ### Colores de grupos musculares
 
-`Color.muscleGroup("chest")` — definidos en `Color+DesignSystem.swift`.
-Usan colores adaptativos del sistema (no necesitan asset catalog).
+`muscleGroup.color` — propiedad de instancia del enum `MuscleGroup` (`Shared/DesignSystem/MuscleGroup.swift`), no un helper estático en `Color`. Usan colores adaptativos del sistema (no necesitan asset catalog). Consumido por ejemplo en `MuscleGroupBadge`.
 
-| ID | Color |
+| Caso de `MuscleGroup` | Color |
 |----|-------|
-| `"chest"` | `.blue` |
-| `"back"` | `.green` |
-| `"legs"` / `"quadriceps"` / `"hamstrings"` | `.red` |
-| `"shoulders"` | `.purple` |
-| `"biceps"` | `.orange` |
-| `"triceps"` | `.yellow` |
-| `"core"` / `"abs"` | `.teal` |
-| `"glutes"` | `.pink` |
-| `"calves"` | `.brown` |
-| `"cardio"` / `"fullbody"` | `.cyan` |
+| `.chest` | `.blue` |
+| `.back` | `.green` |
+| `.legs` / `.quadriceps` / `.hamstrings` | `.red` |
+| `.shoulders` | `.purple` |
+| `.biceps` | `.orange` |
+| `.triceps` | `.yellow` |
+| `.core` | `.teal` |
+| `.glutes` | `.pink` |
+| `.calves` | `.brown` |
+| `.cardio` / `.fullBody` | `.cyan` |
+
+No existe un caso `.abs` — solo `.core`.
 
 ---
 
@@ -153,7 +172,7 @@ Usan colores adaptativos del sistema (no necesitan asset catalog).
 
 - **SF Pro Display:** Large Title, Title 1 — encabezados de módulo
 - **SF Pro Text:** Body, Subheadline, Caption — contenido y UI general
-- **SF Mono:** pesos (kg), repeticiones y valores numéricos en sesión activa — alineación perfecta en columnas
+- **`.monospacedDigit()`:** pesos (kg), repeticiones y valores numéricos en sesión activa — alineación perfecta en columnas. Es el modificador del sistema, no una fuente "SF Mono" custom — confirmado en `ActiveSessionView.swift`
 - **Dynamic Type:** soporte completo hasta `.accessibilityExtraExtraExtraLarge`
 - **Bold Text:** la pantalla de sesión activa debe funcionar con Bold Text activado
 
@@ -175,6 +194,8 @@ Usan colores adaptativos del sistema (no necesitan asset catalog).
 | Músculo | `figure.arms.open` |
 | Macros | `chart.pie.fill` |
 | Descanso activo | `figure.walk` |
+
+Los 4 tabs están confirmados en `Forma/App/MainTabView.swift` usando la API moderna `Tab(_:systemImage:value:)` dentro de `TabView(selection:)`, con `.tabViewStyle(.sidebarAdaptable)` y `.tabBarMinimizeBehavior(.onScrollDown)`.
 
 ---
 
@@ -202,6 +223,8 @@ Viven en `Shared/DesignSystem/`. Usar siempre estos en vez de reimplementar.
 | Personal Record detectado | `.notification` heavy |
 | Marcar comida completada | `.light` |
 
+Implementado hoy con `.sensoryFeedback(_:trigger:)`: solo "iniciar temporizador de descanso" (`.impact(weight: .heavy)`) y "finalizar temporizador" (`.success`), ambos en `ActiveSessionView.swift`. El resto de la tabla es objetivo de Fase 15 (Polish), todavía no implementado.
+
 ---
 
 ## Accesibilidad — requisitos mínimos
@@ -214,6 +237,8 @@ Viven en `Shared/DesignSystem/`. Usar siempre estos en vez de reimplementar.
 - VoiceOver probado en el flujo completo de registro de serie
 - Iconos decorativos: `.accessibilityHidden(true)`
 - Vistas compuestas: `.accessibilityElement(children: .ignore)` + label explícito
+
+Estado actual (Fase 15 todavía no iniciada): solo `ProgressOverviewView`, `PhotoGalleryView` y `ProfileSetupView` usan modificadores de accesibilidad explícitos hoy; `accessibilityReduceMotion` no se respeta en ninguna vista todavía.
 
 ---
 
