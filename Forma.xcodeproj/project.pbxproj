@@ -22,13 +22,6 @@
 			remoteGlobalIDString = 47E6DCDB2F7752DA002E8446;
 			remoteInfo = Forma;
 		};
-		47E6DCF62F7752DD002E8446 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 47E6DCD42F7752DA002E8446 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 47E6DCDB2F7752DA002E8446;
-			remoteInfo = Forma;
-		};
 		47EC42B82F7C68E1009F789A /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 47E6DCD42F7752DA002E8446 /* Project object */;
@@ -55,7 +48,6 @@
 /* Begin PBXFileReference section */
 		47E6DCDC2F7752DA002E8446 /* Forma.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Forma.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		47E6DCEB2F7752DD002E8446 /* FormaTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = FormaTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		47E6DCF52F7752DD002E8446 /* FormaUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = FormaUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		47EC37E32F7A5684009F789A /* CLAUDE.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = CLAUDE.md; sourceTree = "<group>"; };
 		47EC37E42F7A5684009F789A /* PLAN.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = PLAN.md; sourceTree = "<group>"; };
 		47EC42A82F7C68DF009F789A /* FormaLiveActivityExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = FormaLiveActivityExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -102,11 +94,6 @@
 			path = FormaTests;
 			sourceTree = "<group>";
 		};
-		47E6DCF82F7752DD002E8446 /* FormaUITests */ = {
-			isa = PBXFileSystemSynchronizedRootGroup;
-			path = FormaUITests;
-			sourceTree = "<group>";
-		};
 		47EC42AE2F7C68DF009F789A /* FormaLiveActivity */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
@@ -132,13 +119,6 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		47E6DCF22F7752DD002E8446 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		47EC42A52F7C68DF009F789A /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -158,7 +138,6 @@
 				47EC37E42F7A5684009F789A /* PLAN.md */,
 				47E6DCDE2F7752DA002E8446 /* Forma */,
 				47E6DCEE2F7752DD002E8446 /* FormaTests */,
-				47E6DCF82F7752DD002E8446 /* FormaUITests */,
 				47EC42AE2F7C68DF009F789A /* FormaLiveActivity */,
 				47EC42A92F7C68DF009F789A /* Frameworks */,
 				47E6DCDD2F7752DA002E8446 /* Products */,
@@ -170,7 +149,6 @@
 			children = (
 				47E6DCDC2F7752DA002E8446 /* Forma.app */,
 				47E6DCEB2F7752DD002E8446 /* FormaTests.xctest */,
-				47E6DCF52F7752DD002E8446 /* FormaUITests.xctest */,
 				47EC42A82F7C68DF009F789A /* FormaLiveActivityExtension.appex */,
 			);
 			name = Products;
@@ -235,29 +213,6 @@
 			productReference = 47E6DCEB2F7752DD002E8446 /* FormaTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
-		47E6DCF42F7752DD002E8446 /* FormaUITests */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = 47E6DD052F7752DD002E8446 /* Build configuration list for PBXNativeTarget "FormaUITests" */;
-			buildPhases = (
-				47E6DCF12F7752DD002E8446 /* Sources */,
-				47E6DCF22F7752DD002E8446 /* Frameworks */,
-				47E6DCF32F7752DD002E8446 /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				47E6DCF72F7752DD002E8446 /* PBXTargetDependency */,
-			);
-			fileSystemSynchronizedGroups = (
-				47E6DCF82F7752DD002E8446 /* FormaUITests */,
-			);
-			name = FormaUITests;
-			packageProductDependencies = (
-			);
-			productName = FormaUITests;
-			productReference = 47E6DCF52F7752DD002E8446 /* FormaUITests.xctest */;
-			productType = "com.apple.product-type.bundle.ui-testing";
-		};
 		47EC42A72F7C68DF009F789A /* FormaLiveActivityExtension */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 47EC42BC2F7C68E1009F789A /* Build configuration list for PBXNativeTarget "FormaLiveActivityExtension" */;
@@ -297,10 +252,6 @@
 						CreatedOnToolsVersion = 26.4;
 						TestTargetID = 47E6DCDB2F7752DA002E8446;
 					};
-					47E6DCF42F7752DD002E8446 = {
-						CreatedOnToolsVersion = 26.4;
-						TestTargetID = 47E6DCDB2F7752DA002E8446;
-					};
 					47EC42A72F7C68DF009F789A = {
 						CreatedOnToolsVersion = 26.4;
 					};
@@ -322,7 +273,6 @@
 			targets = (
 				47E6DCDB2F7752DA002E8446 /* Forma */,
 				47E6DCEA2F7752DD002E8446 /* FormaTests */,
-				47E6DCF42F7752DD002E8446 /* FormaUITests */,
 				47EC42A72F7C68DF009F789A /* FormaLiveActivityExtension */,
 			);
 		};
@@ -339,13 +289,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 		47E6DCE92F7752DD002E8446 /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		47E6DCF32F7752DD002E8446 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -376,13 +319,6 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		47E6DCF12F7752DD002E8446 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		47EC42A42F7C68DF009F789A /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -397,11 +333,6 @@
 			isa = PBXTargetDependency;
 			target = 47E6DCDB2F7752DA002E8446 /* Forma */;
 			targetProxy = 47E6DCEC2F7752DD002E8446 /* PBXContainerItemProxy */;
-		};
-		47E6DCF72F7752DD002E8446 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 47E6DCDB2F7752DA002E8446 /* Forma */;
-			targetProxy = 47E6DCF62F7752DD002E8446 /* PBXContainerItemProxy */;
 		};
 		47EC42B92F7C68E1009F789A /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
@@ -660,46 +591,6 @@
 			};
 			name = Release;
 		};
-		47E6DD062F7752DD002E8446 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = 28XP7Q88R2;
-				GENERATE_INFOPLIST_FILE = YES;
-				MARKETING_VERSION = 1.0.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.snooopyman.FormaUITests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				STRING_CATALOG_GENERATE_SYMBOLS = NO;
-				SWIFT_APPROACHABLE_CONCURRENCY = YES;
-				SWIFT_EMIT_LOC_STRINGS = NO;
-				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
-				SWIFT_VERSION = 6.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_TARGET_NAME = Forma;
-			};
-			name = Debug;
-		};
-		47E6DD072F7752DD002E8446 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = 28XP7Q88R2;
-				GENERATE_INFOPLIST_FILE = YES;
-				MARKETING_VERSION = 1.0.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.snooopyman.FormaUITests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				STRING_CATALOG_GENERATE_SYMBOLS = NO;
-				SWIFT_APPROACHABLE_CONCURRENCY = YES;
-				SWIFT_EMIT_LOC_STRINGS = NO;
-				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
-				SWIFT_VERSION = 6.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_TARGET_NAME = Forma;
-			};
-			name = Release;
-		};
 		47EC42BD2F7C68E1009F789A /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -786,15 +677,6 @@
 			buildConfigurations = (
 				47E6DD032F7752DD002E8446 /* Debug */,
 				47E6DD042F7752DD002E8446 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		47E6DD052F7752DD002E8446 /* Build configuration list for PBXNativeTarget "FormaUITests" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				47E6DD062F7752DD002E8446 /* Debug */,
-				47E6DD072F7752DD002E8446 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
