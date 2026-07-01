@@ -21,23 +21,23 @@ enum MuscleGroup: String, CaseIterable, Codable {
     case calves
     case cardio
     case fullBody = "fullbody"
-
+    
     var color: Color {
         switch self {
-        case .chest:                    return .blue
-        case .back:                     return .green
+        case .chest:                    return .muscleChest
+        case .back:                     return .muscleBack
         case .legs, .quadriceps,
-             .hamstrings:              return .red
-        case .shoulders:                return .purple
-        case .biceps:                   return .orange
-        case .triceps:                  return .yellow
-        case .core:                     return .teal
-        case .glutes:                   return .pink
-        case .calves:                   return .brown
-        case .cardio, .fullBody:        return .cyan
+                .hamstrings:              return .muscleLegs
+        case .shoulders:                return .muscleShoulders
+        case .biceps:                   return .muscleBiceps
+        case .triceps:                  return .muscleTriceps
+        case .core:                     return .muscleCore
+        case .glutes:                   return .muscleGlutes
+        case .calves:                   return .muscleCalves
+        case .cardio, .fullBody:        return .muscleCardio
         }
     }
-
+    
     var localizedName: String {
         switch self {
         case .chest:        return String(localized: "Chest")

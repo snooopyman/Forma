@@ -26,8 +26,9 @@ struct MesocycleListView: View {
             if let viewModel {
                 mainContent(viewModel)
             } else {
-                ProgressView()
-                    .frame(maxWidth: .infinity, maxHeight: .infinity)
+                contentView(MockMesocycleListViewModel.withData)
+                    .redacted(reason: .placeholder)
+                    .allowsHitTesting(false)
             }
         }
         .navigationTitle(String(localized: "Training"))
@@ -65,8 +66,9 @@ struct MesocycleListView: View {
     private func mainContent(_ viewModel: any MesocycleListViewModelProtocol) -> some View {
         Group {
             if viewModel.isLoading && viewModel.mesocycles.isEmpty {
-                ProgressView()
-                    .frame(maxWidth: .infinity, maxHeight: .infinity)
+                contentView(MockMesocycleListViewModel.withData)
+                    .redacted(reason: .placeholder)
+                    .allowsHitTesting(false)
             } else if viewModel.mesocycles.isEmpty {
                 emptyView
             } else {

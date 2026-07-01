@@ -32,6 +32,7 @@ struct FoodBrowserView: View {
                 contentView
             }
         }
+        .background(.backgroundPrimary)
         .navigationTitle(String(localized: "Food browser"))
         .searchable(
             text: $viewModel.searchText,
@@ -94,6 +95,7 @@ struct FoodBrowserView: View {
                 .listRowBackground(Color(.backgroundCard))
         }
         .listStyle(.plain)
+        .scrollContentBackground(.hidden)
     }
 
     private var emptyView: some View {

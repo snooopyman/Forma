@@ -1532,17 +1532,6 @@
         }
       }
     },
-    "Index" : {
-      "comment" : "Chart x-axis placeholder label.",
-      "localizations" : {
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Índice"
-          }
-        }
-      }
-    },
     "Intensity" : {
       "comment" : "Form section header for RIR and rest configuration.",
       "localizations" : {
@@ -3293,17 +3282,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Desactivar"
-          }
-        }
-      }
-    },
-    "Value" : {
-      "comment" : "Chart y-axis placeholder label.",
-      "localizations" : {
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Valor"
           }
         }
       }

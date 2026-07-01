@@ -26,8 +26,9 @@ struct ProgressOverviewView: View {
             if let viewModel {
                 mainContent(viewModel)
             } else {
-                ProgressView()
-                    .frame(maxWidth: .infinity, maxHeight: .infinity)
+                contentView(MockProgressOverviewViewModel.withData)
+                    .redacted(reason: .placeholder)
+                    .allowsHitTesting(false)
             }
         }
         .navigationTitle(String(localized: "Progress"))
@@ -70,8 +71,9 @@ struct ProgressOverviewView: View {
     private func mainContent(_ viewModel: any ProgressOverviewViewModelProtocol) -> some View {
         Group {
             if viewModel.isLoading && viewModel.measurements.isEmpty {
-                ProgressView()
-                    .frame(maxWidth: .infinity, maxHeight: .infinity)
+                contentView(MockProgressOverviewViewModel.withData)
+                    .redacted(reason: .placeholder)
+                    .allowsHitTesting(false)
             } else if viewModel.measurements.isEmpty {
                 emptyView
             } else {

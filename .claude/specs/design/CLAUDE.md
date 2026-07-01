@@ -82,6 +82,8 @@ Button { action() } label: {
 .buttonBorderShape(.capsule | .circle | .roundedRectangle(radius:))  // forma
 ```
 
+CTAs con `.glass`/`.glassProminent` sin `.buttonBorderShape` explícito → toman **capsule por defecto del sistema**, no `DS.Radius.button`. `DS.Radius.button` (12) aplica solo a botones no-glass/`.bordered`.
+
 ### Fondo de app
 
 - Fondo de app: `#F5F5F5` (nunca blanco puro) — el glass necesita contraste
@@ -117,7 +119,6 @@ Todos los valores de layout viven en `Shared/DesignSystem/DesignTokens.swift` ba
 | `DS.Sizing.macroRingOuter` | 140 | Anillo exterior de macros (`MacroRingView`) |
 | `DS.Sizing.macroRingMiddle` | 110 | Anillo intermedio de macros |
 | `DS.Sizing.macroRingInner` | 80 | Anillo interior de macros |
-| `DS.Sizing.sparklineHeight` | 40 | Altura del sparkline en `MetricTrendCard` |
 | `DS.Sizing.restTimerRing` | 180 | Anillo del temporizador de descanso |
 | `DS.Sizing.minTapTarget` | 44 | Área mínima de tap (HIG) — usado en `ViewModifiers.swift` y `ExerciseSetRow.swift` |
 
@@ -127,7 +128,7 @@ Todos los valores de layout viven en `Shared/DesignSystem/DesignTokens.swift` ba
 
 ## Tokens de color
 
-Los colores viven directamente en el Asset Catalog (`Forma/Resources/Assets.xcassets/Colors/`, 15 colorsets light/dark) y se referencian como `Color`/`ShapeStyle` del sistema (ej. `.accent`, `.backgroundCard`) — **no existe un fichero `Color+DesignSystem.swift`**, los nombres de abajo son los nombres exactos de los colorsets. Nunca valores RGB literales en vistas. La app soporta light y dark mode completo. Todos los tokens son adaptativos vía Asset Catalog.
+Los colores viven directamente en el Asset Catalog (`Forma/Resources/Assets.xcassets/Colors/`, 25 colorsets light/dark: 15 de la tabla de abajo + 10 `muscle*` de categoría muscular) y se referencian como `Color`/`ShapeStyle` del sistema (ej. `.accent`, `.backgroundCard`) — **no existe un fichero `Color+DesignSystem.swift`**, los nombres de abajo son los nombres exactos de los colorsets. Nunca valores RGB literales en vistas. La app soporta light y dark mode completo. Todos los tokens son adaptativos vía Asset Catalog.
 
 | Token | Light | Dark | Uso |
 |-------|-------|------|-----|
@@ -137,7 +138,7 @@ Los colores viven directamente en el Asset Catalog (`Forma/Resources/Assets.xcas
 | `.error` | `#FF3B30` | `#FF453A` | Volumen sobre MRV, errores |
 | `.macroProtein` | `#007AFF` | `#0A84FF` | Anillo y badge de proteína |
 | `.macroCarbs` | `#FF9500` | `#FF9F0A` | Anillo y badge de carbohidratos |
-| `.macroFat` | `#FFCC00` | `#FFD60A` | Anillo y badge de grasa |
+| `.macroFat` | `#8A6E00` | `#FFD60A` | Anillo y badge de grasa — light oscurecido para cumplir contraste 4.5:1 sobre `.backgroundCard` en texto (ver A6) |
 | `.backgroundPrimary` | `#F5F5F5` | `#000000` | Fondo de pantalla — nunca blanco puro |
 | `.backgroundCard` | `#FFFFFF` | `#1C1C1E` | Cards y list rows |
 | `.backgroundSecondary` | `#EBEBEB` | `#2C2C2E` | Superficies secundarias, grouped insets |
@@ -149,20 +150,20 @@ Los colores viven directamente en el Asset Catalog (`Forma/Resources/Assets.xcas
 
 ### Colores de grupos musculares
 
-`muscleGroup.color` — propiedad de instancia del enum `MuscleGroup` (`Shared/DesignSystem/MuscleGroup.swift`), no un helper estático en `Color`. Usan colores adaptativos del sistema (no necesitan asset catalog). Consumido por ejemplo en `MuscleGroupBadge`.
+`muscleGroup.color` — propiedad de instancia del enum `MuscleGroup` (`Shared/DesignSystem/MuscleGroup.swift`), no un helper estático en `Color`. Usan un colorset dedicado por grupo en el Asset Catalog (`Colors/muscle*.colorset`), **desacoplado a propósito** de `.success`/`.error`/`.warning` — antes reciclaban colores de sistema (`.green` para back, `.red` para legs) que coincidían visualmente con esos tokens semánticos; ahora son tonos propios que no colisionan con ningún otro significado de la app. Todos los 10 colorsets cumplen contraste WCAG AA (≥4.5:1) como texto sobre `.backgroundCard` en su modo correspondiente. Consumido por ejemplo en `MuscleGroupBadge`.
 
-| Caso de `MuscleGroup` | Color |
+| Caso de `MuscleGroup` | Colorset |
 |----|-------|
-| `.chest` | `.blue` |
-| `.back` | `.green` |
-| `.legs` / `.quadriceps` / `.hamstrings` | `.red` |
-| `.shoulders` | `.purple` |
-| `.biceps` | `.orange` |
-| `.triceps` | `.yellow` |
-| `.core` | `.teal` |
-| `.glutes` | `.pink` |
-| `.calves` | `.brown` |
-| `.cardio` / `.fullBody` | `.cyan` |
+| `.chest` | `.muscleChest` |
+| `.back` | `.muscleBack` |
+| `.legs` / `.quadriceps` / `.hamstrings` | `.muscleLegs` |
+| `.shoulders` | `.muscleShoulders` |
+| `.biceps` | `.muscleBiceps` |
+| `.triceps` | `.muscleTriceps` |
+| `.core` | `.muscleCore` |
+| `.glutes` | `.muscleGlutes` |
+| `.calves` | `.muscleCalves` |
+| `.cardio` / `.fullBody` | `.muscleCardio` |
 
 No existe un caso `.abs` — solo `.core`.
 
@@ -207,9 +208,15 @@ Viven en `Shared/DesignSystem/`. Usar siempre estos en vez de reimplementar.
 |-----------|------|-------------|
 | `MacroRingView` | View | `proteinCurrent/Goal`, `carbsCurrent/Goal`, `fatCurrent/Goal` — tres anillos con Swift Charts. Usado en Dashboard, Nutrición y Widget |
 | `ExerciseSetRow` | View | Estado `pending/active/completed`. Spring animation + haptic al completar |
-| `MetricTrendCard` | View | Métrica principal, valor actual, delta vs período anterior, sparkline — Progreso y Dashboard |
 | `MuscleGroupBadge` | View | Nombre del grupo muscular + SF Symbol. Colores consistentes por grupo |
-| `NutritionProgressBar` | View | Gradiente: azul → verde → naranja al superar objetivo |
+
+---
+
+## Estados vacíos y de carga
+
+- **Empty state de pantalla completa** (el tab/pantalla entero no tiene datos, ej. sin mesociclos, sin plan de nutrición, sin fotos): `ContentUnavailableView` + `.buttonStyle(.glassProminent)` en la acción principal. Ejemplos: `MesocycleListView.emptyView`, `PlanOverviewView.emptyView`, `ProgressOverviewView.emptyView`, `PhotoGalleryView`.
+- **Empty state inline dentro de una card** (una sección entre otras en una pantalla con más contenido, ej. la card de entreno en el Dashboard cuando no hay mesociclo activo): link de texto (`.foregroundStyle(.accent)`, sin `buttonStyle`), no un botón prominente — evita competir visualmente con el resto de cards de la pantalla. Ejemplo: `DashboardView.noMesocycleContent`.
+- **Loading state de pantalla completa** (antes de la primera carga de datos): skeleton — reutilizar la vista de contenido real (`contentView`/`loadedContent`) con el `Mock*ViewModel.withData` de esa feature, envuelto en `.redacted(reason: .placeholder)` + `.allowsHitTesting(false)`. Nunca un `ProgressView()` centrado genérico para el loading inicial de una pantalla completa — sí es correcto para indicadores puntuales de una acción en curso (ej. fila de HealthKit en Settings mientras se espera el permiso, estado `.couldNotDetermine` de iCloud).
 
 ---
 

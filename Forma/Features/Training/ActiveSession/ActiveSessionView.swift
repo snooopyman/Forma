@@ -54,6 +54,7 @@ struct ActiveSessionView: View {
                     sessionContent
                 }
             }
+            .background(.backgroundPrimary)
             .navigationTitle(viewModel.workoutDay.name)
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
@@ -431,8 +432,7 @@ struct ActiveSessionView: View {
                 .fontWeight(.semibold)
                 .frame(maxWidth: .infinity, minHeight: DS.Sizing.minTapTarget)
         }
-        .buttonStyle(.glassProminent)
-        .tint(.success)
+        .buttonStyle(.glass)
         .disabled(viewModel.isCompleting)
     }
 

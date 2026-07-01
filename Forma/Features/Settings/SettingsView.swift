@@ -213,7 +213,7 @@ struct SettingsView: View {
                     Text(viewModel.cloudKitStatusText)
                 } icon: {
                     Image(systemName: viewModel.cloudKitStatusIconName)
-                        .foregroundStyle(viewModel.cloudKitIsHealthy ? Color.success : Color.error)
+                        .foregroundStyle(viewModel.cloudKitStatusColor)
                 }
                 
                 Spacer()

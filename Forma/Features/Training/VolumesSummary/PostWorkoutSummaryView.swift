@@ -36,6 +36,7 @@ struct PostWorkoutSummaryView: View {
             }
             .padding(DS.Spacing.lg)
         }
+        .background(.backgroundPrimary)
         .safeAreaInset(edge: .bottom) {
             doneButton
                 .padding(DS.Spacing.lg)

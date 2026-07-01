@@ -8,6 +8,7 @@
 import Foundation
 import CloudKit
 import OSLog
+import SwiftUI
 
 @Observable
 @MainActor
@@ -53,7 +54,14 @@ final class SettingsViewModel {
         }
     }
     
-    var cloudKitIsHealthy: Bool { cloudKitStatus == .available }
+    var cloudKitStatusColor: Color {
+        switch cloudKitStatus {
+        case .available:                            return .success
+        case .noAccount, .couldNotDetermine:        return .textSecondary
+        case .restricted, .temporarilyUnavailable:  return .error
+        @unknown default:                           return .textSecondary
+        }
+    }
     
     var appVersion: String { Bundle.appVersion }
     

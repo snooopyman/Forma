@@ -32,7 +32,10 @@ struct DashboardView: View {
             if let vm = viewModel {
                 content(vm: vm)
             } else {
-                ProgressView()
+                loadedContent(vm: MockDashboardViewModel.withData)
+                    .redacted(reason: .placeholder)
+                    .allowsHitTesting(false)
+                    .background(.backgroundPrimary)
             }
         }
         .task {
@@ -73,23 +76,11 @@ struct DashboardView: View {
     private func content(vm: any DashboardViewModelProtocol) -> some View {
         Group {
             if vm.isLoading && vm.activeMesocycle == nil && vm.macroSummary == nil {
-                ProgressView()
-                    .frame(maxWidth: .infinity, maxHeight: .infinity)
+                loadedContent(vm: MockDashboardViewModel.withData)
+                    .redacted(reason: .placeholder)
+                    .allowsHitTesting(false)
             } else {
-                ScrollView {
-                    LazyVStack(alignment: .leading, spacing: DS.Spacing.lg) {
-                        headerSection(vm: vm)
-                        workoutCard(vm: vm)
-                        macroCard(vm: vm)
-                        healthKitCard(vm: vm)
-                        if vm.showMeasurementReminder {
-                            measurementReminderCard
-                        }
-                        weeklySummaryCard(vm: vm)
-                    }
-                    .padding(.horizontal, DS.Spacing.lg)
-                    .padding(.bottom, DS.Spacing.xxl)
-                }
+                loadedContent(vm: vm)
             }
         }
         .background(.backgroundPrimary)
@@ -124,7 +115,25 @@ struct DashboardView: View {
             if let msg = vm.errorMessage { Text(msg) }
         }
     }
-    
+
+    @ViewBuilder
+    private func loadedContent(vm: any DashboardViewModelProtocol) -> some View {
+        ScrollView {
+            LazyVStack(alignment: .leading, spacing: DS.Spacing.lg) {
+                headerSection(vm: vm)
+                workoutCard(vm: vm)
+                macroCard(vm: vm)
+                healthKitCard(vm: vm)
+                if vm.showMeasurementReminder {
+                    measurementReminderCard
+                }
+                weeklySummaryCard(vm: vm)
+            }
+            .padding(.horizontal, DS.Spacing.lg)
+            .padding(.bottom, DS.Spacing.xxl)
+        }
+    }
+
     @ViewBuilder
     private func headerSection(vm: any DashboardViewModelProtocol) -> some View {
         Text(vm.todayFormatted)
@@ -351,7 +360,7 @@ struct DashboardView: View {
                                 current: summary.consumedCalories,
                                 goal: Double(summary.targetCalories),
                                 unit: String(localized: "kcal"),
-                                color: .accent
+                                color: .textPrimary
                             )
                             macroRow(
                                 label: String(localized: "Protein"),

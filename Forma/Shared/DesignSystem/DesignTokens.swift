@@ -36,7 +36,6 @@ enum DS {
         static let macroRingOuter: CGFloat = 140
         static let macroRingMiddle: CGFloat = 110
         static let macroRingInner: CGFloat = 80
-        static let sparklineHeight: CGFloat = 40
         static let restTimerRing: CGFloat = 180
         static let minTapTarget: CGFloat = 44
     }

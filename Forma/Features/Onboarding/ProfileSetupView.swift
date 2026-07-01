@@ -221,7 +221,7 @@ struct ProfileSetupView: View {
 
             Image(systemName: "heart.fill")
                 .font(.system(size: 64, weight: .light))
-                .foregroundStyle(Color.error)
+                .foregroundStyle(.pink)
                 .symbolEffect(.pulse)
 
             VStack(spacing: DS.Spacing.sm) {

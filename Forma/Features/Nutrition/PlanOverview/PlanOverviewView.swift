@@ -28,8 +28,9 @@ struct PlanOverviewView: View {
             if let viewModel {
                 mainContent(viewModel)
             } else {
-                ProgressView()
-                    .frame(maxWidth: .infinity, maxHeight: .infinity)
+                contentView(MockPlanOverviewViewModel.withData)
+                    .redacted(reason: .placeholder)
+                    .allowsHitTesting(false)
             }
         }
         .navigationTitle(String(localized: "Nutrition"))
@@ -89,8 +90,9 @@ struct PlanOverviewView: View {
     private func mainContent(_ viewModel: any PlanOverviewViewModelProtocol) -> some View {
         Group {
             if viewModel.isLoading && viewModel.plan == nil {
-                ProgressView()
-                    .frame(maxWidth: .infinity, maxHeight: .infinity)
+                contentView(MockPlanOverviewViewModel.withData)
+                    .redacted(reason: .placeholder)
+                    .allowsHitTesting(false)
             } else if viewModel.plan == nil {
                 emptyView
             } else {
@@ -142,7 +144,7 @@ struct PlanOverviewView: View {
                     current: summary.consumedCalories,
                     goal: Double(summary.targetCalories),
                     unit: "kcal",
-                    color: .accent
+                    color: .textPrimary
                 )
                 macroRow(
                     label: String(localized: "Protein"),
