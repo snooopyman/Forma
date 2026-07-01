@@ -11,9 +11,9 @@ final class MockProgressInteractor: ProgressInteractorProtocol {
     
     // MARK: - Stub Data
     
-    var stubbedMeasurements: [BodyMeasurement] = []
-    var shouldThrowOnFetch = false
-    var shouldThrowOnDelete = false
+    nonisolated(unsafe) var stubbedMeasurements: [BodyMeasurement] = []
+    nonisolated(unsafe) var shouldThrowOnFetch = false
+    nonisolated(unsafe) var shouldThrowOnDelete = false
     
     // MARK: - Functions
     

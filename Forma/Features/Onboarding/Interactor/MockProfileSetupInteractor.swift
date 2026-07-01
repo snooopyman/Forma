@@ -11,8 +11,8 @@ final class MockProfileSetupInteractor: ProfileSetupInteractorProtocol {
 
     // MARK: - Stub Data
 
-    var stubbedProfile: UserProfile?
-    var shouldThrowOnSave = false
+    nonisolated(unsafe) var stubbedProfile: UserProfile?
+    nonisolated(unsafe) var shouldThrowOnSave = false
 
     // MARK: - Functions
 

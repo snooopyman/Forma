@@ -11,11 +11,11 @@ final class MockWorkoutDayInteractor: WorkoutDayInteractorProtocol {
     
     // MARK: - Stub Data
     
-    var stubbedInProgressSession: WorkoutSession?
-    var stubbedStartedSession: WorkoutSession?
-    var shouldThrowOnLoad = false
-    var shouldThrowOnDelete = false
-    var shouldThrowOnStart = false
+    nonisolated(unsafe) var stubbedInProgressSession: WorkoutSession?
+    nonisolated(unsafe) var stubbedStartedSession: WorkoutSession?
+    nonisolated(unsafe) var shouldThrowOnLoad = false
+    nonisolated(unsafe) var shouldThrowOnDelete = false
+    nonisolated(unsafe) var shouldThrowOnStart = false
     
     // MARK: - Functions
     

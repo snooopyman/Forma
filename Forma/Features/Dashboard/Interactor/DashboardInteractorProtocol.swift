@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct DashboardSnapshot: Sendable {
+struct DashboardSnapshot {
     let activeMesocycle: Mesocycle?
     let todayWorkoutDay: WorkoutDay?
     let inProgressSession: WorkoutSession?

@@ -11,10 +11,10 @@ final class MockMesocycleListInteractor: MesocycleListInteractorProtocol {
     
     // MARK: - Stub Data
     
-    var stubbedMesocycles: [Mesocycle] = []
-    var shouldThrowOnFetch = false
-    var shouldThrowOnDelete = false
-    var shouldThrowOnSetActive = false
+    nonisolated(unsafe) var stubbedMesocycles: [Mesocycle] = []
+    nonisolated(unsafe) var shouldThrowOnFetch = false
+    nonisolated(unsafe) var shouldThrowOnDelete = false
+    nonisolated(unsafe) var shouldThrowOnSetActive = false
     
     // MARK: - Functions
     

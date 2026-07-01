@@ -11,9 +11,9 @@ final class MockMealDetailInteractor: MealDetailInteractorProtocol {
 
     // MARK: - Stub Data
 
-    var stubbedLog: DailyNutritionLog?
-    var shouldThrowOnLoad = false
-    var shouldThrowOnMutate = false
+    nonisolated(unsafe) var stubbedLog: DailyNutritionLog?
+    nonisolated(unsafe) var shouldThrowOnLoad = false
+    nonisolated(unsafe) var shouldThrowOnMutate = false
 
     // MARK: - Functions
 

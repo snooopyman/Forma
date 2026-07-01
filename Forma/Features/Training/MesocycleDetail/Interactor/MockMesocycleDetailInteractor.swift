@@ -11,10 +11,10 @@ final class MockMesocycleDetailInteractor: MesocycleDetailInteractorProtocol {
     
     // MARK: - Stub Data
     
-    var stubbedSessions: [WorkoutSession] = []
-    var stubbedInProgressSession: WorkoutSession?
-    var shouldThrowOnLoad = false
-    var shouldThrowOnMutate = false
+    nonisolated(unsafe) var stubbedSessions: [WorkoutSession] = []
+    nonisolated(unsafe) var stubbedInProgressSession: WorkoutSession?
+    nonisolated(unsafe) var shouldThrowOnLoad = false
+    nonisolated(unsafe) var shouldThrowOnMutate = false
     
     // MARK: - Functions
     

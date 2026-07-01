@@ -11,9 +11,9 @@ final class MockPhotoGalleryInteractor: PhotoGalleryInteractorProtocol {
     
     // MARK: - Stub Data
     
-    var stubbedPhotos: [ProgressPhoto] = []
-    var shouldThrowOnFetch = false
-    var shouldThrowOnDelete = false
+    nonisolated(unsafe) var stubbedPhotos: [ProgressPhoto] = []
+    nonisolated(unsafe) var shouldThrowOnFetch = false
+    nonisolated(unsafe) var shouldThrowOnDelete = false
     
     // MARK: - Functions
     

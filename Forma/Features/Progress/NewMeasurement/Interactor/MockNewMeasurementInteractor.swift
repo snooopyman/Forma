@@ -11,9 +11,9 @@ final class MockNewMeasurementInteractor: NewMeasurementInteractorProtocol {
 
     // MARK: - Stub Data
 
-    var stubbedProfile: UserProfile?
-    var stubbedLatestWeight: Double?
-    var shouldThrowOnSave = false
+    nonisolated(unsafe) var stubbedProfile: UserProfile?
+    nonisolated(unsafe) var stubbedLatestWeight: Double?
+    nonisolated(unsafe) var shouldThrowOnSave = false
 
     // MARK: - Functions
 

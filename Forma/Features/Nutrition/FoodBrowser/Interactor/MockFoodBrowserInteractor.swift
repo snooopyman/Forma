@@ -11,8 +11,8 @@ final class MockFoodBrowserInteractor: FoodBrowserInteractorProtocol {
 
     // MARK: - Stub Data
 
-    var stubbedItems: [FoodItem] = []
-    var shouldThrow = false
+    nonisolated(unsafe) var stubbedItems: [FoodItem] = []
+    nonisolated(unsafe) var shouldThrow = false
 
     // MARK: - Functions
 

@@ -18,12 +18,11 @@ protocol RestTimerActivityServiceProtocol: Sendable {
 
 // MARK: - Concrete Implementation
 
-@MainActor
 final class RestTimerActivityService: RestTimerActivityServiceProtocol {
-    
+
     // MARK: - Private Properties
-    
-    private var currentActivity: Activity<RestTimerAttributes>?
+
+    nonisolated(unsafe) private var currentActivity: Activity<RestTimerAttributes>?
     
     // MARK: - Functions
     

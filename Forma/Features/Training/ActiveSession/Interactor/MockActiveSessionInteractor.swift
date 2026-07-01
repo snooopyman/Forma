@@ -12,12 +12,12 @@ final class MockActiveSessionInteractor: ActiveSessionInteractorProtocol {
     
     // MARK: - Stub Data
     
-    var stubbedLoggedSet: LoggedSet?
-    var stubbedLastSets: [LoggedSet] = []
-    var shouldThrowOnLogSet = false
-    var shouldThrowOnDeleteSet = false
-    var shouldThrowOnComplete = false
-    var shouldThrowOnDiscard = false
+    nonisolated(unsafe) var stubbedLoggedSet: LoggedSet?
+    nonisolated(unsafe) var stubbedLastSets: [LoggedSet] = []
+    nonisolated(unsafe) var shouldThrowOnLogSet = false
+    nonisolated(unsafe) var shouldThrowOnDeleteSet = false
+    nonisolated(unsafe) var shouldThrowOnComplete = false
+    nonisolated(unsafe) var shouldThrowOnDiscard = false
     
     // MARK: - Functions
     

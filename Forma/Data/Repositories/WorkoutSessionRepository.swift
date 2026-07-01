@@ -10,7 +10,7 @@ import SwiftData
 
 final class WorkoutSessionRepository: WorkoutSessionRepositoryProtocol {
     
-    private let modelContext: ModelContext
+    nonisolated(unsafe) private let modelContext: ModelContext
     
     init(modelContext: ModelContext) {
         self.modelContext = modelContext

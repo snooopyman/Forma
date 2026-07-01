@@ -11,9 +11,9 @@ final class MockSettingsInteractor: SettingsInteractorProtocol {
     
     // MARK: - Stub Data
     
-    var stubbedProfile: UserProfile?
-    var shouldThrowOnLoad = false
-    var shouldThrowOnHealthKit = false
+    nonisolated(unsafe) var stubbedProfile: UserProfile?
+    nonisolated(unsafe) var shouldThrowOnLoad = false
+    nonisolated(unsafe) var shouldThrowOnHealthKit = false
     
     // MARK: - Functions
     

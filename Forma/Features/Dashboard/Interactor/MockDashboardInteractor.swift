@@ -15,7 +15,7 @@ final class MockDashboardInteractor: DashboardInteractorProtocol {
 
     // MARK: - Stub Data
 
-    var stubbedSnapshot = DashboardSnapshot(
+    nonisolated(unsafe) var stubbedSnapshot = DashboardSnapshot(
         activeMesocycle: nil,
         todayWorkoutDay: nil,
         inProgressSession: nil,
@@ -26,8 +26,8 @@ final class MockDashboardInteractor: DashboardInteractorProtocol {
         hasActivePlan: false,
         showMeasurementReminder: false
     )
-    var stubbedHealthSnapshot = HealthSnapshot(steps: 0, activeCalories: 0, exerciseMinutes: 0)
-    var shouldThrowOnLoad = false
+    nonisolated(unsafe) var stubbedHealthSnapshot = HealthSnapshot(steps: 0, activeCalories: 0, exerciseMinutes: 0)
+    nonisolated(unsafe) var shouldThrowOnLoad = false
 
     // MARK: - Functions
 

@@ -11,11 +11,11 @@ final class MockPlanOverviewInteractor: PlanOverviewInteractorProtocol {
 
     // MARK: - Stub Data
 
-    var stubbedPlan: NutritionPlan?
-    var stubbedLog: DailyNutritionLog?
-    var stubbedSummary: DailyMacroSummary?
-    var shouldThrowOnLoad = false
-    var shouldThrowOnMutate = false
+    nonisolated(unsafe) var stubbedPlan: NutritionPlan?
+    nonisolated(unsafe) var stubbedLog: DailyNutritionLog?
+    nonisolated(unsafe) var stubbedSummary: DailyMacroSummary?
+    nonisolated(unsafe) var shouldThrowOnLoad = false
+    nonisolated(unsafe) var shouldThrowOnMutate = false
 
     // MARK: - Functions
 

@@ -11,7 +11,7 @@ final class MockCreatePlanInteractor: CreatePlanInteractorProtocol {
 
     // MARK: - Stub Data
 
-    var shouldThrow = false
+    nonisolated(unsafe) var shouldThrow = false
 
     // MARK: - Functions
 
