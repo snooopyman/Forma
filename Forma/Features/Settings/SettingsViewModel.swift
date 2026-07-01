@@ -25,6 +25,7 @@ final class SettingsViewModel {
     var isRequestingHealthKit = false
     var healthKitError: String?
     var exportFileURL: URL?
+    var exportError: String?
     
     // MARK: - Computed Properties
     
@@ -105,10 +106,15 @@ final class SettingsViewModel {
         )
         let encoder = JSONEncoder()
         encoder.outputFormatting = [.prettyPrinted, .sortedKeys]
-        guard let data = try? encoder.encode(dto) else { return }
         let url = FileManager.default.temporaryDirectory.appendingPathComponent("forma-profile.json")
-        try? data.write(to: url)
-        exportFileURL = url
+        do {
+            let data = try encoder.encode(dto)
+            try data.write(to: url)
+            exportFileURL = url
+        } catch {
+            Logger.core.error("Profile export failed: \(error, privacy: .public)")
+            exportError = L10n.Settings.Error.exportFailed
+        }
     }
     
     private func checkCloudKitStatus() {

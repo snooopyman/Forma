@@ -248,6 +248,11 @@ struct SettingsView: View {
                     )
                 }
             }
+            if let error = viewModel.exportError {
+                Text(error)
+                    .font(.caption)
+                    .foregroundStyle(.error)
+            }
         }
     }
     

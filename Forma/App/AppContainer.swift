@@ -8,6 +8,7 @@
 import SwiftUI
 import SwiftData
 import Observation
+import os
 
 @Observable
 final class AppContainer {
@@ -56,8 +57,12 @@ final class AppContainer {
                 existing.forEach { modelContext.delete($0) }
             }
             FoodCatalog.catalog.forEach { modelContext.insert($0) }
-            try? modelContext.save()
-            UserDefaults.standard.set(true, forKey: "com.armando.forma.foodCatalogV1")
+            do {
+                try modelContext.save()
+                UserDefaults.standard.set(true, forKey: "com.armando.forma.foodCatalogV1")
+            } catch {
+                Logger.core.error("Food catalog seed failed: \(error, privacy: .public)")
+            }
         }
     }
 }

@@ -37,6 +37,24 @@
         }
       }
     },
+    "ERROR_EXPORT_FAILED" : {
+      "comment" : "Error when exporting profile data to a file fails",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Could not export profile data"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No se pudieron exportar los datos del perfil"
+          }
+        }
+      }
+    },
     "ICLOUD_SYNCING" : {
       "comment" : "iCloud status when data is syncing",
       "extractionState" : "manual",

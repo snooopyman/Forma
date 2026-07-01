@@ -8,6 +8,7 @@
 import SwiftUI
 import PhotosUI
 import UIKit
+import os
 
 struct PhotoGalleryView: View {
 
@@ -229,6 +230,7 @@ private struct AddProgressPhotoSheet: View {
     @State private var notes = ""
     @State private var isSaving = false
     @State private var showReplaceAlert = false
+    @State private var errorMessage: String?
 
     // MARK: - Environment
 
@@ -325,6 +327,17 @@ private struct AddProgressPhotoSheet: View {
             } message: {
                 Text(String(localized: "You already have a \(angle.localizedName.lowercased()) photo for this month. Do you want to replace it?"))
             }
+            .alert(
+                String(localized: "Error"),
+                isPresented: Binding(
+                    get: { errorMessage != nil },
+                    set: { if !$0 { errorMessage = nil } }
+                )
+            ) {
+                Button(String(localized: "OK"), role: .cancel) {}
+            } message: {
+                if let errorMessage { Text(errorMessage) }
+            }
         }
         .onChange(of: selectedItem) { @MainActor _, newItem in
             Task {
@@ -338,13 +351,19 @@ private struct AddProgressPhotoSheet: View {
     private func save(replacing existing: ProgressPhoto? = nil) async {
         guard let data = imageData else { return }
         isSaving = true
-        if let existing {
-            try? await repository.delete(existing)
+        defer { isSaving = false }
+        do {
+            if let existing {
+                try await repository.delete(existing)
+            }
+            let photo = ProgressPhoto(date: date, angle: angle, imageData: data, notes: notes)
+            try await repository.save(photo)
+            onSaved()
+            dismiss()
+        } catch {
+            Logger.progress.error("Failed to save progress photo: \(error, privacy: .public)")
+            errorMessage = L10n.Error.generic
         }
-        let photo = ProgressPhoto(date: date, angle: angle, imageData: data, notes: notes)
-        try? await repository.save(photo)
-        onSaved()
-        dismiss()
     }
 }
 

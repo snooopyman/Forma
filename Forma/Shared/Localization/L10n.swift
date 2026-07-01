@@ -110,8 +110,9 @@ enum L10n {
         }
         
         enum Error {
-            nonisolated static let loadFailed = String(localized: .SettingsLocalizable.errorLoadFailed)
-            nonisolated static let saveFailed = String(localized: .SettingsLocalizable.errorSaveFailed)
+            nonisolated static let loadFailed   = String(localized: .SettingsLocalizable.errorLoadFailed)
+            nonisolated static let saveFailed   = String(localized: .SettingsLocalizable.errorSaveFailed)
+            nonisolated static let exportFailed = String(localized: .SettingsLocalizable.errorExportFailed)
         }
     }
     
