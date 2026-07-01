@@ -422,22 +422,22 @@ private struct MeasurementRowView: View {
     }
 }
 
-#Preview("Empty") {
+#Preview("Empty", traits: .previewContainer(.empty)) {
     NavigationStack { ProgressOverviewView() }
         .environment(\.progressOverviewViewModel, MockProgressOverviewViewModel.empty)
 }
 
-#Preview("With data") {
+#Preview("With data", traits: .previewContainer(.withData)) {
     NavigationStack { ProgressOverviewView() }
         .environment(\.progressOverviewViewModel, MockProgressOverviewViewModel.withData)
 }
 
-#Preview("Loading") {
+#Preview("Loading", traits: .previewContainer(.empty)) {
     NavigationStack { ProgressOverviewView() }
         .environment(\.progressOverviewViewModel, MockProgressOverviewViewModel.loading)
 }
 
-#Preview("Error") {
+#Preview("Error", traits: .previewContainer(.empty)) {
     NavigationStack { ProgressOverviewView() }
         .environment(\.progressOverviewViewModel, MockProgressOverviewViewModel.withError)
 }

@@ -26,12 +26,12 @@ final class MockDashboardViewModel: DashboardViewModelProtocol {
     var showMeasurementReminder: Bool = false
     var weeklyCompletedSessions: Int = 0
     var weeklyPlannedDays: Int = 0
+    var isHealthKitAvailable: Bool = false
     var isLoading: Bool = false
     var errorMessage: String?
 
     // MARK: - Computed Properties
 
-    var isHealthKitAvailable: Bool { false }
     var greeting: String { L10n.Dashboard.goodMorning }
     var todayFormatted: String { Date.now.formatted(.dateTime.weekday(.wide).day().month(.wide)) }
 
@@ -54,8 +54,44 @@ extension MockDashboardViewModel {
 
     static var withData: MockDashboardViewModel {
         let vm = MockDashboardViewModel()
+
+        let mesocycle = Mesocycle(
+            name: "Hipertrofia Bloque 1",
+            startDate: Calendar.current.date(byAdding: .day, value: -14, to: .now)!,
+            durationWeeks: 6,
+            useFixedDays: false,
+            isActive: true
+        )
+        let workoutDay = WorkoutDay(name: "Push", order: 0, weekday: .monday)
+        workoutDay.mesocycle = mesocycle
+        workoutDay.plannedExercises = (0..<5).map { PlannedExercise(order: $0) }
+        mesocycle.workoutDays = [workoutDay]
+
+        vm.activeMesocycle = mesocycle
+        vm.todayWorkoutDay = workoutDay
+        vm.isTodaySessionCompleted = false
+
+        vm.macroSummary = DailyMacroSummary(
+            consumedCalories: 1450,
+            consumedProteinG: 110,
+            consumedCarbsG: 140,
+            consumedFatG: 40,
+            targetCalories: 2800,
+            targetProteinG: 180,
+            targetCarbsG: 320,
+            targetFatG: 75
+        )
+        vm.hasActivePlan = true
+
+        vm.isHealthKitAvailable = true
+        vm.healthKitAuthorized = true
+        vm.todaySteps = 6_240
+        vm.todayActiveCalories = 380
+        vm.todayExerciseMinutes = 22
+
         vm.weeklyCompletedSessions = 3
         vm.weeklyPlannedDays = 5
+
         return vm
     }
 

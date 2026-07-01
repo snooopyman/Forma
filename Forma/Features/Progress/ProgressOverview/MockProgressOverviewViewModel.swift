@@ -53,7 +53,33 @@ extension MockProgressOverviewViewModel {
         return vm
     }
 
-    static var withData: MockProgressOverviewViewModel { MockProgressOverviewViewModel() }
+    static var withData: MockProgressOverviewViewModel {
+        let vm = MockProgressOverviewViewModel()
+
+        let entries: [(daysAgo: Int, kg: Double, waist: Double, abdomen: Double, neck: Double)] = [
+            (0,  81.8, 80.0, 85.0, 38.5),
+            (7,  81.4, 80.5, 85.5, 38.4),
+            (14, 81.0, 80.8, 86.0, 38.4),
+            (21, 80.5, 81.2, 86.5, 38.2),
+            (28, 80.1, 81.5, 87.0, 38.2),
+            (35, 79.8, 81.8, 87.5, 38.0),
+            (42, 79.2, 82.0, 88.0, 38.0)
+        ]
+        vm.measurements = entries.map { entry in
+            BodyMeasurement(
+                date: Calendar.current.date(byAdding: .day, value: -entry.daysAgo, to: .now)!,
+                weightKg: entry.kg,
+                heightCm: 178,
+                biologicalSex: .male,
+                neckCm: entry.neck,
+                armCm: 36.0,
+                waistCm: entry.waist,
+                abdomenCm: entry.abdomen
+            )
+        }
+
+        return vm
+    }
 
     static var withError: MockProgressOverviewViewModel {
         let vm = MockProgressOverviewViewModel()

@@ -8,7 +8,7 @@
 import SwiftUI
 
 @MainActor
-protocol DashboardViewModelProtocol {
+protocol DashboardViewModelProtocol: AnyObject {
     var activeMesocycle: Mesocycle? { get }
     var todayWorkoutDay: WorkoutDay? { get }
     var inProgressSession: WorkoutSession? { get }

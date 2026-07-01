@@ -46,7 +46,38 @@ extension MockMesocycleListViewModel {
         return vm
     }
 
-    static var withData: MockMesocycleListViewModel { MockMesocycleListViewModel() }
+    static var withData: MockMesocycleListViewModel {
+        let vm = MockMesocycleListViewModel()
+
+        let active = Mesocycle(
+            name: "Hipertrofia Bloque 1",
+            startDate: Calendar.current.date(byAdding: .day, value: -14, to: .now)!,
+            durationWeeks: 6,
+            useFixedDays: false,
+            isActive: true
+        )
+
+        let paused = Mesocycle(
+            name: "Fuerza Bloque 4",
+            startDate: Calendar.current.date(byAdding: .day, value: -21, to: .now)!,
+            durationWeeks: 8,
+            useFixedDays: true,
+            isActive: false
+        )
+        paused.pausedAt = Calendar.current.date(byAdding: .day, value: -5, to: .now)
+
+        let completed = Mesocycle(
+            name: "Volumen Bloque 3",
+            startDate: Calendar.current.date(byAdding: .weekOfYear, value: -10, to: .now)!,
+            durationWeeks: 6,
+            useFixedDays: false,
+            isActive: false
+        )
+
+        vm.mesocycles = [active, paused, completed]
+
+        return vm
+    }
 
     static var withError: MockMesocycleListViewModel {
         let vm = MockMesocycleListViewModel()

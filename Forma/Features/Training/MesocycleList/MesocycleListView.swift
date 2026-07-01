@@ -181,22 +181,22 @@ private struct MesocycleRowView: View {
 
 // MARK: - Previews
 
-#Preview("Empty") {
+#Preview("Empty", traits: .previewContainer(.empty)) {
     NavigationStack { MesocycleListView() }
         .environment(\.mesocycleListViewModel, MockMesocycleListViewModel.empty)
 }
 
-#Preview("With data") {
+#Preview("With data", traits: .previewContainer(.withData)) {
     NavigationStack { MesocycleListView() }
         .environment(\.mesocycleListViewModel, MockMesocycleListViewModel.withData)
 }
 
-#Preview("Loading") {
+#Preview("Loading", traits: .previewContainer(.empty)) {
     NavigationStack { MesocycleListView() }
         .environment(\.mesocycleListViewModel, MockMesocycleListViewModel.loading)
 }
 
-#Preview("Error") {
+#Preview("Error", traits: .previewContainer(.empty)) {
     NavigationStack { MesocycleListView() }
         .environment(\.mesocycleListViewModel, MockMesocycleListViewModel.withError)
 }

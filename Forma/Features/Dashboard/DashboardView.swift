@@ -8,25 +8,25 @@
 import SwiftUI
 
 struct DashboardView: View {
-
+    
     // MARK: - Environment
-
+    
     @Environment(AppContainer.self) private var container
     @Environment(\.dashboardViewModel) private var viewModel
-
+    
     // MARK: - States
-
+    
     @State private var showingCreateMesocycle = false
     @State private var showingCreateNutritionPlan = false
     @State private var showingNewMeasurement = false
     @State private var showingSettings = false
     @State private var activeSession: WorkoutSession?
-
+    
     @AppStorage("com.armando.forma.dailyStepsGoal") private var dailyStepsGoal: Int = 10_000
     @AppStorage("com.armando.forma.dailyExerciseGoal") private var dailyExerciseGoal: Int = 30
-
+    
     // MARK: - Body
-
+    
     var body: some View {
         Group {
             if let vm = viewModel {
@@ -71,19 +71,26 @@ struct DashboardView: View {
     
     @ViewBuilder
     private func content(vm: any DashboardViewModelProtocol) -> some View {
-        ScrollView {
-            LazyVStack(spacing: DS.Spacing.lg) {
-                headerSection(vm: vm)
-                workoutCard(vm: vm)
-                macroCard(vm: vm)
-                healthKitCard(vm: vm)
-                if vm.showMeasurementReminder {
-                    measurementReminderCard
+        Group {
+            if vm.isLoading && vm.activeMesocycle == nil && vm.macroSummary == nil {
+                ProgressView()
+                    .frame(maxWidth: .infinity, maxHeight: .infinity)
+            } else {
+                ScrollView {
+                    LazyVStack(alignment: .leading, spacing: DS.Spacing.lg) {
+                        headerSection(vm: vm)
+                        workoutCard(vm: vm)
+                        macroCard(vm: vm)
+                        healthKitCard(vm: vm)
+                        if vm.showMeasurementReminder {
+                            measurementReminderCard
+                        }
+                        weeklySummaryCard(vm: vm)
+                    }
+                    .padding(.horizontal, DS.Spacing.lg)
+                    .padding(.bottom, DS.Spacing.xxl)
                 }
-                weeklySummaryCard(vm: vm)
             }
-            .padding(.horizontal, DS.Spacing.lg)
-            .padding(.bottom, DS.Spacing.xxl)
         }
         .background(.backgroundPrimary)
         .navigationTitle(String(localized: "Today"))
@@ -104,6 +111,17 @@ struct DashboardView: View {
         }
         .refreshable {
             await vm.load()
+        }
+        .alert(
+            String(localized: "Error"),
+            isPresented: Binding(
+                get: { vm.errorMessage != nil },
+                set: { if !$0 { vm.errorMessage = nil } }
+            )
+        ) {
+            Button(String(localized: "OK"), role: .cancel) {}
+        } message: {
+            if let msg = vm.errorMessage { Text(msg) }
         }
     }
     
@@ -409,6 +427,7 @@ struct DashboardView: View {
                     Text(String(localized: "Health not available on this device"))
                         .font(.subheadline)
                         .foregroundStyle(.textTertiary)
+                        .frame(maxWidth: .infinity)
                 } else if !vm.healthKitAuthorized {
                     connectHealthKitButton(vm: vm)
                 } else {
@@ -440,11 +459,11 @@ struct DashboardView: View {
     @ViewBuilder
     private func healthKitMetrics(vm: any DashboardViewModelProtocol) -> some View {
         let stepsProgress = dailyStepsGoal > 0
-            ? min(Double(vm.todaySteps) / Double(dailyStepsGoal), 1.0)
-            : 0.0
+        ? min(Double(vm.todaySteps) / Double(dailyStepsGoal), 1.0)
+        : 0.0
         let exerciseProgress = dailyExerciseGoal > 0
-            ? min(vm.todayExerciseMinutes / Double(dailyExerciseGoal), 1.0)
-            : 0.0
+        ? min(vm.todayExerciseMinutes / Double(dailyExerciseGoal), 1.0)
+        : 0.0
         HStack(alignment: .top) {
             healthKitMetric(
                 value: vm.todaySteps.formatted(),
@@ -475,7 +494,7 @@ struct DashboardView: View {
         }
         .frame(maxWidth: .infinity)
     }
-
+    
     private func healthKitMetric(
         value: String,
         goal: String,
@@ -572,22 +591,22 @@ struct DashboardView: View {
     }
 }
 
-#Preview("Empty") {
+#Preview("Empty", traits: .previewContainer(.empty)) {
     NavigationStack { DashboardView() }
         .environment(\.dashboardViewModel, MockDashboardViewModel.empty)
 }
 
-#Preview("With data") {
+#Preview("With data", traits: .previewContainer(.withData)) {
     NavigationStack { DashboardView() }
         .environment(\.dashboardViewModel, MockDashboardViewModel.withData)
 }
 
-#Preview("Loading") {
+#Preview("Loading", traits: .previewContainer(.empty)) {
     NavigationStack { DashboardView() }
         .environment(\.dashboardViewModel, MockDashboardViewModel.loading)
 }
 
-#Preview("Error") {
+#Preview("Error", traits: .previewContainer(.empty)) {
     NavigationStack { DashboardView() }
         .environment(\.dashboardViewModel, MockDashboardViewModel.withError)
 }

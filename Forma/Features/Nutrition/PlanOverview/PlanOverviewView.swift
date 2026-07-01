@@ -340,22 +340,22 @@ private struct MealRowView: View {
 
 // MARK: - Previews
 
-#Preview("Empty") {
+#Preview("Empty", traits: .previewContainer(.empty)) {
     NavigationStack { PlanOverviewView() }
         .environment(\.planOverviewViewModel, MockPlanOverviewViewModel.empty)
 }
 
-#Preview("With data") {
+#Preview("With data", traits: .previewContainer(.withData)) {
     NavigationStack { PlanOverviewView() }
         .environment(\.planOverviewViewModel, MockPlanOverviewViewModel.withData)
 }
 
-#Preview("Loading") {
+#Preview("Loading", traits: .previewContainer(.empty)) {
     NavigationStack { PlanOverviewView() }
         .environment(\.planOverviewViewModel, MockPlanOverviewViewModel.loading)
 }
 
-#Preview("Error") {
+#Preview("Error", traits: .previewContainer(.empty)) {
     NavigationStack { PlanOverviewView() }
         .environment(\.planOverviewViewModel, MockPlanOverviewViewModel.withError)
 }
