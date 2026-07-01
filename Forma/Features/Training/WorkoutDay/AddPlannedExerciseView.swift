@@ -6,21 +6,22 @@
 //
 
 import SwiftUI
+import SwiftData
 
 struct AddPlannedExerciseView: View {
-
+    
     // MARK: - Private Properties
-
+    
     private let workoutDay: WorkoutDay?
     private let editingExercise: PlannedExercise?
     private let mesocycleRepository: MesocycleRepositoryProtocol
-
+    
     // MARK: - Environment
-
+    
     @Environment(\.dismiss) private var dismiss
-
+    
     // MARK: - States
-
+    
     @State private var exerciseName: String
     @State private var muscle: MuscleGroup
     @State private var sets: Int
@@ -30,13 +31,13 @@ struct AddPlannedExerciseView: View {
     @State private var restSeconds: Int
     @State private var isSaving = false
     @State private var errorMessage: String?
-
+    
     // MARK: - Computed Properties
-
+    
     private var isEditMode: Bool { editingExercise != nil }
-
+    
     // MARK: - Initializers
-
+    
     init(workoutDay: WorkoutDay, mesocycleRepository: MesocycleRepositoryProtocol) {
         self.workoutDay = workoutDay
         self.editingExercise = nil
@@ -49,7 +50,7 @@ struct AddPlannedExerciseView: View {
         _rir = State(initialValue: 2)
         _restSeconds = State(initialValue: 120)
     }
-
+    
     init(editing planned: PlannedExercise, mesocycleRepository: MesocycleRepositoryProtocol) {
         self.workoutDay = nil
         self.editingExercise = planned
@@ -62,9 +63,9 @@ struct AddPlannedExerciseView: View {
         _rir = State(initialValue: planned.rirTarget)
         _restSeconds = State(initialValue: planned.restSeconds)
     }
-
+    
     // MARK: - Body
-
+    
     var body: some View {
         NavigationStack {
             Form {
@@ -147,9 +148,9 @@ struct AddPlannedExerciseView: View {
             }
         }
     }
-
+    
     // MARK: - Private Functions
-
+    
     private func save() async {
         isSaving = true
         defer { isSaving = false }
@@ -186,4 +187,30 @@ struct AddPlannedExerciseView: View {
             errorMessage = L10n.Error.generic
         }
     }
+}
+
+// MARK: - Previews
+
+private struct AddPlannedExercisePreviewWrapper: View {
+    @Environment(AppContainer.self) private var container
+    @Query private var days: [WorkoutDay]
+    @Query private var plannedExercises: [PlannedExercise]
+    
+    let editing: Bool
+    
+    var body: some View {
+        if editing, let planned = plannedExercises.first(where: { $0.exercise != nil }) {
+            AddPlannedExerciseView(editing: planned, mesocycleRepository: container.mesocycleRepository)
+        } else if let day = days.first(where: { !$0.isRestDay }) {
+            AddPlannedExerciseView(workoutDay: day, mesocycleRepository: container.mesocycleRepository)
+        }
+    }
+}
+
+#Preview("Add", traits: .previewContainer(.withData)) {
+    AddPlannedExercisePreviewWrapper(editing: false)
+}
+
+#Preview("Edit", traits: .previewContainer(.withData)) {
+    AddPlannedExercisePreviewWrapper(editing: true)
 }

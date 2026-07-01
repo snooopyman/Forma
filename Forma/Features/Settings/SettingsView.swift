@@ -303,3 +303,13 @@ struct SettingsView: View {
     }
     #endif
 }
+
+// MARK: - Previews
+
+#Preview(traits: .previewContainer(.withData)) {
+    @Previewable @Environment(AppContainer.self) var container
+    SettingsView(
+        userProfileRepository: container.userProfileRepository,
+        healthKitService: container.healthKitService
+    )
+}

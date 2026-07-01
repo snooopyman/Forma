@@ -366,3 +366,31 @@ enum CircumferenceType: String, CaseIterable, Identifiable {
         }
     }
 }
+
+// MARK: - Previews
+
+private func sampleMeasurements(count: Int) -> [BodyMeasurement] {
+    (0..<count).map { index in
+        let daysAgo = (count - 1 - index) * 7
+        return BodyMeasurement(
+            date: Calendar.current.date(byAdding: .day, value: -daysAgo, to: .now) ?? .now,
+            weightKg: 81.8 - Double(index) * 0.4,
+            heightCm: 178,
+            biologicalSex: .male,
+            neckCm: 38.5,
+            armCm: 36.0,
+            waistCm: 80.0 + Double(index) * 0.3,
+            abdomenCm: 85.0 + Double(index) * 0.4
+        )
+    }
+}
+
+#Preview("Few points") {
+    BodyChartsView(measurements: sampleMeasurements(count: 2))
+        .padding(DS.Spacing.lg)
+}
+
+#Preview("With data") {
+    BodyChartsView(measurements: sampleMeasurements(count: 7))
+        .padding(DS.Spacing.lg)
+}

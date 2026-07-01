@@ -188,7 +188,14 @@ private struct FoodBrowserRow: View {
     }
 }
 
-#Preview(traits: .previewContainer()) {
+#Preview("With results", traits: .previewContainer(.withData)) {
+    @Previewable @Environment(AppContainer.self) var container
+    NavigationStack {
+        FoodBrowserView(repository: container.foodItemRepository)
+    }
+}
+
+#Preview("Empty", traits: .previewContainer(.empty)) {
     @Previewable @Environment(AppContainer.self) var container
     NavigationStack {
         FoodBrowserView(repository: container.foodItemRepository)

@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import SwiftData
 import PhotosUI
 import UIKit
 import os
@@ -367,9 +368,37 @@ private struct AddProgressPhotoSheet: View {
     }
 }
 
-#Preview(traits: .previewContainer()) {
+#Preview("Empty", traits: .previewContainer(.empty)) {
     @Previewable @Environment(AppContainer.self) var container
     NavigationStack {
         PhotoGalleryView(repository: container.progressPhotoRepository)
     }
+}
+
+#Preview("With photos", traits: .previewContainer(.empty)) {
+    @Previewable @Environment(AppContainer.self) var container
+    @Previewable @Environment(\.modelContext) var modelContext
+    NavigationStack {
+        PhotoGalleryView(repository: container.progressPhotoRepository)
+    }
+    .task {
+        let samples: [(PhotoAngle, UIColor)] = [
+            (.front, .systemBlue),
+            (.sideLeft, .systemGreen),
+            (.back, .systemOrange)
+        ]
+        for (index, sample) in samples.enumerated() {
+            let date = Calendar.current.date(byAdding: .day, value: -index * 14, to: .now) ?? .now
+            modelContext.insert(ProgressPhoto(date: date, angle: sample.0, imageData: samplePhotoData(color: sample.1)))
+        }
+    }
+}
+
+private func samplePhotoData(color: UIColor) -> Data {
+    let renderer = UIGraphicsImageRenderer(size: CGSize(width: 300, height: 400))
+    let image = renderer.image { _ in
+        color.setFill()
+        UIRectFill(CGRect(x: 0, y: 0, width: 300, height: 400))
+    }
+    return image.pngData() ?? Data()
 }
