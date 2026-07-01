@@ -11,11 +11,10 @@ import SwiftData
 struct AddPlannedExerciseView: View {
     
     // MARK: - Private Properties
-    
-    private let workoutDay: WorkoutDay?
+
     private let editingExercise: PlannedExercise?
-    private let mesocycleRepository: MesocycleRepositoryProtocol
-    
+    private let viewModel: WorkoutDayDetailViewModel
+
     // MARK: - Environment
     
     @Environment(\.dismiss) private var dismiss
@@ -38,10 +37,9 @@ struct AddPlannedExerciseView: View {
     
     // MARK: - Initializers
     
-    init(workoutDay: WorkoutDay, mesocycleRepository: MesocycleRepositoryProtocol) {
-        self.workoutDay = workoutDay
+    init(viewModel: WorkoutDayDetailViewModel) {
+        self.viewModel = viewModel
         self.editingExercise = nil
-        self.mesocycleRepository = mesocycleRepository
         _exerciseName = State(initialValue: "")
         _muscle = State(initialValue: .chest)
         _sets = State(initialValue: 3)
@@ -50,11 +48,10 @@ struct AddPlannedExerciseView: View {
         _rir = State(initialValue: 2)
         _restSeconds = State(initialValue: 120)
     }
-    
-    init(editing planned: PlannedExercise, mesocycleRepository: MesocycleRepositoryProtocol) {
-        self.workoutDay = nil
+
+    init(editing planned: PlannedExercise, viewModel: WorkoutDayDetailViewModel) {
+        self.viewModel = viewModel
         self.editingExercise = planned
-        self.mesocycleRepository = mesocycleRepository
         _exerciseName = State(initialValue: planned.exercise?.name ?? "")
         _muscle = State(initialValue: planned.exercise?.primaryMuscle ?? .chest)
         _sets = State(initialValue: planned.sets)
@@ -154,37 +151,33 @@ struct AddPlannedExerciseView: View {
     private func save() async {
         isSaving = true
         defer { isSaving = false }
-        do {
-            if let planned = editingExercise {
-                try await mesocycleRepository.updatePlannedExercise(
-                    planned,
-                    name: exerciseName.trimmingCharacters(in: .whitespaces),
-                    muscle: muscle,
-                    sets: sets,
-                    repsMin: repsMin,
-                    repsMax: repsMax,
-                    rir: rir,
-                    restSeconds: restSeconds
-                )
-            } else if let day = workoutDay {
-                let exercise = Exercise(
-                    name: exerciseName.trimmingCharacters(in: .whitespaces),
-                    primaryMuscle: muscle,
-                    isCustom: true
-                )
-                let planned = PlannedExercise(
-                    order: day.plannedExercises.count,
-                    sets: sets,
-                    repsMin: repsMin,
-                    repsMax: repsMax,
-                    rirTarget: rir,
-                    restSeconds: restSeconds
-                )
-                try await mesocycleRepository.addPlannedExercise(planned, exercise: exercise, to: day)
-            }
+        if let planned = editingExercise {
+            await viewModel.updatePlannedExercise(
+                planned,
+                name: exerciseName.trimmingCharacters(in: .whitespaces),
+                muscle: muscle,
+                sets: sets,
+                repsMin: repsMin,
+                repsMax: repsMax,
+                rir: rir,
+                restSeconds: restSeconds
+            )
+        } else {
+            await viewModel.addPlannedExercise(
+                name: exerciseName.trimmingCharacters(in: .whitespaces),
+                muscle: muscle,
+                sets: sets,
+                repsMin: repsMin,
+                repsMax: repsMax,
+                rir: rir,
+                restSeconds: restSeconds
+            )
+        }
+        if viewModel.errorMessage != nil {
+            errorMessage = viewModel.errorMessage
+            viewModel.errorMessage = nil
+        } else {
             dismiss()
-        } catch {
-            errorMessage = L10n.Error.generic
         }
     }
 }
@@ -195,15 +188,24 @@ private struct AddPlannedExercisePreviewWrapper: View {
     @Environment(AppContainer.self) private var container
     @Query private var days: [WorkoutDay]
     @Query private var plannedExercises: [PlannedExercise]
-    
+
     let editing: Bool
-    
+
     var body: some View {
-        if editing, let planned = plannedExercises.first(where: { $0.exercise != nil }) {
-            AddPlannedExerciseView(editing: planned, mesocycleRepository: container.mesocycleRepository)
+        if editing, let planned = plannedExercises.first(where: { $0.exercise != nil }), let day = planned.workoutDay {
+            AddPlannedExerciseView(editing: planned, viewModel: makeViewModel(for: day))
         } else if let day = days.first(where: { !$0.isRestDay }) {
-            AddPlannedExerciseView(workoutDay: day, mesocycleRepository: container.mesocycleRepository)
+            AddPlannedExerciseView(viewModel: makeViewModel(for: day))
         }
+    }
+
+    private func makeViewModel(for day: WorkoutDay) -> WorkoutDayDetailViewModel {
+        let interactor = WorkoutDayInteractor(
+            mesocycleRepository: container.mesocycleRepository,
+            sessionRepository: container.workoutSessionRepository,
+            sessionService: container.workoutSessionService
+        )
+        return WorkoutDayDetailViewModel(workoutDay: day, interactor: interactor)
     }
 }
 

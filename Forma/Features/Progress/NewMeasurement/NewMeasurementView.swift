@@ -26,10 +26,13 @@ struct NewMeasurementView: View {
         editing: BodyMeasurement? = nil,
         onSaved: @escaping @MainActor () -> Void
     ) {
-        _viewModel = State(initialValue: NewMeasurementViewModel(
-            repository: repository,
+        let interactor = NewMeasurementInteractor(
+            measurementRepository: repository,
             profileRepository: profileRepository,
-            healthKitService: healthKitService,
+            healthKitService: healthKitService
+        )
+        _viewModel = State(initialValue: NewMeasurementViewModel(
+            interactor: interactor,
             editing: editing,
             onSaved: onSaved
         ))

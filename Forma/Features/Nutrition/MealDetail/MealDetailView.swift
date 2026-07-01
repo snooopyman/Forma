@@ -29,9 +29,10 @@ struct MealDetailView: View {
     // MARK: - Initializers
 
     init(meal: Meal, nutritionRepository: NutritionRepositoryProtocol, onLogged: @escaping () -> Void) {
+        let interactor = MealDetailInteractor(nutritionRepository: nutritionRepository)
         _viewModel = State(initialValue: MealDetailViewModel(
             meal: meal,
-            nutritionRepository: nutritionRepository
+            interactor: interactor
         ))
         self.onLogged = onLogged
     }

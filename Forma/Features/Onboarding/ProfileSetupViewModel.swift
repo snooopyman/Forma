@@ -31,8 +31,7 @@ final class ProfileSetupViewModel {
     
     // MARK: - Private Properties
     
-    private let repository: UserProfileRepositoryProtocol
-    private let healthKitService: HealthKitServiceProtocol
+    private let interactor: ProfileSetupInteractorProtocol
     
     var birthDateRange: ClosedRange<Date> {
         let min = Calendar.current.date(byAdding: .year, value: -100, to: .now) ?? .now
@@ -42,9 +41,8 @@ final class ProfileSetupViewModel {
     
     // MARK: - Initializers
     
-    init(repository: UserProfileRepositoryProtocol, healthKitService: HealthKitServiceProtocol) {
-        self.repository = repository
-        self.healthKitService = healthKitService
+    init(interactor: ProfileSetupInteractorProtocol) {
+        self.interactor = interactor
     }
     
     // MARK: - Functions
@@ -58,7 +56,7 @@ final class ProfileSetupViewModel {
     }
     
     func connectHealthKit() async {
-        try? await healthKitService.requestAuthorization()
+        try? await interactor.requestHealthKitAccess()
     }
     
     func save() async {
@@ -66,15 +64,15 @@ final class ProfileSetupViewModel {
         defer { isSaving = false }
         do {
             let trimmedName = name.trimmingCharacters(in: .whitespaces)
-            if let existing = try await repository.fetch() {
+            if let existing = try await interactor.fetchProfile() {
                 existing.name = trimmedName
                 existing.birthDate = birthDate
                 existing.heightCm = heightCm
                 existing.biologicalSex = biologicalSex
                 existing.activityLevel = activityLevel
-                try await repository.save(existing)
+                try await interactor.saveProfile(existing)
             } else {
-                try await repository.save(UserProfile(
+                try await interactor.saveProfile(UserProfile(
                     name: trimmedName,
                     birthDate: birthDate,
                     heightCm: heightCm,

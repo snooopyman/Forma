@@ -42,8 +42,8 @@ struct MesocycleListView: View {
             }
         }
         .sheet(isPresented: $showingCreate) {
-            CreateMesocycleView {
-                Task { await viewModel?.load() }
+            if let viewModel {
+                CreateMesocycleView(viewModel: viewModel)
             }
         }
         .task {

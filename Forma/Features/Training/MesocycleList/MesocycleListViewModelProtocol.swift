@@ -17,6 +17,7 @@ protocol MesocycleListViewModelProtocol: AnyObject {
     func load() async
     func delete(_ mesocycle: Mesocycle) async
     func setActive(_ mesocycle: Mesocycle) async
+    func createMesocycle(name: String, startDate: Date, durationWeeks: Int, useFixedDays: Bool) async throws
 }
 
 // MARK: - @Entry

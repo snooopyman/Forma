@@ -24,8 +24,13 @@ final class SettingsInteractor: SettingsInteractorProtocol {
         self.healthKitService = healthKitService
     }
     
+    // MARK: - Computed Properties
+
+    var isHealthKitAvailable: Bool { healthKitService.isAvailable }
+    var isHealthKitAuthorized: Bool { healthKitService.isAuthorized }
+
     // MARK: - Functions
-    
+
     func loadProfile() async throws -> UserProfile? {
         try await userProfileRepository.fetch()
     }

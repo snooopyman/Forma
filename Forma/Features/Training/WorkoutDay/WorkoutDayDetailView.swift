@@ -10,10 +10,6 @@ import SwiftData
 
 struct WorkoutDayDetailView: View {
     
-    // MARK: - Private Properties
-    
-    private let mesocycleRepository: MesocycleRepositoryProtocol
-    
     // MARK: - States
     
     @State private var viewModel: WorkoutDayDetailViewModel
@@ -33,12 +29,14 @@ struct WorkoutDayDetailView: View {
         sessionService: WorkoutSessionServiceProtocol,
         sessionRepository: WorkoutSessionRepositoryProtocol
     ) {
-        self.mesocycleRepository = mesocycleRepository
+        let interactor = WorkoutDayInteractor(
+            mesocycleRepository: mesocycleRepository,
+            sessionRepository: sessionRepository,
+            sessionService: sessionService
+        )
         _viewModel = State(initialValue: WorkoutDayDetailViewModel(
             workoutDay: workoutDay,
-            mesocycleRepository: mesocycleRepository,
-            sessionService: sessionService,
-            sessionRepository: sessionRepository
+            interactor: interactor
         ))
     }
     
@@ -67,16 +65,10 @@ struct WorkoutDayDetailView: View {
             }
         }
         .sheet(isPresented: $showingAddExercise) {
-            AddPlannedExerciseView(
-                workoutDay: viewModel.workoutDay,
-                mesocycleRepository: mesocycleRepository
-            )
+            AddPlannedExerciseView(viewModel: viewModel)
         }
         .sheet(item: $editingExercise) { planned in
-            AddPlannedExerciseView(
-                editing: planned,
-                mesocycleRepository: mesocycleRepository
-            )
+            AddPlannedExerciseView(editing: planned, viewModel: viewModel)
         }
         .alert(
             String(localized: "Error"),

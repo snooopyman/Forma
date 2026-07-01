@@ -16,7 +16,8 @@ struct FoodBrowserView: View {
     // MARK: - Initializers
 
     init(repository: FoodItemRepositoryProtocol) {
-        _viewModel = State(initialValue: FoodBrowserViewModel(repository: repository))
+        let interactor = FoodBrowserInteractor(foodItemRepository: repository)
+        _viewModel = State(initialValue: FoodBrowserViewModel(interactor: interactor))
     }
 
     // MARK: - Body

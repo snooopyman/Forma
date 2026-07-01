@@ -40,7 +40,11 @@ struct SettingsView: View {
         healthKitService: HealthKitServiceProtocol
     ) {
         self.userProfileRepository = userProfileRepository
-        _viewModel = State(initialValue: SettingsViewModel(healthKitService: healthKitService))
+        let interactor = SettingsInteractor(
+            userProfileRepository: userProfileRepository,
+            healthKitService: healthKitService
+        )
+        _viewModel = State(initialValue: SettingsViewModel(interactor: interactor))
     }
     
     // MARK: - Body
@@ -66,9 +70,9 @@ struct SettingsView: View {
                         .fontWeight(.semibold)
                 }
             }
-            .task { await viewModel.load(userProfileRepository: userProfileRepository) }
+            .task { await viewModel.load() }
             .sheet(isPresented: $showingEditProfile, onDismiss: {
-                Task { await viewModel.load(userProfileRepository: userProfileRepository) }
+                Task { await viewModel.load() }
             }) {
                 if let profile = viewModel.profile {
                     EditProfileView(profile: profile, repository: userProfileRepository)

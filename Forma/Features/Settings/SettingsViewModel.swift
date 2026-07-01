@@ -17,7 +17,7 @@ final class SettingsViewModel {
     // MARK: - Private Properties
     
     @ObservationIgnored
-    private let healthKitService: HealthKitServiceProtocol
+    private let interactor: SettingsInteractorProtocol
     
     // MARK: - States
     
@@ -30,8 +30,8 @@ final class SettingsViewModel {
     
     // MARK: - Computed Properties
     
-    var isHealthKitAvailable: Bool { healthKitService.isAvailable }
-    var isHealthKitAuthorized: Bool { healthKitService.isAuthorized }
+    var isHealthKitAvailable: Bool { interactor.isHealthKitAvailable }
+    var isHealthKitAuthorized: Bool { interactor.isHealthKitAuthorized }
     
     var cloudKitStatusText: String {
         switch cloudKitStatus {
@@ -67,23 +67,23 @@ final class SettingsViewModel {
     
     // MARK: - Initializers
     
-    init(healthKitService: HealthKitServiceProtocol) {
-        self.healthKitService = healthKitService
+    init(interactor: SettingsInteractorProtocol) {
+        self.interactor = interactor
     }
-    
+
     // MARK: - Functions
-    
-    func load(userProfileRepository: UserProfileRepositoryProtocol) async {
-        profile = try? await userProfileRepository.fetch()
+
+    func load() async {
+        profile = try? await interactor.loadProfile()
         buildExportJSON()
         checkCloudKitStatus()
     }
-    
+
     func requestHealthKitAccess() async {
         isRequestingHealthKit = true
         defer { isRequestingHealthKit = false }
         do {
-            try await healthKitService.requestAuthorization()
+            try await interactor.requestHealthKitAccess()
         } catch {
             handleError(error)
         }

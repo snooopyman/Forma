@@ -15,7 +15,7 @@ final class MealDetailViewModel {
     // MARK: - Private Properties
     
     @ObservationIgnored
-    private let nutritionRepository: NutritionRepositoryProtocol
+    private let interactor: MealDetailInteractorProtocol
     
     // MARK: - States
     
@@ -51,9 +51,9 @@ final class MealDetailViewModel {
     
     // MARK: - Initializers
     
-    init(meal: Meal, nutritionRepository: NutritionRepositoryProtocol) {
+    init(meal: Meal, interactor: MealDetailInteractorProtocol) {
         self.meal = meal
-        self.nutritionRepository = nutritionRepository
+        self.interactor = interactor
     }
     
     // MARK: - Functions
@@ -62,7 +62,7 @@ final class MealDetailViewModel {
         isLoading = true
         defer { isLoading = false }
         do {
-            todayLog = try await nutritionRepository.fetchLog(for: .now)
+            todayLog = try await interactor.fetchLog(for: .now)
             if let logged = loggedOption,
                let idx = sortedOptions.firstIndex(where: { $0.id == logged.id }) {
                 selectedOptionIndex = idx
@@ -79,13 +79,13 @@ final class MealDetailViewModel {
         do {
             let log = try await ensureTodayLog()
             if let existing = todayLog?.mealLogs.first(where: { $0.meal?.id == meal.id }) {
-                try await nutritionRepository.removeMealLog(existing)
+                try await interactor.removeMealLog(existing)
             }
             let mealLog = MealLog(wasFollowed: true)
             mealLog.meal = meal
             mealLog.selectedOption = option
-            try await nutritionRepository.addMealLog(mealLog, to: log)
-            todayLog = try await nutritionRepository.fetchLog(for: .now)
+            try await interactor.addMealLog(mealLog, to: log)
+            todayLog = try await interactor.fetchLog(for: .now)
             Logger.nutrition.info("Logged option \(option.optionNumber, privacy: .public) for \(self.meal.name, privacy: .public)")
         } catch {
             handleError(error)
@@ -95,8 +95,8 @@ final class MealDetailViewModel {
     func unlog() async {
         guard let existing = todayLog?.mealLogs.first(where: { $0.meal?.id == meal.id }) else { return }
         do {
-            try await nutritionRepository.removeMealLog(existing)
-            todayLog = try await nutritionRepository.fetchLog(for: .now)
+            try await interactor.removeMealLog(existing)
+            todayLog = try await interactor.fetchLog(for: .now)
         } catch {
             handleError(error)
         }
@@ -106,7 +106,7 @@ final class MealDetailViewModel {
         guard let option = selectedOption else { return }
         meal.preferredOptionNumber = option.optionNumber
         do {
-            try await nutritionRepository.save()
+            try await interactor.save()
             Logger.nutrition.info("Set preferred option \(option.optionNumber, privacy: .public) for \(self.meal.name, privacy: .public)")
         } catch {
             handleError(error)
@@ -120,7 +120,7 @@ final class MealDetailViewModel {
         option.meal = meal
         meal.options.append(option)
         do {
-            try await nutritionRepository.insertMealOption(option)
+            try await interactor.insertMealOption(option)
             if let idx = sortedOptions.firstIndex(where: { $0.id == option.id }) {
                 selectedOptionIndex = idx
             }
@@ -132,7 +132,7 @@ final class MealDetailViewModel {
     
     func deleteOption(_ option: MealOption) async {
         do {
-            try await nutritionRepository.deleteMealOption(option)
+            try await interactor.deleteMealOption(option)
             selectedOptionIndex = 0
             Logger.nutrition.info("Deleted option from meal \(self.meal.name, privacy: .public)")
         } catch {
@@ -146,7 +146,7 @@ final class MealDetailViewModel {
         item.mealOption = option
         option.items.append(item)
         do {
-            try await nutritionRepository.insertMealOptionItem(item)
+            try await interactor.insertMealOptionItem(item)
             Logger.nutrition.info("Added \(food.name, privacy: .public) (\(grams, privacy: .public)g) to option")
         } catch {
             handleError(error)
@@ -155,7 +155,7 @@ final class MealDetailViewModel {
     
     func deleteFoodItem(_ item: MealOptionItem) async {
         do {
-            try await nutritionRepository.deleteMealOptionItem(item)
+            try await interactor.deleteMealOptionItem(item)
             Logger.nutrition.info("Deleted food item from option")
         } catch {
             handleError(error)
@@ -176,7 +176,7 @@ final class MealDetailViewModel {
     private func ensureTodayLog() async throws -> DailyNutritionLog {
         if let existing = todayLog { return existing }
         let newLog = DailyNutritionLog(date: .now)
-        try await nutritionRepository.saveLog(newLog)
+        try await interactor.saveLog(newLog)
         todayLog = newLog
         return newLog
     }

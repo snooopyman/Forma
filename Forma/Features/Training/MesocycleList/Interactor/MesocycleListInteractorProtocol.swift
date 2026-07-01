@@ -11,4 +11,5 @@ protocol MesocycleListInteractorProtocol: Sendable {
     func fetchMesocycles() async throws -> [Mesocycle]
     func deleteMesocycle(_ mesocycle: Mesocycle) async throws
     func setActiveMesocycle(_ mesocycle: Mesocycle) async throws
+    func createMesocycle(name: String, startDate: Date, durationWeeks: Int, useFixedDays: Bool) async throws
 }

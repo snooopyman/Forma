@@ -15,7 +15,7 @@ final class PhotoGalleryViewModel {
     // MARK: - Private Properties
     
     @ObservationIgnored
-    private let repository: ProgressPhotoRepositoryProtocol
+    private let interactor: PhotoGalleryInteractorProtocol
     
     // MARK: - States
     
@@ -49,8 +49,8 @@ final class PhotoGalleryViewModel {
     
     // MARK: - Initializers
     
-    init(repository: ProgressPhotoRepositoryProtocol) {
-        self.repository = repository
+    init(interactor: PhotoGalleryInteractorProtocol) {
+        self.interactor = interactor
     }
     
     // MARK: - Functions
@@ -59,7 +59,7 @@ final class PhotoGalleryViewModel {
         isLoading = true
         defer { isLoading = false }
         do {
-            photos = try await repository.fetchAll()
+            photos = try await interactor.fetchPhotos()
         } catch {
             handleError(error)
         }
@@ -67,7 +67,7 @@ final class PhotoGalleryViewModel {
     
     func delete(_ photo: ProgressPhoto) async {
         do {
-            try await repository.delete(photo)
+            try await interactor.deletePhoto(photo)
         } catch {
             handleError(error)
         }

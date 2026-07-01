@@ -15,7 +15,7 @@ final class EditProfileViewModel {
     // MARK: - Private Properties
     
     @ObservationIgnored
-    private let repository: UserProfileRepositoryProtocol
+    private let interactor: EditProfileInteractorProtocol
     
     @ObservationIgnored
     private let profile: UserProfile
@@ -44,9 +44,9 @@ final class EditProfileViewModel {
     
     // MARK: - Initializers
     
-    init(profile: UserProfile, repository: UserProfileRepositoryProtocol) {
+    init(profile: UserProfile, interactor: EditProfileInteractorProtocol) {
         self.profile = profile
-        self.repository = repository
+        self.interactor = interactor
         self.name = profile.name
         self.birthDate = profile.birthDate
         self.heightCm = profile.heightCm
@@ -68,7 +68,7 @@ final class EditProfileViewModel {
             profile.biologicalSex = biologicalSex
             profile.activityLevel = activityLevel
             profile.weightUnit = weightUnit
-            try await repository.save(profile)
+            try await interactor.saveProfile(profile)
             Logger.core.info("Profile updated")
             saveSucceeded = true
         } catch {

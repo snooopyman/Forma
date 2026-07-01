@@ -15,10 +15,7 @@ final class MesocycleDetailViewModel {
     // MARK: - Private Properties
     
     @ObservationIgnored
-    private let mesocycleRepository: MesocycleRepositoryProtocol
-    
-    @ObservationIgnored
-    private let sessionRepository: WorkoutSessionRepositoryProtocol
+    private let interactor: MesocycleDetailInteractorProtocol
     
     // MARK: - Properties
     
@@ -38,12 +35,10 @@ final class MesocycleDetailViewModel {
     
     init(
         mesocycle: Mesocycle,
-        mesocycleRepository: MesocycleRepositoryProtocol,
-        sessionRepository: WorkoutSessionRepositoryProtocol
+        interactor: MesocycleDetailInteractorProtocol
     ) {
         self.mesocycle = mesocycle
-        self.mesocycleRepository = mesocycleRepository
-        self.sessionRepository = sessionRepository
+        self.interactor = interactor
     }
     
     // MARK: - Functions
@@ -52,8 +47,8 @@ final class MesocycleDetailViewModel {
         isLoading = true
         defer { isLoading = false }
         do {
-            sessions = try await sessionRepository.fetchAll(for: mesocycle)
-            inProgressSession = try await sessionRepository.fetchInProgress()
+            sessions = try await interactor.fetchSessions(for: mesocycle)
+            inProgressSession = try await interactor.fetchInProgressSession()
         } catch {
             handleError(error)
         }
@@ -61,7 +56,7 @@ final class MesocycleDetailViewModel {
     
     func activate() async {
         do {
-            try await mesocycleRepository.setActive(mesocycle)
+            try await interactor.activate(mesocycle)
         } catch {
             handleError(error)
         }
@@ -69,7 +64,7 @@ final class MesocycleDetailViewModel {
     
     func pause() async {
         do {
-            try await mesocycleRepository.pause(mesocycle)
+            try await interactor.pause(mesocycle)
         } catch {
             handleError(error)
         }
@@ -77,7 +72,7 @@ final class MesocycleDetailViewModel {
     
     func resume() async {
         do {
-            try await mesocycleRepository.resume(mesocycle)
+            try await interactor.resume(mesocycle)
         } catch {
             handleError(error)
         }
@@ -96,7 +91,7 @@ final class MesocycleDetailViewModel {
             isRestDay: isRestDay
         )
         do {
-            try await mesocycleRepository.addWorkoutDay(day, to: mesocycle)
+            try await interactor.addWorkoutDay(day, to: mesocycle)
         } catch {
             handleError(error)
         }

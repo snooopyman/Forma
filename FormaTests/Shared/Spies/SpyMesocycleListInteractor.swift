@@ -15,9 +15,11 @@ final class SpyMesocycleListInteractor: MesocycleListInteractorProtocol, @unchec
     private(set) var fetchMesocyclesWasCalled = false
     private(set) var deleteMesocycleWasCalled = false
     private(set) var setActiveMesocycleWasCalled = false
+    private(set) var createMesocycleWasCalled = false
     private(set) var lastDeletedMesocycle: Mesocycle?
     private(set) var lastActivatedMesocycle: Mesocycle?
-    
+    private(set) var lastCreatedName: String?
+
     // MARK: - Stub Data
     
     var stubbedMesocycles: [Mesocycle] = []
@@ -30,8 +32,10 @@ final class SpyMesocycleListInteractor: MesocycleListInteractorProtocol, @unchec
         fetchMesocyclesWasCalled = false
         deleteMesocycleWasCalled = false
         setActiveMesocycleWasCalled = false
+        createMesocycleWasCalled = false
         lastDeletedMesocycle = nil
         lastActivatedMesocycle = nil
+        lastCreatedName = nil
     }
     
     func fetchMesocycles() async throws -> [Mesocycle] {
@@ -51,5 +55,17 @@ final class SpyMesocycleListInteractor: MesocycleListInteractorProtocol, @unchec
         setActiveMesocycleWasCalled = true
         lastActivatedMesocycle = mesocycle
         if shouldThrowError { throw errorToThrow }
+    }
+
+    func createMesocycle(name: String, startDate: Date, durationWeeks: Int, useFixedDays: Bool) async throws {
+        createMesocycleWasCalled = true
+        lastCreatedName = name
+        if shouldThrowError { throw errorToThrow }
+        stubbedMesocycles.append(Mesocycle(
+            name: name,
+            startDate: startDate,
+            durationWeeks: durationWeeks,
+            useFixedDays: useFixedDays
+        ))
     }
 }

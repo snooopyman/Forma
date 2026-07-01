@@ -22,7 +22,8 @@ struct CreateNutritionPlanView: View {
     // MARK: - Initializers
 
     init(nutritionRepository: NutritionRepositoryProtocol, onSaved: @escaping () -> Void) {
-        _viewModel = State(initialValue: CreateNutritionPlanViewModel(nutritionRepository: nutritionRepository))
+        let interactor = CreatePlanInteractor(nutritionRepository: nutritionRepository)
+        _viewModel = State(initialValue: CreateNutritionPlanViewModel(interactor: interactor))
         self.onSaved = onSaved
     }
 

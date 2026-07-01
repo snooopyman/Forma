@@ -1,6 +1,6 @@
 # ADR 004: async/await como única estrategia de concurrencia
 
-Fecha: 2026-03-28 — Strict Concurrency Complete activado en 2026-06-29 (commit `d48d300`)
+Fecha: 2026-03-28 — Strict Concurrency Complete activado en 2026-06-29 (commit `d48d300`) — `SWIFT_DEFAULT_ACTOR_ISOLATION` cambiado a `nonisolated` en 2026-07-01 (commit `07a40fa`)
 Estado: Aceptada
 
 ## Contexto
@@ -9,9 +9,11 @@ La app tiene múltiples operaciones asíncronas: acceso a SwiftData, llamadas a 
 
 ## Decisión
 
-Strict Concurrency Checking en modo **Complete**, a nivel de proyecto (`SWIFT_STRICT_CONCURRENCY = complete`), junto con `SWIFT_APPROACHABLE_CONCURRENCY = YES` y `SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor`. Toda operación asíncrona usa `async/await` y `Task`. Cero `DispatchQueue`, `DispatchGroup`, `DispatchSemaphore` ni callbacks `@escaping` — confirmado: cero apariciones en todo `Forma/`.
+Strict Concurrency Checking en modo **Complete**, a nivel de proyecto (`SWIFT_STRICT_CONCURRENCY = complete`), junto con `SWIFT_APPROACHABLE_CONCURRENCY = YES` y `SWIFT_DEFAULT_ACTOR_ISOLATION = nonisolated`. Toda operación asíncrona usa `async/await` y `Task`. Cero `DispatchQueue`, `DispatchGroup`, `DispatchSemaphore` ni callbacks `@escaping` — confirmado: cero apariciones en todo `Forma/`.
 
-- ViewModels e Interactors-protocol: `@MainActor` — todas las actualizaciones de UI en el hilo principal. Los Interactors concretos en sí son `Sendable` planos, sin `@MainActor` (orquestan repos/services y pueden ejecutarse fuera del main actor).
+**Cambio 2026-07-01:** el default pasó de `MainActor` a `nonisolated` (el default clásico de Swift 6.0/6.1, confirmado por el usuario como permanente, no un experimento). Esto invierte la relación entre el default del módulo y las anotaciones explícitas: con `nonisolated` de default, `@MainActor` en ViewModels **ya no es redundante** — es la única razón por la que esas clases corren en el hilo principal. Ver `.claude/specs/patterns/concurrency-isolation.md` sección 6 para el detalle de qué se infiere con cada valor.
+
+- ViewModels e Interactors-protocol: `@MainActor` explícito y **obligatorio** (con el default en `nonisolated`, nada se infiere como `@MainActor` automáticamente) — todas las actualizaciones de UI en el hilo principal. Los Interactors concretos en sí son `Sendable` planos, sin `@MainActor` (orquestan repos/services y pueden ejecutarse fuera del main actor) — con `nonisolated` de default esto ya no depende de la excepción de `SendableMetatype` (sección 3/6 de `concurrency-isolation.md`), es simplemente el comportamiento por defecto del módulo.
 - `async let` para paralelismo acotado conocido — usado en `DashboardInteractor` (combinar varias fuentes del Dashboard) y en `HealthKitService` (fetch paralelo de minutos de ejercicio/entreno).
 - HealthKit expone APIs basadas en callback (`HKSampleQuery`, `HKStatisticsQuery`); `HealthKitService` las envuelve con `withCheckedContinuation` para exponerlas como `async`.
 - `HealthKitService` es `final class ...: @unchecked Sendable` — es la única excepción `@unchecked Sendable` del código de producción, justificada porque envuelve `HKHealthStore`, cuyas garantías de thread-safety no las puede verificar el compilador.

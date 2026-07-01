@@ -9,14 +9,13 @@ import SwiftUI
 
 struct CreateMesocycleView: View {
 
+    // MARK: - Private Properties
+
+    private let viewModel: any MesocycleListViewModelProtocol
+
     // MARK: - Environment
 
-    @Environment(AppContainer.self) private var container
     @Environment(\.dismiss) private var dismiss
-
-    // MARK: - Properties
-
-    let onSaved: () -> Void
 
     // MARK: - States
 
@@ -26,6 +25,12 @@ struct CreateMesocycleView: View {
     @State private var startDate = Date.now
     @State private var isSaving = false
     @State private var errorMessage: String?
+
+    // MARK: - Initializers
+
+    init(viewModel: any MesocycleListViewModelProtocol) {
+        self.viewModel = viewModel
+    }
 
     // MARK: - Body
 
@@ -83,15 +88,13 @@ struct CreateMesocycleView: View {
     private func save() async {
         isSaving = true
         defer { isSaving = false }
-        let mesocycle = Mesocycle(
-            name: name.trimmingCharacters(in: .whitespaces),
-            startDate: startDate,
-            durationWeeks: durationWeeks,
-            useFixedDays: useFixedDays
-        )
         do {
-            try await container.mesocycleRepository.save(mesocycle)
-            onSaved()
+            try await viewModel.createMesocycle(
+                name: name.trimmingCharacters(in: .whitespaces),
+                startDate: startDate,
+                durationWeeks: durationWeeks,
+                useFixedDays: useFixedDays
+            )
             dismiss()
         } catch {
             errorMessage = L10n.Error.generic
@@ -100,5 +103,5 @@ struct CreateMesocycleView: View {
 }
 
 #Preview(traits: .previewContainer(.empty)) {
-    CreateMesocycleView {}
+    CreateMesocycleView(viewModel: MockMesocycleListViewModel.empty)
 }

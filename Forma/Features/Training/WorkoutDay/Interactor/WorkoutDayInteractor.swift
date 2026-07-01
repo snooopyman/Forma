@@ -40,4 +40,30 @@ final class WorkoutDayInteractor: WorkoutDayInteractorProtocol {
     func startSession(for workoutDay: WorkoutDay, in mesocycle: Mesocycle) async throws -> WorkoutSession {
         try await sessionService.startSession(for: workoutDay, in: mesocycle)
     }
+
+    func addPlannedExercise(_ planned: PlannedExercise, exercise: Exercise, to day: WorkoutDay) async throws {
+        try await mesocycleRepository.addPlannedExercise(planned, exercise: exercise, to: day)
+    }
+
+    func updatePlannedExercise(
+        _ planned: PlannedExercise,
+        name: String,
+        muscle: MuscleGroup,
+        sets: Int,
+        repsMin: Int,
+        repsMax: Int,
+        rir: Int,
+        restSeconds: Int
+    ) async throws {
+        try await mesocycleRepository.updatePlannedExercise(
+            planned,
+            name: name,
+            muscle: muscle,
+            sets: sets,
+            repsMin: repsMin,
+            repsMax: repsMax,
+            rir: rir,
+            restSeconds: restSeconds
+        )
+    }
 }

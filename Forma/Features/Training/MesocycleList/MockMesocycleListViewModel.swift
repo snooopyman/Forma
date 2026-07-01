@@ -33,6 +33,15 @@ final class MockMesocycleListViewModel: MesocycleListViewModelProtocol {
         mesocycles.forEach { $0.isActive = false }
         mesocycles.first { $0.id == mesocycle.id }?.isActive = true
     }
+
+    func createMesocycle(name: String, startDate: Date, durationWeeks: Int, useFixedDays: Bool) async throws {
+        mesocycles.append(Mesocycle(
+            name: name,
+            startDate: startDate,
+            durationWeeks: durationWeeks,
+            useFixedDays: useFixedDays
+        ))
+    }
 }
 
 // MARK: - Preview Factories

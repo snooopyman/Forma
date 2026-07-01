@@ -26,10 +26,13 @@ struct MesocycleDetailView: View {
         mesocycleRepository: MesocycleRepositoryProtocol,
         sessionRepository: WorkoutSessionRepositoryProtocol
     ) {
-        _viewModel = State(initialValue: MesocycleDetailViewModel(
-            mesocycle: mesocycle,
+        let interactor = MesocycleDetailInteractor(
             mesocycleRepository: mesocycleRepository,
             sessionRepository: sessionRepository
+        )
+        _viewModel = State(initialValue: MesocycleDetailViewModel(
+            mesocycle: mesocycle,
+            interactor: interactor
         ))
     }
 
@@ -67,7 +70,7 @@ struct MesocycleDetailView: View {
             }
         }
         .sheet(isPresented: $showingCreateDay) {
-            CreateWorkoutDayView(mesocycle: viewModel.mesocycle, mesocycleRepository: container.mesocycleRepository)
+            CreateWorkoutDayView(viewModel: viewModel)
         }
         .task {
             await viewModel.load()

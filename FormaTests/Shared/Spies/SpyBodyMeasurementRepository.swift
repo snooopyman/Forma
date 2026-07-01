@@ -15,9 +15,11 @@ final class SpyBodyMeasurementRepository: BodyMeasurementRepositoryProtocol, @un
     private(set) var fetchAllWasCalled = false
     private(set) var fetchLatestWasCalled = false
     private(set) var saveWasCalled = false
+    private(set) var updateWasCalled = false
     private(set) var deleteWasCalled = false
     private(set) var lastDeletedMeasurement: BodyMeasurement?
     private(set) var lastSavedMeasurement: BodyMeasurement?
+    private(set) var lastUpdatedMeasurement: BodyMeasurement?
     
     // MARK: - Stub Data
     
@@ -32,9 +34,11 @@ final class SpyBodyMeasurementRepository: BodyMeasurementRepositoryProtocol, @un
         fetchAllWasCalled = false
         fetchLatestWasCalled = false
         saveWasCalled = false
+        updateWasCalled = false
         deleteWasCalled = false
         lastDeletedMeasurement = nil
         lastSavedMeasurement = nil
+        lastUpdatedMeasurement = nil
     }
     
     func fetchAll() async throws -> [BodyMeasurement] {
@@ -56,6 +60,8 @@ final class SpyBodyMeasurementRepository: BodyMeasurementRepositoryProtocol, @un
     }
     
     func update(_ measurement: BodyMeasurement) async throws {
+        updateWasCalled = true
+        lastUpdatedMeasurement = measurement
         if shouldThrowError { throw errorToThrow }
     }
     

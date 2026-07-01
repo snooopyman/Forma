@@ -14,7 +14,9 @@ final class MockSettingsInteractor: SettingsInteractorProtocol {
     nonisolated(unsafe) var stubbedProfile: UserProfile?
     nonisolated(unsafe) var shouldThrowOnLoad = false
     nonisolated(unsafe) var shouldThrowOnHealthKit = false
-    
+    nonisolated(unsafe) var isHealthKitAvailable = true
+    nonisolated(unsafe) var isHealthKitAuthorized = false
+
     // MARK: - Functions
     
     func loadProfile() async throws -> UserProfile? {

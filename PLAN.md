@@ -139,10 +139,10 @@ Estado actual: → **Fase 13** (Tests, en progreso) — Fase 15 (Polish + Accesi
 
 ---
 
-## Fase 12 — Capa Interactor + errores tipados + protocolos de ViewModel ✅
+## Fase 12 — Capa Interactor + errores tipados + protocolos de ViewModel ✅ (wiring real completado 2026-07-01)
 *No estaba planificada como fase propia originalmente — se hizo como bloque de retrofit (commits `041cdd2`, `3a15320`, `74a1051`, `8e7578d`) antes de Fase 13. Se documenta aquí a posteriori para que el plan refleje lo que realmente pasó.*
 - [x] Errores de dominio tipados por módulo: `TrainingError`, `NutritionError`, `ProgressError`, `SettingsError`
-- [x] Capa Interactor (`Features/{Módulo}/Interactor/`) en las 16 features con ViewModel — el ViewModel ya no llama a repositorios/servicios directamente
+- [x] Capa Interactor (`Features/{Módulo}/Interactor/`) creada en las 15 features con ViewModel — **pero el scaffolding inicial (commits de junio) no conectó 11 de esas 15 ViewModels a su Interactor; seguían llamando a repositorios/servicios directamente, dejando el triplete Interactor+Protocol+Mock como código muerto.** Un audit del 2026-07-01 lo encontró y corrigió: las 15 ViewModels llaman ahora exclusivamente a su Interactor, verificado con `grep` + build + 210 tests pasando. Ver `.claude/specs/decisions/002-arquitectura-mvvm.md`.
 - [x] `AppContainer` expone solo tipos protocolo (repos y services), nunca tipos concretos
 - [x] `handleError` por ViewModel, mapeando el error tipado del módulo a `errorMessage`
 - [x] `ViewModelProtocol` + `MockViewModel` + inyección por `@Environment`/`@Entry` en las 4 pantallas tab-root (Dashboard, MesocycleList, PlanOverview, ProgressOverview) y en ActiveSession — el resto de pantallas usa ViewModel+Interactor sin protocolo
@@ -151,15 +151,13 @@ Estado actual: → **Fase 13** (Tests, en progreso) — Fase 15 (Polish + Accesi
 
 ## Fase 13 — Tests (en progreso)
 - [x] FormaTests target con Swift Testing
-- [x] Spies para BodyMeasurement, Mesocycle, Nutrition y WorkoutSession repository protocols (FormaTests/Shared/Spies/)
-- [ ] Spies + tests para FoodItem, ProgressPhoto y UserProfile repositories
-- [x] `MesocycleListTests+ViewModel`, `MesocycleListTests+Interactor`
-- [x] `ActiveSessionTests+ViewModel`, `ActiveSessionTests+Interactor` (flujo crítico)
-- [x] `PlanOverviewTests+ViewModel/+Interactor`, `ProgressOverviewTests+ViewModel/+Interactor`
-- [ ] Tests para Dashboard, Onboarding, Settings, Nutrition (CreatePlan/EditPlan/FoodBrowser/MealDetail), Progress (BodyCharts/NewMeasurement/PhotoGallery), Training (MesocycleDetail/VolumesSummary/WorkoutDay)
+- [x] Spies para BodyMeasurement, Mesocycle, Nutrition, WorkoutSession, FoodItem, ProgressPhoto, UserProfile repository protocols + HealthKitService, RestTimerActivityService, WorkoutSessionService (`FormaTests/Shared/Spies/`)
+- [x] Tests de repositorio SwiftData-en-memoria para FoodItem, ProgressPhoto y UserProfile (`FoodItemRepositoryTests`, `ProgressPhotoRepositoryTests`, `UserProfileRepositoryTests` en `FormaTests/Data/Repositories/`) — completado 2026-07-01, mismo patrón que BodyMeasurement/Mesocycle/Nutrition/WorkoutSession (`ModelConfiguration(isStoredInMemoryOnly: true)`, sin PreviewContainer)
+- [x] Las 15 features con ViewModel+Interactor tienen `{Feature}Tests+ViewModel` y `{Feature}Tests+Interactor` — completado 2026-07-01 (ver `.claude/specs/patterns/testing.md`). El `+Interactor` de cada una testea la clase Interactor real de producción, no su propio Spy. Auditoría 2026-07-01: las 16 ViewModels (incl. Dashboard) llaman solo a su Interactor, los 16 tripletes Interactor+Protocol+Mock están completos, los 26 Spies en `FormaTests/Shared/Spies/` tienen tracking completo (`*WasCalled`/`last*`/`reset()`) — sin desviaciones encontradas
+- [ ] Tests para Dashboard (única feature con ViewModel sin cobertura — `SpyDashboardInteractor` existe pero está huérfano)
 - [ ] BodyMetricsService tests
 - [ ] VolumeCalculatorService tests
-- [ ] Cobertura ≥ 70% en lógica de negocio — no medida formalmente todavía (25 ficheros de test, 81 `@Test` en total)
+- [ ] Cobertura ≥ 70% en lógica de negocio — no medida formalmente todavía (78 ficheros de test, 220 `@Test` pasando)
 
 ---
 
@@ -167,7 +165,7 @@ Estado actual: → **Fase 13** (Tests, en progreso) — Fase 15 (Polish + Accesi
 - [x] `L10n.swift` — enum type-safe de claves de localización (`Shared/Localization/`)
 - [x] `SWIFT_STRICT_CONCURRENCY = complete` a nivel de proyecto
 - [x] `SWIFT_APPROACHABLE_CONCURRENCY = YES`
-- [x] `SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor`
+- [x] `SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor` inicialmente (commit `d48d300`, 2026-06-29) → cambiado a `nonisolated` el 2026-07-01 (commit `07a40fa`), confirmado permanente. Ver `.claude/specs/patterns/concurrency-isolation.md` sección 6 para las implicaciones (`@MainActor` en ViewModels pasa de redundante a obligatorio).
 - Nota: `FormaLiveActivityExtension` sigue en `SWIFT_VERSION = 5.0` — no se ha migrado el widget extension a Swift 6 todavía
 
 ---

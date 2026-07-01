@@ -66,6 +66,16 @@ final class MesocycleListViewModel: MesocycleListViewModelProtocol {
         }
     }
 
+    func createMesocycle(name: String, startDate: Date, durationWeeks: Int, useFixedDays: Bool) async throws {
+        try await interactor.createMesocycle(
+            name: name,
+            startDate: startDate,
+            durationWeeks: durationWeeks,
+            useFixedDays: useFixedDays
+        )
+        await load()
+    }
+
     // MARK: - Private Functions
 
     private func handleError(_ error: Error) {

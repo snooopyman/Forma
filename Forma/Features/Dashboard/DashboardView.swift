@@ -13,6 +13,7 @@ struct DashboardView: View {
     
     @Environment(AppContainer.self) private var container
     @Environment(\.dashboardViewModel) private var viewModel
+    @Environment(\.mesocycleListViewModel) private var mesocycleListViewModel
     
     // MARK: - States
     
@@ -42,7 +43,9 @@ struct DashboardView: View {
             await viewModel?.load()
         }
         .sheet(isPresented: $showingCreateMesocycle) {
-            CreateMesocycleView { }
+            if let mesocycleListViewModel {
+                CreateMesocycleView(viewModel: mesocycleListViewModel)
+            }
         }
         .sheet(isPresented: $showingCreateNutritionPlan) {
             CreateNutritionPlanView(nutritionRepository: container.nutritionRepository) { }

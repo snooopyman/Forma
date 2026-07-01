@@ -22,9 +22,10 @@ struct EditNutritionPlanView: View {
     // MARK: - Initializers
 
     init(plan: NutritionPlan, nutritionRepository: NutritionRepositoryProtocol, onSaved: @escaping () -> Void) {
+        let interactor = EditPlanInteractor(nutritionRepository: nutritionRepository)
         _viewModel = State(initialValue: EditNutritionPlanViewModel(
             plan: plan,
-            nutritionRepository: nutritionRepository
+            interactor: interactor
         ))
         self.onSaved = onSaved
     }

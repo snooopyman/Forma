@@ -148,6 +148,7 @@ struct ActiveSessionView: View {
         Text(Duration.seconds(Int(elapsedTime)).formatted(.time(pattern: .minuteSecond)))
             .font(.body.monospacedDigit())
             .foregroundStyle(.textSecondary)
+            .fixedSize(horizontal: true, vertical: false)
     }
 
     @ViewBuilder

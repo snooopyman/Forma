@@ -15,13 +15,7 @@ final class WorkoutDayDetailViewModel: AnyObject {
     // MARK: - Private Properties
     
     @ObservationIgnored
-    private let mesocycleRepository: MesocycleRepositoryProtocol
-    
-    @ObservationIgnored
-    private let sessionService: WorkoutSessionServiceProtocol
-    
-    @ObservationIgnored
-    private let sessionRepository: WorkoutSessionRepositoryProtocol
+    private let interactor: WorkoutDayInteractorProtocol
     
     // MARK: - Properties
     
@@ -49,14 +43,10 @@ final class WorkoutDayDetailViewModel: AnyObject {
     
     init(
         workoutDay: WorkoutDay,
-        mesocycleRepository: MesocycleRepositoryProtocol,
-        sessionService: WorkoutSessionServiceProtocol,
-        sessionRepository: WorkoutSessionRepositoryProtocol
+        interactor: WorkoutDayInteractorProtocol
     ) {
         self.workoutDay = workoutDay
-        self.mesocycleRepository = mesocycleRepository
-        self.sessionService = sessionService
-        self.sessionRepository = sessionRepository
+        self.interactor = interactor
     }
     
     // MARK: - Functions
@@ -65,7 +55,7 @@ final class WorkoutDayDetailViewModel: AnyObject {
         isLoading = true
         defer { isLoading = false }
         do {
-            inProgressSession = try await sessionRepository.fetchInProgress()
+            inProgressSession = try await interactor.fetchInProgressSession()
         } catch {
             handleError(error)
         }
@@ -73,7 +63,7 @@ final class WorkoutDayDetailViewModel: AnyObject {
     
     func deleteExercise(_ planned: PlannedExercise) async {
         do {
-            try await mesocycleRepository.deletePlannedExercise(planned)
+            try await interactor.deletePlannedExercise(planned)
         } catch {
             handleError(error)
         }
@@ -85,9 +75,60 @@ final class WorkoutDayDetailViewModel: AnyObject {
         }
         isStarting = true
         defer { isStarting = false }
-        return try await sessionService.startSession(for: workoutDay, in: mesocycle)
+        return try await interactor.startSession(for: workoutDay, in: mesocycle)
     }
-    
+
+    func addPlannedExercise(
+        name: String,
+        muscle: MuscleGroup,
+        sets: Int,
+        repsMin: Int,
+        repsMax: Int,
+        rir: Int,
+        restSeconds: Int
+    ) async {
+        let exercise = Exercise(name: name, primaryMuscle: muscle, isCustom: true)
+        let planned = PlannedExercise(
+            order: workoutDay.plannedExercises.count,
+            sets: sets,
+            repsMin: repsMin,
+            repsMax: repsMax,
+            rirTarget: rir,
+            restSeconds: restSeconds
+        )
+        do {
+            try await interactor.addPlannedExercise(planned, exercise: exercise, to: workoutDay)
+        } catch {
+            handleError(error)
+        }
+    }
+
+    func updatePlannedExercise(
+        _ planned: PlannedExercise,
+        name: String,
+        muscle: MuscleGroup,
+        sets: Int,
+        repsMin: Int,
+        repsMax: Int,
+        rir: Int,
+        restSeconds: Int
+    ) async {
+        do {
+            try await interactor.updatePlannedExercise(
+                planned,
+                name: name,
+                muscle: muscle,
+                sets: sets,
+                repsMin: repsMin,
+                repsMax: repsMax,
+                rir: rir,
+                restSeconds: restSeconds
+            )
+        } catch {
+            handleError(error)
+        }
+    }
+
     // MARK: - Private Functions
     
     private func handleError(_ error: Error) {

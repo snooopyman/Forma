@@ -15,7 +15,7 @@ final class EditNutritionPlanViewModel {
     // MARK: - Private Properties
     
     @ObservationIgnored
-    private let nutritionRepository: NutritionRepositoryProtocol
+    private let interactor: EditPlanInteractorProtocol
     
     // MARK: - States
     
@@ -44,9 +44,9 @@ final class EditNutritionPlanViewModel {
     
     // MARK: - Initializers
     
-    init(plan: NutritionPlan, nutritionRepository: NutritionRepositoryProtocol) {
+    init(plan: NutritionPlan, interactor: EditPlanInteractorProtocol) {
         self.plan = plan
-        self.nutritionRepository = nutritionRepository
+        self.interactor = interactor
         self.planName = plan.name
         self.caloriesText = String(plan.targetCalories)
         self.proteinText = plan.targetProteinG.formatted(.number.precision(.fractionLength(1)))
@@ -63,7 +63,7 @@ final class EditNutritionPlanViewModel {
         meal.nutritionPlan = plan
         plan.meals.append(meal)
         do {
-            try await nutritionRepository.insertMeal(meal)
+            try await interactor.insertMeal(meal)
             meals = plan.meals.sorted { $0.order < $1.order }
             Logger.nutrition.info("Added meal: \(meal.name, privacy: .public)")
         } catch {
@@ -73,7 +73,7 @@ final class EditNutritionPlanViewModel {
     
     func deleteMeal(_ meal: Meal) async {
         do {
-            try await nutritionRepository.deleteMeal(meal)
+            try await interactor.deleteMeal(meal)
             meals = plan.meals.sorted { $0.order < $1.order }
             Logger.nutrition.info("Deleted meal: \(meal.name, privacy: .public)")
         } catch {
@@ -95,7 +95,7 @@ final class EditNutritionPlanViewModel {
         plan.targetCarbsG = carbs
         plan.targetFatG = fat
         do {
-            try await nutritionRepository.save()
+            try await interactor.save()
             Logger.nutrition.info("Updated plan: \(self.plan.name, privacy: .public)")
         } catch {
             handleError(error)

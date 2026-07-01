@@ -15,7 +15,7 @@ final class FoodBrowserViewModel {
     // MARK: - Private Properties
     
     @ObservationIgnored
-    private let repository: FoodItemRepositoryProtocol
+    private let interactor: FoodBrowserInteractorProtocol
     
     // MARK: - States
     
@@ -44,8 +44,8 @@ final class FoodBrowserViewModel {
     
     // MARK: - Initializers
     
-    init(repository: FoodItemRepositoryProtocol) {
-        self.repository = repository
+    init(interactor: FoodBrowserInteractorProtocol) {
+        self.interactor = interactor
     }
     
     // MARK: - Functions
@@ -54,7 +54,7 @@ final class FoodBrowserViewModel {
         isLoading = true
         defer { isLoading = false }
         do {
-            allItems = try await repository.fetchAll()
+            allItems = try await interactor.fetchAllItems()
         } catch {
             handleError(error)
         }

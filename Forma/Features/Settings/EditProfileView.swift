@@ -20,9 +20,10 @@ struct EditProfileView: View {
     // MARK: - Initializers
 
     init(profile: UserProfile, repository: UserProfileRepositoryProtocol) {
+        let interactor = EditProfileInteractor(userProfileRepository: repository)
         _viewModel = State(initialValue: EditProfileViewModel(
             profile: profile,
-            repository: repository
+            interactor: interactor
         ))
     }
 

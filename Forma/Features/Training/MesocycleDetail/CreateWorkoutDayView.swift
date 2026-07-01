@@ -12,8 +12,7 @@ struct CreateWorkoutDayView: View {
 
     // MARK: - Private Properties
 
-    private let mesocycle: Mesocycle
-    private let mesocycleRepository: MesocycleRepositoryProtocol
+    private let viewModel: MesocycleDetailViewModel
 
     // MARK: - Environment
 
@@ -29,9 +28,8 @@ struct CreateWorkoutDayView: View {
 
     // MARK: - Initializers
 
-    init(mesocycle: Mesocycle, mesocycleRepository: MesocycleRepositoryProtocol) {
-        self.mesocycle = mesocycle
-        self.mesocycleRepository = mesocycleRepository
+    init(viewModel: MesocycleDetailViewModel) {
+        self.viewModel = viewModel
     }
 
     // MARK: - Body
@@ -43,7 +41,7 @@ struct CreateWorkoutDayView: View {
                     TextField(String(localized: "Day name"), text: $name)
                     Toggle(String(localized: "Rest day"), isOn: $isRestDay.animation())
                 }
-                if !isRestDay && mesocycle.useFixedDays {
+                if !isRestDay && viewModel.mesocycle.useFixedDays {
                     Section {
                         Picker(String(localized: "Weekday"), selection: $weekday) {
                             Text(String(localized: "Not fixed")).tag(Optional<Weekday>.none)
@@ -87,17 +85,16 @@ struct CreateWorkoutDayView: View {
     private func save() async {
         isSaving = true
         defer { isSaving = false }
-        let day = WorkoutDay(
+        await viewModel.addWorkoutDay(
             name: name.trimmingCharacters(in: .whitespaces),
-            order: mesocycle.workoutDays.count,
-            weekday: isRestDay ? nil : weekday,
-            isRestDay: isRestDay
+            isRestDay: isRestDay,
+            weekday: weekday
         )
-        do {
-            try await mesocycleRepository.addWorkoutDay(day, to: mesocycle)
+        if viewModel.errorMessage != nil {
+            errorMessage = viewModel.errorMessage
+            viewModel.errorMessage = nil
+        } else {
             dismiss()
-        } catch {
-            errorMessage = L10n.Error.generic
         }
     }
 }

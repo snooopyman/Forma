@@ -20,10 +20,11 @@ struct ProfileSetupView: View {
     // MARK: - Initializers
 
     init(repository: UserProfileRepositoryProtocol, healthKitService: HealthKitServiceProtocol) {
-        _viewModel = State(initialValue: ProfileSetupViewModel(
-            repository: repository,
+        let interactor = ProfileSetupInteractor(
+            userProfileRepository: repository,
             healthKitService: healthKitService
-        ))
+        )
+        _viewModel = State(initialValue: ProfileSetupViewModel(interactor: interactor))
     }
 
     // MARK: - Body

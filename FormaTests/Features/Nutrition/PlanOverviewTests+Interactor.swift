@@ -15,16 +15,28 @@ extension PlanOverviewTests {
     @MainActor
     struct InteractorTests {
 
-        let spy: SpyPlanOverviewInteractor
+        // MARK: - Subject Under Test
+
+        let sut: PlanOverviewInteractor
+
+        // MARK: - Spies
+
+        let spy: SpyNutritionRepository
+
+        // MARK: - Initializers
 
         init() {
-            spy = SpyPlanOverviewInteractor()
+            spy = SpyNutritionRepository()
+            sut = PlanOverviewInteractor(nutritionRepository: spy, macroService: MacroTrackingService())
         }
 
-        @Test("fetchActivePlan is tracked by spy")
+        @Test("fetchActivePlan delegates to repository")
         func fetchActivePlanTracked() async throws {
-            _ = try await spy.fetchActivePlan()
+            let plan = NutritionPlan(name: "Plan", targetCalories: 2000, targetProteinG: 150, targetCarbsG: 200, targetFatG: 60)
+            spy.stubbedActivePlan = plan
+            let result = try await sut.fetchActivePlan()
             #expect(spy.fetchActivePlanWasCalled == true)
+            #expect(result?.id == plan.id)
         }
 
         @Test("fetchActivePlan propagates error")
@@ -32,38 +44,47 @@ extension PlanOverviewTests {
             spy.shouldThrowError = true
             spy.errorToThrow = NutritionError.loadFailed
             await #expect(throws: NutritionError.self) {
-                _ = try await spy.fetchActivePlan()
+                _ = try await sut.fetchActivePlan()
             }
         }
 
-        @Test("fetchLog is tracked by spy")
+        @Test("fetchLog delegates to repository")
         func fetchLogTracked() async throws {
-            _ = try await spy.fetchLog(for: .now)
+            _ = try await sut.fetchLog(for: .now)
             #expect(spy.fetchLogWasCalled == true)
         }
 
-        @Test("addMealLog tracks last added log")
+        @Test("computeSummary uses the real MacroTrackingService")
+        func computeSummaryUsesRealService() {
+            let plan = NutritionPlan(name: "Plan", targetCalories: 2000, targetProteinG: 150, targetCarbsG: 200, targetFatG: 60)
+            let summary = sut.computeSummary(plan: plan, log: nil)
+            #expect(summary.targetCalories == 2000)
+            #expect(summary.consumedCalories == 0)
+        }
+
+        @Test("saveLog delegates to repository")
+        func saveLogTracked() async throws {
+            let log = DailyNutritionLog(date: .now)
+            try await sut.saveLog(log)
+            #expect(spy.saveLogWasCalled == true)
+            #expect(spy.lastSavedLog?.id == log.id)
+        }
+
+        @Test("addMealLog delegates to repository")
         func addMealLogTracked() async throws {
             let log = DailyNutritionLog(date: .now)
             let mealLog = MealLog(wasFollowed: true)
-            try await spy.addMealLog(mealLog, to: log)
+            try await sut.addMealLog(mealLog, to: log)
             #expect(spy.addMealLogWasCalled == true)
             #expect(spy.lastAddedMealLog?.id == mealLog.id)
         }
 
-        @Test("removeMealLog tracks last removed log")
+        @Test("removeMealLog delegates to repository")
         func removeMealLogTracked() async throws {
             let mealLog = MealLog(wasFollowed: true)
-            try await spy.removeMealLog(mealLog)
+            try await sut.removeMealLog(mealLog)
             #expect(spy.removeMealLogWasCalled == true)
             #expect(spy.lastRemovedMealLog?.id == mealLog.id)
-        }
-
-        @Test("reset clears all tracking flags")
-        func resetClearsFlags() async throws {
-            _ = try await spy.fetchActivePlan()
-            spy.reset()
-            #expect(spy.fetchActivePlanWasCalled == false)
         }
     }
 }

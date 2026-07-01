@@ -15,14 +15,8 @@ final class NewMeasurementViewModel {
     // MARK: - Private Properties
     
     @ObservationIgnored
-    private let repository: BodyMeasurementRepositoryProtocol
-    
-    @ObservationIgnored
-    private let profileRepository: UserProfileRepositoryProtocol
-    
-    @ObservationIgnored
-    private let healthKitService: HealthKitServiceProtocol
-    
+    private let interactor: NewMeasurementInteractorProtocol
+
     @ObservationIgnored
     private let existingMeasurement: BodyMeasurement?
     
@@ -60,15 +54,11 @@ final class NewMeasurementViewModel {
     // MARK: - Initializers
     
     init(
-        repository: BodyMeasurementRepositoryProtocol,
-        profileRepository: UserProfileRepositoryProtocol,
-        healthKitService: HealthKitServiceProtocol,
+        interactor: NewMeasurementInteractorProtocol,
         editing: BodyMeasurement? = nil,
         onSaved: @escaping @MainActor () -> Void
     ) {
-        self.repository = repository
-        self.profileRepository = profileRepository
-        self.healthKitService = healthKitService
+        self.interactor = interactor
         self.existingMeasurement = editing
         self.onSaved = onSaved
         
@@ -92,12 +82,12 @@ final class NewMeasurementViewModel {
     
     func loadProfileHeight() async {
         guard heightText.isEmpty else { return }
-        let profile = try? await profileRepository.fetch()
+        let profile = try? await interactor.fetchProfile()
         let h = profile?.heightCm ?? 170
         heightText = h.formatted(.number.precision(.fractionLength(0)))
-        
+
         if weightText.isEmpty, existingMeasurement == nil,
-           let hkWeight = await healthKitService.fetchLatestWeight() {
+           let hkWeight = await interactor.fetchLatestWeight() {
             weightText = hkWeight.formatted(.number.precision(.fractionLength(1)))
         }
     }
@@ -119,9 +109,9 @@ final class NewMeasurementViewModel {
                 existing.pelvisCm = parseOptional(pelvisText)
                 existing.thighCm = parseOptional(thighText)
                 existing.notes = notes
-                try await repository.update(existing)
+                try await interactor.updateMeasurement(existing)
             } else {
-                let profile = try? await profileRepository.fetch()
+                let profile = try? await interactor.fetchProfile()
                 let measurement = BodyMeasurement(
                     date: date,
                     weightKg: weight,
@@ -135,9 +125,9 @@ final class NewMeasurementViewModel {
                     thighCm: parseOptional(thighText),
                     notes: notes
                 )
-                try await repository.save(measurement)
+                try await interactor.saveMeasurement(measurement)
             }
-            await healthKitService.writeWeight(weight, date: date)
+            await interactor.writeWeight(weight, date: date)
             Logger.progress.info("Saved measurement: \(weight, privacy: .public) kg")
             onSaved()
         } catch {

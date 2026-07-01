@@ -23,7 +23,7 @@ final class CreateNutritionPlanViewModel {
     // MARK: - Private Properties
     
     @ObservationIgnored
-    private let nutritionRepository: NutritionRepositoryProtocol
+    private let interactor: CreatePlanInteractorProtocol
     
     // MARK: - States
     
@@ -51,8 +51,8 @@ final class CreateNutritionPlanViewModel {
     
     // MARK: - Initializers
     
-    init(nutritionRepository: NutritionRepositoryProtocol) {
-        self.nutritionRepository = nutritionRepository
+    init(interactor: CreatePlanInteractorProtocol) {
+        self.interactor = interactor
         draftMeals = [
             DraftMeal(name: L10n.Nutrition.Meal.breakfast, mealType: .breakfast, isRequired: true),
             DraftMeal(name: L10n.Nutrition.Meal.lunch, mealType: .lunch, isRequired: true),
@@ -92,8 +92,8 @@ final class CreateNutritionPlanViewModel {
                 meal.nutritionPlan = plan
                 plan.meals.append(meal)
             }
-            try await nutritionRepository.savePlan(plan)
-            try await nutritionRepository.setActivePlan(plan)
+            try await interactor.savePlan(plan)
+            try await interactor.setActivePlan(plan)
             Logger.nutrition.info("Created plan: \(plan.name, privacy: .public)")
         } catch {
             handleError(error)

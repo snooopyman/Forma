@@ -32,4 +32,14 @@ final class MesocycleListInteractor: MesocycleListInteractorProtocol {
     func setActiveMesocycle(_ mesocycle: Mesocycle) async throws {
         try await repository.setActive(mesocycle)
     }
+
+    func createMesocycle(name: String, startDate: Date, durationWeeks: Int, useFixedDays: Bool) async throws {
+        let mesocycle = Mesocycle(
+            name: name,
+            startDate: startDate,
+            durationWeeks: durationWeeks,
+            useFixedDays: useFixedDays
+        )
+        try await repository.save(mesocycle)
+    }
 }

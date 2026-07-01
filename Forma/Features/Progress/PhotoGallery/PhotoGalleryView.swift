@@ -26,7 +26,8 @@ struct PhotoGalleryView: View {
     // MARK: - Initializers
 
     init(repository: ProgressPhotoRepositoryProtocol) {
-        _viewModel = State(initialValue: PhotoGalleryViewModel(repository: repository))
+        let interactor = PhotoGalleryInteractor(repository: repository)
+        _viewModel = State(initialValue: PhotoGalleryViewModel(interactor: interactor))
     }
 
     // MARK: - Body
