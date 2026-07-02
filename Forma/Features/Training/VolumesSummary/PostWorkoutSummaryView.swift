@@ -36,6 +36,7 @@ struct PostWorkoutSummaryView: View {
             }
             .padding(DS.Spacing.lg)
         }
+        .scrollIndicators(.hidden)
         .background(.backgroundPrimary)
         .safeAreaInset(edge: .bottom) {
             doneButton

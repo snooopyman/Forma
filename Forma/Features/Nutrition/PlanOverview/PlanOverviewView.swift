@@ -123,6 +123,7 @@ struct PlanOverviewView: View {
             }
             .padding(DS.Spacing.lg)
         }
+        .scrollIndicators(.hidden)
         .background(.backgroundPrimary)
     }
     

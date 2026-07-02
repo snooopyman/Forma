@@ -135,6 +135,7 @@ struct DashboardView: View {
             .padding(.horizontal, DS.Spacing.lg)
             .padding(.bottom, DS.Spacing.xxl)
         }
+        .scrollIndicators(.hidden)
     }
 
     @ViewBuilder
