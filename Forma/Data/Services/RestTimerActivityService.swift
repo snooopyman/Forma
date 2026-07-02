@@ -50,10 +50,3 @@ final class RestTimerActivityService: RestTimerActivityServiceProtocol {
         currentActivity = nil
     }
 }
-
-// MARK: - Mock
-
-struct MockRestTimerActivityService: RestTimerActivityServiceProtocol {
-    func startActivity(exerciseName: String, seconds: Int) async {}
-    func endActivity() async {}
-}
