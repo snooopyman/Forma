@@ -35,6 +35,9 @@ struct PostWorkoutSummaryView: View {
                 }
             }
             .padding(DS.Spacing.lg)
+            .overlay {
+                GymIconRainView()
+            }
         }
         .scrollIndicators(.hidden)
         .background(.backgroundPrimary)
