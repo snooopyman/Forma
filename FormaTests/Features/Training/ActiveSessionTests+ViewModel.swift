@@ -90,5 +90,49 @@ extension ActiveSessionTests {
             #expect(sut.restSecondsRemaining == 0)
             #expect(sut.isResting == false)
         }
+
+        @Test("loadReferenceSets caches last sets, exposing a reference set and a suggested target")
+        func loadReferenceSetsPopulatesSuggestion() async {
+            let exercise = Exercise(name: "Bench Press", primaryMuscle: .chest, equipment: EquipmentType.barbell.rawValue)
+            let planned = PlannedExercise(order: 0, repsMin: 8, repsMax: 10, rirTarget: 2)
+            planned.exercise = exercise
+            spy.stubbedLastSets = [LoggedSet(order: 1, exerciseName: "Bench Press", weightKg: 100, reps: 10, rirActual: 2)]
+
+            await sut.loadReferenceSets(for: planned)
+
+            #expect(sut.referenceSet(for: planned)?.weightKg == 100)
+            #expect(sut.suggestedTarget(for: planned)?.suggestedWeightKg == 102.5)
+            #expect(sut.suggestedTarget(for: planned)?.suggestedReps == 8)
+        }
+
+        @Test("applySuggestion writes the suggested weight and reps into the inputs")
+        func applySuggestionWritesInputs() async {
+            let exercise = Exercise(name: "Bench Press", primaryMuscle: .chest, equipment: EquipmentType.barbell.rawValue)
+            let planned = PlannedExercise(order: 0, repsMin: 8, repsMax: 10, rirTarget: 2)
+            planned.exercise = exercise
+            spy.stubbedLastSets = [LoggedSet(order: 1, exerciseName: "Bench Press", weightKg: 100, reps: 10, rirActual: 2)]
+
+            await sut.loadReferenceSets(for: planned)
+            sut.applySuggestion(for: planned)
+
+            #expect(sut.weightInputs[planned.id]?.weightDouble == 102.5)
+            #expect(sut.repsInputs[planned.id] == "8")
+        }
+
+        @Test("No suggestion is offered when the exercise was skipped in the last completed session")
+        func noSuggestionWhenSkippedLastTime() async {
+            let exercise = Exercise(name: "Bench Press", primaryMuscle: .chest, equipment: EquipmentType.barbell.rawValue)
+            let planned = PlannedExercise(order: 0)
+            planned.exercise = exercise
+            spy.stubbedLastSets = []
+
+            await sut.loadReferenceSets(for: planned)
+            sut.applySuggestion(for: planned)
+
+            #expect(sut.referenceSet(for: planned) == nil)
+            #expect(sut.suggestedTarget(for: planned) == nil)
+            #expect(sut.weightInputs[planned.id] == nil)
+            #expect(sut.repsInputs[planned.id] == nil)
+        }
     }
 }

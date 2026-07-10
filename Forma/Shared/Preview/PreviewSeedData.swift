@@ -38,16 +38,16 @@ enum PreviewSeedData {
 
     private static func insertExercises(into context: ModelContext) -> [Exercise] {
         let exercises: [Exercise] = [
-            Exercise(name: "Bench Press", primaryMuscle: .chest, secondaryMuscles: [.triceps, .shoulders], equipment: "Barbell"),
-            Exercise(name: "Incline Dumbbell Press", primaryMuscle: .chest, secondaryMuscles: [.shoulders], equipment: "Dumbbell"),
-            Exercise(name: "Pull-Up", primaryMuscle: .back, secondaryMuscles: [.biceps, .shoulders], equipment: "Bodyweight"),
-            Exercise(name: "Barbell Row", primaryMuscle: .back, secondaryMuscles: [.biceps, .shoulders], equipment: "Barbell"),
-            Exercise(name: "Squat", primaryMuscle: .quadriceps, secondaryMuscles: [.glutes, .hamstrings], equipment: "Barbell"),
-            Exercise(name: "Romanian Deadlift", primaryMuscle: .hamstrings, secondaryMuscles: [.glutes, .back], equipment: "Barbell"),
-            Exercise(name: "Overhead Press", primaryMuscle: .shoulders, secondaryMuscles: [.triceps], equipment: "Barbell"),
-            Exercise(name: "Lateral Raise", primaryMuscle: .shoulders, equipment: "Dumbbell"),
-            Exercise(name: "Tricep Pushdown", primaryMuscle: .triceps, equipment: "Cable"),
-            Exercise(name: "Barbell Curl", primaryMuscle: .biceps, equipment: "Barbell"),
+            Exercise(name: "Bench Press", primaryMuscle: .chest, secondaryMuscles: [.triceps, .shoulders], equipment: EquipmentType.barbell.rawValue),
+            Exercise(name: "Incline Dumbbell Press", primaryMuscle: .chest, secondaryMuscles: [.shoulders], equipment: EquipmentType.dumbbell.rawValue),
+            Exercise(name: "Pull-Up", primaryMuscle: .back, secondaryMuscles: [.biceps, .shoulders], equipment: EquipmentType.bodyweight.rawValue),
+            Exercise(name: "Barbell Row", primaryMuscle: .back, secondaryMuscles: [.biceps, .shoulders], equipment: EquipmentType.barbell.rawValue),
+            Exercise(name: "Squat", primaryMuscle: .quadriceps, secondaryMuscles: [.glutes, .hamstrings], equipment: EquipmentType.barbell.rawValue),
+            Exercise(name: "Romanian Deadlift", primaryMuscle: .hamstrings, secondaryMuscles: [.glutes, .back], equipment: EquipmentType.barbell.rawValue),
+            Exercise(name: "Overhead Press", primaryMuscle: .shoulders, secondaryMuscles: [.triceps], equipment: EquipmentType.barbell.rawValue),
+            Exercise(name: "Lateral Raise", primaryMuscle: .shoulders, equipment: EquipmentType.dumbbell.rawValue),
+            Exercise(name: "Tricep Pushdown", primaryMuscle: .triceps, equipment: EquipmentType.machineOrCable.rawValue),
+            Exercise(name: "Barbell Curl", primaryMuscle: .biceps, equipment: EquipmentType.barbell.rawValue),
         ]
         exercises.forEach { context.insert($0) }
         return exercises

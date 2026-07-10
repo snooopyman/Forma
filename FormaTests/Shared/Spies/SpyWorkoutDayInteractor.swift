@@ -71,6 +71,7 @@ final class SpyWorkoutDayInteractor: WorkoutDayInteractorProtocol, @unchecked Se
         _ planned: PlannedExercise,
         name: String,
         muscle: MuscleGroup,
+        equipment: EquipmentType?,
         sets: Int,
         repsMin: Int,
         repsMax: Int,

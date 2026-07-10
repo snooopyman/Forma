@@ -16,6 +16,7 @@ protocol WorkoutDayInteractorProtocol: Sendable {
         _ planned: PlannedExercise,
         name: String,
         muscle: MuscleGroup,
+        equipment: EquipmentType?,
         sets: Int,
         repsMin: Int,
         repsMax: Int,

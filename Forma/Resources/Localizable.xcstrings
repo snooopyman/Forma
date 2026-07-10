@@ -398,6 +398,17 @@
         }
       }
     },
+    "Barbell" : {
+      "comment" : "Equipment type: barbell.",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Barra"
+          }
+        }
+      }
+    },
     "Biceps" : {
       "comment" : "Localized name of the biceps muscle group.",
       "localizations" : {
@@ -459,6 +470,17 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "% Grasa"
+          }
+        }
+      }
+    },
+    "Bodyweight" : {
+      "comment" : "Equipment type: bodyweight, no external load.",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Peso corporal"
           }
         }
       }
@@ -704,6 +726,17 @@
         }
       }
     },
+    "Controls the suggested weight jump: smaller for barbells, bigger for dumbbells" : {
+      "comment" : "Explanatory popover text for the equipment picker in the exercise form.",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Controla el salto de peso sugerido: menor en barra, mayor en mancuerna"
+          }
+        }
+      }
+    },
     "Core" : {
       "comment" : "Localized name of the core muscle group.",
       "localizations" : {
@@ -932,6 +965,17 @@
         }
       }
     },
+    "Dumbbell" : {
+      "comment" : "Equipment type: dumbbell.",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mancuerna"
+          }
+        }
+      }
+    },
     "Duration" : {
       "comment" : "Label for workout session duration.",
       "localizations" : {
@@ -1022,6 +1066,17 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Editar perfil"
+          }
+        }
+      }
+    },
+    "Equipment" : {
+      "comment" : "Picker label for selecting the equipment type of a planned exercise.",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Equipo"
           }
         }
       }
@@ -1553,6 +1608,17 @@
         }
       }
     },
+    "Last time" : {
+      "comment" : "Label showing the reference weight/reps/RIR from the last completed session, in active session set logging.",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Última vez"
+          }
+        }
+      }
+    },
     "Latest check-in" : {
       "localizations" : {
         "en" : {
@@ -1661,6 +1727,17 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Almuerzo"
+          }
+        }
+      }
+    },
+    "Machine / Cable" : {
+      "comment" : "Equipment type: machine or cable pulley.",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Máquina / Polea"
           }
         }
       }
@@ -3282,6 +3359,28 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Desmarcar"
+          }
+        }
+      }
+    },
+    "Unspecified" : {
+      "comment" : "Default option for the equipment picker when no equipment type is set.",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sin especificar"
+          }
+        }
+      }
+    },
+    "Use suggestion" : {
+      "comment" : "Button that applies the progressive overload suggestion to the weight/reps inputs in active session set logging.",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Usar sugerencia"
           }
         }
       }

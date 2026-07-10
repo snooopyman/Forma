@@ -117,9 +117,10 @@ final class MesocycleRepository: MesocycleRepositoryProtocol {
         }
     }
     
-    func updatePlannedExercise(_ planned: PlannedExercise, name: String, muscle: MuscleGroup, sets: Int, repsMin: Int, repsMax: Int, rir: Int, restSeconds: Int) async throws {
+    func updatePlannedExercise(_ planned: PlannedExercise, name: String, muscle: MuscleGroup, equipment: EquipmentType?, sets: Int, repsMin: Int, repsMax: Int, rir: Int, restSeconds: Int) async throws {
         planned.exercise?.name = name
         planned.exercise?.primaryMuscle = muscle
+        planned.exercise?.equipmentType = equipment
         planned.sets = sets
         planned.repsMin = repsMin
         planned.repsMax = repsMax

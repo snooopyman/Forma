@@ -23,6 +23,7 @@ struct AddPlannedExerciseView: View {
     
     @State private var exerciseName: String
     @State private var muscle: MuscleGroup
+    @State private var equipment: EquipmentType?
     @State private var sets: Int
     @State private var repsMin: Int
     @State private var repsMax: Int
@@ -30,6 +31,7 @@ struct AddPlannedExerciseView: View {
     @State private var restSeconds: Int
     @State private var isSaving = false
     @State private var errorMessage: String?
+    @State private var showEquipmentInfo = false
     
     // MARK: - Computed Properties
     
@@ -42,6 +44,7 @@ struct AddPlannedExerciseView: View {
         self.editingExercise = nil
         _exerciseName = State(initialValue: "")
         _muscle = State(initialValue: .chest)
+        _equipment = State(initialValue: nil)
         _sets = State(initialValue: 3)
         _repsMin = State(initialValue: 8)
         _repsMax = State(initialValue: 12)
@@ -54,6 +57,7 @@ struct AddPlannedExerciseView: View {
         self.editingExercise = planned
         _exerciseName = State(initialValue: planned.exercise?.name ?? "")
         _muscle = State(initialValue: planned.exercise?.primaryMuscle ?? .chest)
+        _equipment = State(initialValue: planned.exercise?.equipmentType)
         _sets = State(initialValue: planned.sets)
         _repsMin = State(initialValue: planned.repsMin)
         _repsMax = State(initialValue: planned.repsMax)
@@ -71,6 +75,27 @@ struct AddPlannedExerciseView: View {
                     Picker(String(localized: "Muscle group"), selection: $muscle) {
                         ForEach(MuscleGroup.allCases, id: \.self) { m in
                             Text(m.localizedName).tag(m)
+                        }
+                    }
+                    HStack {
+                        Picker(String(localized: "Equipment"), selection: $equipment) {
+                            Text(String(localized: "Unspecified")).tag(EquipmentType?.none)
+                            ForEach(EquipmentType.allCases, id: \.self) { type in
+                                Text(type.localizedName).tag(EquipmentType?.some(type))
+                            }
+                        }
+                        Button {
+                            showEquipmentInfo = true
+                        } label: {
+                            Image(systemName: "info.circle")
+                                .foregroundStyle(.textSecondary)
+                        }
+                        .buttonStyle(.plain)
+                        .popover(isPresented: $showEquipmentInfo) {
+                            Text(String(localized: "Controls the suggested weight jump: smaller for barbells, bigger for dumbbells"))
+                                .font(.footnote)
+                                .padding()
+                                .presentationCompactAdaptation(.popover)
                         }
                     }
                 }
@@ -156,6 +181,7 @@ struct AddPlannedExerciseView: View {
                 planned,
                 name: exerciseName.trimmingCharacters(in: .whitespaces),
                 muscle: muscle,
+                equipment: equipment,
                 sets: sets,
                 repsMin: repsMin,
                 repsMax: repsMax,
@@ -166,6 +192,7 @@ struct AddPlannedExerciseView: View {
             await viewModel.addPlannedExercise(
                 name: exerciseName.trimmingCharacters(in: .whitespaces),
                 muscle: muscle,
+                equipment: equipment,
                 sets: sets,
                 repsMin: repsMin,
                 repsMax: repsMax,

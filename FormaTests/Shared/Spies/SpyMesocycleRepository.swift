@@ -110,7 +110,7 @@ final class SpyMesocycleRepository: MesocycleRepositoryProtocol, @unchecked Send
         if shouldThrowError { throw errorToThrow }
     }
 
-    func updatePlannedExercise(_ planned: PlannedExercise, name: String, muscle: MuscleGroup, sets: Int, repsMin: Int, repsMax: Int, rir: Int, restSeconds: Int) async throws {
+    func updatePlannedExercise(_ planned: PlannedExercise, name: String, muscle: MuscleGroup, equipment: EquipmentType?, sets: Int, repsMin: Int, repsMax: Int, rir: Int, restSeconds: Int) async throws {
         updatePlannedExerciseWasCalled = true
         lastUpdatedPlannedExercise = planned
         if shouldThrowError { throw errorToThrow }

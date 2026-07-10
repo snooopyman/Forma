@@ -81,13 +81,14 @@ final class WorkoutDayDetailViewModel: AnyObject {
     func addPlannedExercise(
         name: String,
         muscle: MuscleGroup,
+        equipment: EquipmentType?,
         sets: Int,
         repsMin: Int,
         repsMax: Int,
         rir: Int,
         restSeconds: Int
     ) async {
-        let exercise = Exercise(name: name, primaryMuscle: muscle, isCustom: true)
+        let exercise = Exercise(name: name, primaryMuscle: muscle, equipment: equipment?.rawValue ?? "", isCustom: true)
         let planned = PlannedExercise(
             order: workoutDay.plannedExercises.count,
             sets: sets,
@@ -107,6 +108,7 @@ final class WorkoutDayDetailViewModel: AnyObject {
         _ planned: PlannedExercise,
         name: String,
         muscle: MuscleGroup,
+        equipment: EquipmentType?,
         sets: Int,
         repsMin: Int,
         repsMax: Int,
@@ -118,6 +120,7 @@ final class WorkoutDayDetailViewModel: AnyObject {
                 planned,
                 name: name,
                 muscle: muscle,
+                equipment: equipment,
                 sets: sets,
                 repsMin: repsMin,
                 repsMax: repsMax,

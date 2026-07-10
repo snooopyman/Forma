@@ -20,6 +20,11 @@ final class Exercise {
     var instructions: String
     var isCustom: Bool
 
+    var equipmentType: EquipmentType? {
+        get { EquipmentType(rawValue: equipment) }
+        set { equipment = newValue?.rawValue ?? "" }
+    }
+
     init(
         id: UUID = UUID(),
         name: String,

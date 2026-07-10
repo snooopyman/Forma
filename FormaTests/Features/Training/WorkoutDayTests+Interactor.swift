@@ -75,7 +75,7 @@ extension WorkoutDayTests {
         @Test("updatePlannedExercise delegates to mesocycle repository")
         func updatePlannedExerciseTracked() async throws {
             let planned = PlannedExercise(order: 0)
-            try await sut.updatePlannedExercise(planned, name: "Incline Press", muscle: .chest, sets: 3, repsMin: 8, repsMax: 12, rir: 1, restSeconds: 90)
+            try await sut.updatePlannedExercise(planned, name: "Incline Press", muscle: .chest, equipment: .barbell, sets: 3, repsMin: 8, repsMax: 12, rir: 1, restSeconds: 90)
             #expect(spyMesocycleRepository.updatePlannedExerciseWasCalled == true)
             #expect(spyMesocycleRepository.lastUpdatedPlannedExercise?.id == planned.id)
         }

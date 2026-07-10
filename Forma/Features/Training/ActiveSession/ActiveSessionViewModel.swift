@@ -12,61 +12,63 @@ import os
 @Observable
 @MainActor
 final class ActiveSessionViewModel: ActiveSessionViewModelProtocol {
-
+    
     // MARK: - Private Properties
-
+    
     @ObservationIgnored
     private let interactor: ActiveSessionInteractorProtocol
-
+    
     @ObservationIgnored
     private let exportWorkoutsKey = "com.armando.forma.exportWorkoutsToHealth"
-
+    
     @ObservationIgnored
     private var restTimerTask: Task<Void, Never>?
-
+    
+    private var lastSetsByExercise: [UUID: [LoggedSet]] = [:]
+    
     // MARK: - Properties
-
+    
     let session: WorkoutSession
     let workoutDay: WorkoutDay
-
+    
     var currentExerciseIndex = 0
     var isCompleting = false
     var showFinishConfirmation = false
     var showDiscardConfirmation = false
     var isCompleted = false
     var errorMessage: String?
-
+    
     // Keyed by PlannedExercise.id
     var weightInputs: [UUID: String] = [:]
     var repsInputs: [UUID: String] = [:]
     var rirInputs: [UUID: String] = [:]
-
+    
     var restSecondsRemaining = 0
     var isResting = false
     var restJustEnded = false
     var wasExportedToHealth = false
-
+    
     // MARK: - Computed Properties
-
+    
     var sortedExercises: [PlannedExercise] {
         workoutDay.plannedExercises.sorted { $0.order < $1.order }
     }
-
+    
     var currentExercise: PlannedExercise? {
         guard !sortedExercises.isEmpty,
               currentExerciseIndex < sortedExercises.count else { return nil }
         return sortedExercises[currentExerciseIndex]
     }
-
+    
     var elapsedTime: TimeInterval {
         Date.now.timeIntervalSince(session.startedAt)
     }
-
+    
     var canNavigatePrevious: Bool { currentExerciseIndex > 0 }
     var canNavigateNext: Bool { currentExerciseIndex < sortedExercises.count - 1 }
-
+    
     // MARK: - Initializers
-
+    
     init(
         session: WorkoutSession,
         workoutDay: WorkoutDay,
@@ -76,19 +78,19 @@ final class ActiveSessionViewModel: ActiveSessionViewModelProtocol {
         self.workoutDay = workoutDay
         self.interactor = interactor
     }
-
+    
     // MARK: - Functions
-
+    
     func loggedSets(for exercise: PlannedExercise) -> [LoggedSet] {
         session.loggedSets
             .filter { $0.plannedExercise?.id == exercise.id }
             .sorted { $0.order < $1.order }
     }
-
+    
     func nextSetNumber(for exercise: PlannedExercise) -> Int {
         loggedSets(for: exercise).count + 1
     }
-
+    
     func setRowState(setNumber: Int, for exercise: PlannedExercise) -> SetRowState {
         let logged = loggedSets(for: exercise)
         let completedCount = logged.count
@@ -96,31 +98,31 @@ final class ActiveSessionViewModel: ActiveSessionViewModelProtocol {
         if setNumber == completedCount + 1 { return .active }
         return .pending
     }
-
+    
     func navigatePrevious() {
         guard canNavigatePrevious else { return }
         currentExerciseIndex -= 1
     }
-
+    
     func navigateNext() {
         guard canNavigateNext else { return }
         currentExerciseIndex += 1
     }
-
+    
     func logSet(for exercise: PlannedExercise) async {
         let weightText = weightInputs[exercise.id] ?? ""
         let repsText = repsInputs[exercise.id] ?? ""
-
+        
         guard let weight = weightText.weightDouble, let reps = Int(repsText) else {
             errorMessage = L10n.Training.Session.invalidSetInput
             return
         }
-
+        
         let rirText = rirInputs[exercise.id] ?? ""
         let rir = Int(rirText)
         let order = nextSetNumber(for: exercise)
         let name = exercise.exercise?.name ?? ""
-
+        
         let input = SetInput(exerciseName: name, weightKg: weight, reps: reps, rirActual: rir)
         do {
             _ = try await interactor.logSet(input, order: order, to: session, plannedExercise: exercise)
@@ -129,7 +131,7 @@ final class ActiveSessionViewModel: ActiveSessionViewModelProtocol {
             handleError(error)
         }
     }
-
+    
     func deleteSet(_ set: LoggedSet) async {
         do {
             try await interactor.deleteSet(set, from: session)
@@ -137,7 +139,7 @@ final class ActiveSessionViewModel: ActiveSessionViewModelProtocol {
             handleError(error)
         }
     }
-
+    
     func completeSession() async {
         isCompleting = true
         defer { isCompleting = false }
@@ -159,7 +161,7 @@ final class ActiveSessionViewModel: ActiveSessionViewModelProtocol {
             handleError(error)
         }
     }
-
+    
     func discardSession() async {
         do {
             restTimerTask?.cancel()
@@ -170,29 +172,47 @@ final class ActiveSessionViewModel: ActiveSessionViewModelProtocol {
             handleError(error)
         }
     }
-
-    func loadLastWeight(for exercise: PlannedExercise) async {
-        guard weightInputs[exercise.id] == nil,
+    
+    func loadReferenceSets(for exercise: PlannedExercise) async {
+        guard lastSetsByExercise[exercise.id] == nil,
               let name = exercise.exercise?.name else { return }
         do {
-            let lastSets = try await interactor.fetchLastSets(for: workoutDay, exerciseName: name)
-            if let lastSet = lastSets.first {
-                weightInputs[exercise.id] = lastSet.weightKg.asWeight
-            }
+            lastSetsByExercise[exercise.id] = try await interactor.fetchLastSets(for: workoutDay, exerciseName: name)
         } catch {
             Logger.training.error("Error: \(error, privacy: .private)")
         }
     }
-
+    
+    func referenceSet(for exercise: PlannedExercise) -> LoggedSet? {
+        guard let lastSets = lastSetsByExercise[exercise.id] else { return nil }
+        return ProgressiveOverloadSuggestion.referenceSet(from: lastSets, setNumber: nextSetNumber(for: exercise))
+    }
+    
+    func suggestedTarget(for exercise: PlannedExercise) -> (suggestedWeightKg: Double, suggestedReps: Int)? {
+        guard let lastSets = lastSetsByExercise[exercise.id] else { return nil }
+        return ProgressiveOverloadSuggestion.suggest(
+            lastSets: lastSets,
+            setNumber: nextSetNumber(for: exercise),
+            plannedExercise: exercise,
+            equipment: exercise.exercise?.equipmentType
+        )
+    }
+    
+    func applySuggestion(for exercise: PlannedExercise) {
+        guard let suggestion = suggestedTarget(for: exercise) else { return }
+        weightInputs[exercise.id] = suggestion.suggestedWeightKg.asWeight
+        repsInputs[exercise.id] = String(suggestion.suggestedReps)
+    }
+    
     func skipRest() {
         restTimerTask?.cancel()
         restSecondsRemaining = 0
         isResting = false
         Task { await interactor.endRestActivity() }
     }
-
+    
     // MARK: - Private Functions
-
+    
     private func handleError(_ error: Error) {
         Logger.training.error("Error: \(error, privacy: .private)")
         if let trainingError = error as? TrainingError {
@@ -201,7 +221,7 @@ final class ActiveSessionViewModel: ActiveSessionViewModelProtocol {
             errorMessage = L10n.Error.generic
         }
     }
-
+    
     private func hkActivityType(for type: SessionType) -> HKWorkoutActivityType {
         switch type {
         case .planned, .freeStyle: return .traditionalStrengthTraining
@@ -209,19 +229,19 @@ final class ActiveSessionViewModel: ActiveSessionViewModelProtocol {
         case .mobility:            return .flexibility
         }
     }
-
+    
     private func startRestTimer(seconds: Int) {
         restTimerTask?.cancel()
         guard seconds > 0 else { return }
         restSecondsRemaining = seconds
         isResting = true
-
+        
         let exerciseName = currentExercise?.exercise?.name ?? ""
-
+        
         restTimerTask = Task { [weak self] in
             guard let self else { return }
             await interactor.startRestActivity(exerciseName: exerciseName, seconds: seconds)
-
+            
             for remaining in stride(from: seconds - 1, through: 0, by: -1) {
                 try? await Task.sleep(for: .seconds(1))
                 guard !Task.isCancelled else { break }

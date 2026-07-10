@@ -39,6 +39,9 @@ protocol ActiveSessionViewModelProtocol {
     func deleteSet(_ set: LoggedSet) async
     func completeSession() async
     func discardSession() async
-    func loadLastWeight(for exercise: PlannedExercise) async
+    func loadReferenceSets(for exercise: PlannedExercise) async
+    func referenceSet(for exercise: PlannedExercise) -> LoggedSet?
+    func suggestedTarget(for exercise: PlannedExercise) -> (suggestedWeightKg: Double, suggestedReps: Int)?
+    func applySuggestion(for exercise: PlannedExercise)
     func skipRest()
 }

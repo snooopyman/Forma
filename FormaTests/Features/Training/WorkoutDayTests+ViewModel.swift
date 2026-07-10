@@ -70,7 +70,7 @@ extension WorkoutDayTests {
 
         @Test("addPlannedExercise() builds and adds a new exercise")
         func addPlannedExerciseSuccess() async {
-            await sut.addPlannedExercise(name: "Bench Press", muscle: .chest, sets: 4, repsMin: 6, repsMax: 10, rir: 2, restSeconds: 120)
+            await sut.addPlannedExercise(name: "Bench Press", muscle: .chest, equipment: .barbell, sets: 4, repsMin: 6, repsMax: 10, rir: 2, restSeconds: 120)
             #expect(spy.addPlannedExerciseWasCalled == true)
             #expect(spy.lastAddedExercise?.sets == 4)
             #expect(workoutDay.plannedExercises.count == 1)
@@ -80,14 +80,14 @@ extension WorkoutDayTests {
         func addPlannedExerciseFailure() async {
             spy.shouldThrowError = true
             spy.errorToThrow = TrainingError.saveFailed
-            await sut.addPlannedExercise(name: "Bench Press", muscle: .chest, sets: 4, repsMin: 6, repsMax: 10, rir: 2, restSeconds: 120)
+            await sut.addPlannedExercise(name: "Bench Press", muscle: .chest, equipment: .barbell, sets: 4, repsMin: 6, repsMax: 10, rir: 2, restSeconds: 120)
             #expect(sut.errorMessage == TrainingError.saveFailed.errorDescription)
         }
 
         @Test("updatePlannedExercise() calls the interactor")
         func updatePlannedExerciseSuccess() async {
             let planned = PlannedExercise(order: 0)
-            await sut.updatePlannedExercise(planned, name: "Incline Press", muscle: .chest, sets: 3, repsMin: 8, repsMax: 12, rir: 1, restSeconds: 90)
+            await sut.updatePlannedExercise(planned, name: "Incline Press", muscle: .chest, equipment: .barbell, sets: 3, repsMin: 8, repsMax: 12, rir: 1, restSeconds: 90)
             #expect(spy.updatePlannedExerciseWasCalled == true)
             #expect(spy.lastUpdatedExercise?.id == planned.id)
         }
