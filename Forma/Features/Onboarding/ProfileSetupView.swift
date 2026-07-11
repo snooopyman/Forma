@@ -8,42 +8,50 @@
 import SwiftUI
 
 struct ProfileSetupView: View {
-
+    
     // MARK: - Private Properties
-
+    
     @State private var viewModel: ProfileSetupViewModel
-
+    
     // MARK: - States
-
+    
     @AppStorage("postOnboardingAction") private var postOnboardingAction: AppTab = .today
-
+    
     // MARK: - Initializers
-
-    init(repository: UserProfileRepositoryProtocol, healthKitService: HealthKitServiceProtocol) {
+    
+    init(
+        repository: UserProfileRepositoryProtocol,
+        healthKitService: HealthKitServiceProtocol,
+        notificationService: NotificationServiceProtocol,
+        measurementReminderScheduler: MeasurementReminderSchedulerProtocol
+    ) {
         let interactor = ProfileSetupInteractor(
             userProfileRepository: repository,
-            healthKitService: healthKitService
+            healthKitService: healthKitService,
+            notificationService: notificationService,
+            measurementReminderScheduler: measurementReminderScheduler
         )
         _viewModel = State(initialValue: ProfileSetupViewModel(interactor: interactor))
     }
-
+    
     // MARK: - Body
-
+    
     var body: some View {
         ZStack {
             Color.backgroundPrimary.ignoresSafeArea()
-
+            
             VStack(spacing: 0) {
                 stepHeader
                     .padding(.horizontal, DS.Spacing.lg)
                     .padding(.top, DS.Spacing.lg)
-
+                
                 Group {
                     switch viewModel.currentStep {
                     case 0: nameStep
                     case 1: physicalStep
                     case 2: activityStep
                     case 3: healthKitStep
+                    case 4: notificationsStep
                     default: nextStepsStep
                     }
                 }
@@ -55,9 +63,9 @@ struct ProfileSetupView: View {
             }
         }
     }
-
+    
     // MARK: - Private Views
-
+    
     private var stepHeader: some View {
         HStack {
             if viewModel.currentStep > 0 {
@@ -71,39 +79,39 @@ struct ProfileSetupView: View {
             } else {
                 Color.clear.frame(width: DS.Sizing.minTapTarget, height: DS.Sizing.minTapTarget)
             }
-
+            
             Spacer()
-
+            
             HStack(spacing: DS.Spacing.xs) {
-                ForEach(0..<4, id: \.self) { index in
+                ForEach(0..<5, id: \.self) { index in
                     Circle()
                         .fill(index <= viewModel.currentStep ? Color.accent : Color.borderSubtle)
                         .frame(width: 8, height: 8)
                         .animation(.spring(response: 0.3), value: viewModel.currentStep)
                 }
             }
-
+            
             Spacer()
-
+            
             Color.clear.frame(width: DS.Sizing.minTapTarget, height: DS.Sizing.minTapTarget)
         }
     }
-
+    
     private var nameStep: some View {
         VStack(spacing: DS.Spacing.xl) {
             Spacer()
-
+            
             VStack(spacing: DS.Spacing.sm) {
                 Text("Set up your profile")
                     .font(.largeTitle.bold())
                     .multilineTextAlignment(.center)
                     .foregroundStyle(Color.textPrimary)
-
+                
                 Text("What's your name?")
                     .font(.title3)
                     .foregroundStyle(Color.textSecondary)
             }
-
+            
             TextField("Your name", text: $viewModel.name)
                 .font(.title2)
                 .multilineTextAlignment(.center)
@@ -116,9 +124,9 @@ struct ProfileSetupView: View {
                 .background(Color.backgroundCard)
                 .clipShape(RoundedRectangle(cornerRadius: DS.Radius.button))
                 .padding(.horizontal, DS.Spacing.xl)
-
+            
             Spacer()
-
+            
             Button {
                 viewModel.advance()
             } label: {
@@ -131,15 +139,15 @@ struct ProfileSetupView: View {
             .padding(.bottom, DS.Spacing.xxl)
         }
     }
-
+    
     private var physicalStep: some View {
         VStack(spacing: DS.Spacing.xl) {
             Spacer()
-
+            
             Text("Physical stats")
                 .font(.largeTitle.bold())
                 .foregroundStyle(Color.textPrimary)
-
+            
             VStack(spacing: DS.Spacing.md) {
                 physicalRow {
                     DatePicker(
@@ -149,7 +157,7 @@ struct ProfileSetupView: View {
                         displayedComponents: .date
                     )
                 }
-
+                
                 physicalRow {
                     Stepper(value: $viewModel.heightCm, in: 140...220, step: 1) {
                         HStack {
@@ -162,7 +170,7 @@ struct ProfileSetupView: View {
                         }
                     }
                 }
-
+                
                 physicalRow {
                     Picker(String(localized: "Biological sex"), selection: $viewModel.biologicalSex) {
                         ForEach(BiologicalSex.allCases, id: \.self) { sex in
@@ -172,9 +180,9 @@ struct ProfileSetupView: View {
                 }
             }
             .padding(.horizontal, DS.Spacing.lg)
-
+            
             Spacer()
-
+            
             Button {
                 viewModel.advance()
             } label: {
@@ -186,24 +194,24 @@ struct ProfileSetupView: View {
             .padding(.bottom, DS.Spacing.xxl)
         }
     }
-
+    
     private var activityStep: some View {
         VStack(spacing: DS.Spacing.xl) {
             Spacer()
-
+            
             Text("Activity level")
                 .font(.largeTitle.bold())
                 .foregroundStyle(Color.textPrimary)
-
+            
             VStack(spacing: DS.Spacing.sm) {
                 ForEach(ActivityLevel.allCases, id: \.self) { level in
                     activityRow(level)
                 }
             }
             .padding(.horizontal, DS.Spacing.lg)
-
+            
             Spacer()
-
+            
             Button {
                 viewModel.advance()
             } label: {
@@ -215,30 +223,30 @@ struct ProfileSetupView: View {
             .padding(.bottom, DS.Spacing.xxl)
         }
     }
-
+    
     private var healthKitStep: some View {
         VStack(spacing: DS.Spacing.xl) {
             Spacer()
-
+            
             Image(systemName: "heart.fill")
                 .font(.system(size: 64, weight: .light))
                 .foregroundStyle(.pink)
                 .symbolEffect(.pulse)
-
+            
             VStack(spacing: DS.Spacing.sm) {
                 Text("Connect HealthKit")
                     .font(.largeTitle.bold())
                     .foregroundStyle(Color.textPrimary)
-
+                
                 Text("Sync steps, calories and weight from Apple Health.")
                     .font(.body)
                     .multilineTextAlignment(.center)
                     .foregroundStyle(Color.textSecondary)
                     .padding(.horizontal, DS.Spacing.xxl)
             }
-
+            
             Spacer()
-
+            
             VStack(spacing: DS.Spacing.sm) {
                 Button {
                     Task {
@@ -250,7 +258,7 @@ struct ProfileSetupView: View {
                         .frame(maxWidth: .infinity)
                 }
                 .buttonStyle(.glassProminent)
-
+                
                 Button {
                     viewModel.advance()
                 } label: {
@@ -263,31 +271,79 @@ struct ProfileSetupView: View {
             .padding(.bottom, DS.Spacing.xxl)
         }
     }
-
+    
+    private var notificationsStep: some View {
+        VStack(spacing: DS.Spacing.xl) {
+            Spacer()
+            
+            Image(systemName: "bell.badge.fill")
+                .font(.system(size: 64, weight: .light))
+                .foregroundStyle(.accent)
+                .symbolEffect(.pulse)
+            
+            VStack(spacing: DS.Spacing.sm) {
+                Text("Stay on track")
+                    .font(.largeTitle.bold())
+                    .foregroundStyle(Color.textPrimary)
+                
+                Text("Get a reminder to log your weekly measurement, even if Forma isn't open.")
+                    .font(.body)
+                    .multilineTextAlignment(.center)
+                    .foregroundStyle(Color.textSecondary)
+                    .padding(.horizontal, DS.Spacing.xxl)
+            }
+            
+            Spacer()
+            
+            VStack(spacing: DS.Spacing.sm) {
+                Button {
+                    Task {
+                        await viewModel.requestNotificationAccess()
+                        viewModel.advance()
+                    }
+                } label: {
+                    Text("Enable notifications")
+                        .frame(maxWidth: .infinity)
+                }
+                .buttonStyle(.glassProminent)
+                
+                Button {
+                    viewModel.advance()
+                } label: {
+                    Text("Skip")
+                        .frame(maxWidth: .infinity)
+                }
+                .buttonStyle(.glass)
+            }
+            .padding(.horizontal, DS.Spacing.xl)
+            .padding(.bottom, DS.Spacing.xxl)
+        }
+    }
+    
     private var nextStepsStep: some View {
         VStack(spacing: DS.Spacing.xl) {
             Spacer()
-
+            
             Image(systemName: "checkmark.circle.fill")
                 .font(.system(size: 64, weight: .light))
                 .foregroundStyle(Color.success)
                 .symbolEffect(.bounce)
-
+            
             VStack(spacing: DS.Spacing.sm) {
                 Text("You're all set!")
                     .font(.largeTitle.bold())
                     .multilineTextAlignment(.center)
                     .foregroundStyle(Color.textPrimary)
-
+                
                 Text("What would you like to set up first?")
                     .font(.body)
                     .multilineTextAlignment(.center)
                     .foregroundStyle(Color.textSecondary)
                     .padding(.horizontal, DS.Spacing.xxl)
             }
-
+            
             Spacer()
-
+            
             VStack(spacing: DS.Spacing.sm) {
                 Button {
                     postOnboardingAction = .training
@@ -298,7 +354,7 @@ struct ProfileSetupView: View {
                 }
                 .buttonStyle(.glassProminent)
                 .disabled(viewModel.isSaving)
-
+                
                 Button {
                     postOnboardingAction = .nutrition
                     Task { await viewModel.save() }
@@ -308,7 +364,7 @@ struct ProfileSetupView: View {
                 }
                 .buttonStyle(.glass)
                 .disabled(viewModel.isSaving)
-
+                
                 Button {
                     Task { await viewModel.save() }
                 } label: {
@@ -322,7 +378,7 @@ struct ProfileSetupView: View {
             .padding(.bottom, DS.Spacing.xxl)
         }
     }
-
+    
     @ViewBuilder
     private func physicalRow<Content: View>(@ViewBuilder content: () -> Content) -> some View {
         content()
@@ -330,7 +386,7 @@ struct ProfileSetupView: View {
             .background(Color.backgroundCard)
             .clipShape(RoundedRectangle(cornerRadius: DS.Radius.button))
     }
-
+    
     @ViewBuilder
     private func activityRow(_ level: ActivityLevel) -> some View {
         Button {
@@ -341,14 +397,14 @@ struct ProfileSetupView: View {
                     Text(level.localizedName)
                         .font(.body.weight(.semibold))
                         .foregroundStyle(Color.textPrimary)
-
+                    
                     Text(level.description)
                         .font(.caption)
                         .foregroundStyle(Color.textSecondary)
                 }
-
+                
                 Spacer()
-
+                
                 if viewModel.activityLevel == level {
                     Image(systemName: "checkmark.circle.fill")
                         .foregroundStyle(Color.accent)
@@ -363,12 +419,14 @@ struct ProfileSetupView: View {
         .accessibilityLabel(level.localizedName)
         .accessibilityValue(viewModel.activityLevel == level ? String(localized: "Selected") : "")
     }
-
+    
 }
 
 #Preview {
     ProfileSetupView(
         repository: MockUserProfileRepository(),
-        healthKitService: MockHealthKitService()
+        healthKitService: MockHealthKitService(),
+        notificationService: MockNotificationService(),
+        measurementReminderScheduler: MockMeasurementReminderScheduler()
     )
 }

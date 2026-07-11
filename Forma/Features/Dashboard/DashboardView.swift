@@ -26,6 +26,8 @@ struct DashboardView: View {
     @AppStorage("com.armando.forma.dailyStepsGoal") private var dailyStepsGoal: Int = 10_000
     @AppStorage("com.armando.forma.dailyExerciseGoal") private var dailyExerciseGoal: Int = 30
     
+    private let deepLinkRouter = NotificationDeepLinkRouter.shared
+    
     // MARK: - Body
     
     var body: some View {
@@ -54,8 +56,14 @@ struct DashboardView: View {
             NewMeasurementView(
                 repository: container.bodyMeasurementRepository,
                 profileRepository: container.userProfileRepository,
-                healthKitService: container.healthKitService
+                healthKitService: container.healthKitService,
+                measurementReminderScheduler: container.measurementReminderScheduler
             ) { }
+        }
+        .onChange(of: deepLinkRouter.pendingMeasurementReminder, initial: true) { _, isPending in
+            guard isPending else { return }
+            deepLinkRouter.pendingMeasurementReminder = false
+            showingNewMeasurement = true
         }
         .fullScreenCover(item: $activeSession) { session in
             if let day = session.workoutDay {
@@ -100,7 +108,9 @@ struct DashboardView: View {
         .sheet(isPresented: $showingSettings) {
             SettingsView(
                 userProfileRepository: container.userProfileRepository,
-                healthKitService: container.healthKitService
+                healthKitService: container.healthKitService,
+                notificationService: container.notificationService,
+                measurementReminderScheduler: container.measurementReminderScheduler
             )
         }
         .refreshable {
@@ -118,7 +128,7 @@ struct DashboardView: View {
             if let msg = vm.errorMessage { Text(msg) }
         }
     }
-
+    
     @ViewBuilder
     private func loadedContent(vm: any DashboardViewModelProtocol) -> some View {
         ScrollView {
@@ -137,7 +147,7 @@ struct DashboardView: View {
         }
         .scrollIndicators(.hidden)
     }
-
+    
     @ViewBuilder
     private func headerSection(vm: any DashboardViewModelProtocol) -> some View {
         Text(vm.todayFormatted)

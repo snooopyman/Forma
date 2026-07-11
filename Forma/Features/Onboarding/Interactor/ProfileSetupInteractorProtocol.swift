@@ -11,4 +11,6 @@ protocol ProfileSetupInteractorProtocol: Sendable {
     func fetchProfile() async throws -> UserProfile?
     func saveProfile(_ profile: UserProfile) async throws
     func requestHealthKitAccess() async throws
+    func requestNotificationAccess() async throws -> Bool
+    func rescheduleMeasurementReminder() async
 }

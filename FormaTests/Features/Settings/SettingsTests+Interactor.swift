@@ -23,13 +23,22 @@ extension SettingsTests {
 
         let spyRepository: SpyUserProfileRepository
         let spyHealthKitService: SpyHealthKitService
+        let spyNotificationService: SpyNotificationService
+        let spyMeasurementReminderScheduler: SpyMeasurementReminderScheduler
 
         // MARK: - Initializers
 
         init() {
             spyRepository = SpyUserProfileRepository()
             spyHealthKitService = SpyHealthKitService()
-            sut = SettingsInteractor(userProfileRepository: spyRepository, healthKitService: spyHealthKitService)
+            spyNotificationService = SpyNotificationService()
+            spyMeasurementReminderScheduler = SpyMeasurementReminderScheduler()
+            sut = SettingsInteractor(
+                userProfileRepository: spyRepository,
+                healthKitService: spyHealthKitService,
+                notificationService: spyNotificationService,
+                measurementReminderScheduler: spyMeasurementReminderScheduler
+            )
         }
 
         @Test("loadProfile delegates to repository")

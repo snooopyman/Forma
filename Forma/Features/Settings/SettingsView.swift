@@ -10,24 +10,25 @@ import SwiftData
 import CloudKit
 
 struct SettingsView: View {
-
+    
     // MARK: - Private Properties
-
+    
     private let userProfileRepository: UserProfileRepositoryProtocol
-
+    
     // MARK: - States
-
+    
     @State private var viewModel: SettingsViewModel
     @State private var showingEditProfile = false
-    #if DEBUG
+#if DEBUG
     @State private var showingLoadSampleDataAlert = false
     @State private var showingClearDataAlert = false
-    #endif
-
+#endif
+    
     // MARK: - Environment
-
+    
     @Environment(\.modelContext) private var modelContext
-
+    @Environment(\.scenePhase) private var scenePhase
+    
     @AppStorage("com.armando.forma.dailyStepsGoal") private var dailyStepsGoal: Int = 10_000
     @AppStorage("com.armando.forma.dailyExerciseGoal") private var dailyExerciseGoal: Int = 30
     @AppStorage("com.armando.forma.exportWorkoutsToHealth") private var exportWorkoutsToHealth: Bool = true
@@ -37,12 +38,16 @@ struct SettingsView: View {
     
     init(
         userProfileRepository: UserProfileRepositoryProtocol,
-        healthKitService: HealthKitServiceProtocol
+        healthKitService: HealthKitServiceProtocol,
+        notificationService: NotificationServiceProtocol,
+        measurementReminderScheduler: MeasurementReminderSchedulerProtocol
     ) {
         self.userProfileRepository = userProfileRepository
         let interactor = SettingsInteractor(
             userProfileRepository: userProfileRepository,
-            healthKitService: healthKitService
+            healthKitService: healthKitService,
+            notificationService: notificationService,
+            measurementReminderScheduler: measurementReminderScheduler
         )
         _viewModel = State(initialValue: SettingsViewModel(interactor: interactor))
     }
@@ -55,12 +60,13 @@ struct SettingsView: View {
                 profileSection
                 healthSection
                 activityGoalsSection
+                notificationsSection
                 syncSection
                 exportSection
                 aboutSection
-                #if DEBUG
+#if DEBUG
                 developerSection
-                #endif
+#endif
             }
             .navigationTitle(String(localized: "Settings"))
             .navigationBarTitleDisplayMode(.large)
@@ -71,6 +77,10 @@ struct SettingsView: View {
                 }
             }
             .task { await viewModel.load() }
+            .onChange(of: scenePhase) { _, newPhase in
+                guard newPhase == .active else { return }
+                Task { await viewModel.refreshNotificationAuthorization() }
+            }
             .sheet(isPresented: $showingEditProfile, onDismiss: {
                 Task { await viewModel.load() }
             }) {
@@ -78,7 +88,13 @@ struct SettingsView: View {
                     EditProfileView(profile: profile, repository: userProfileRepository)
                 }
             }
-            #if DEBUG
+            .alert(String(localized: "Notifications disabled"), isPresented: $viewModel.showNotificationSystemSettingsAlert) {
+                Button(String(localized: "Open Settings")) { viewModel.openSystemSettings() }
+                Button(String(localized: "Cancel"), role: .cancel) {}
+            } message: {
+                Text(String(localized: "Enable notifications for Forma in Settings to get measurement reminders."))
+            }
+#if DEBUG
             .alert(String(localized: "Load sample data?"), isPresented: $showingLoadSampleDataAlert) {
                 Button(String(localized: "Load"), role: .destructive) {
                     PreviewSeedData.insert(into: modelContext)
@@ -95,7 +111,7 @@ struct SettingsView: View {
             } message: {
                 Text(String(localized: "This will permanently delete all data from this device."))
             }
-            #endif
+#endif
         }
     }
     
@@ -209,7 +225,57 @@ struct SettingsView: View {
             }
         }
     }
-
+    
+    private var notificationsSection: some View {
+        Section {
+            Toggle(isOn: Binding(
+                get: { viewModel.notificationsEnabled },
+                set: { newValue in Task { await viewModel.setNotificationsEnabled(newValue) } }
+            )) {
+                Label(String(localized: "Weekly measurement reminder"), systemImage: "bell.badge")
+            }
+            .disabled(viewModel.isRequestingNotifications)
+            
+            if viewModel.notificationsEnabled {
+                Picker(String(localized: "Reminder day"), selection: Binding(
+                    get: { viewModel.reminderWeekday },
+                    set: { newValue in Task { await viewModel.updateReminderWeekday(newValue) } }
+                )) {
+                    ForEach(Weekday.allCases, id: \.self) { day in
+                        Text(day.localizedName).tag(day)
+                    }
+                }
+                
+                DatePicker(
+                    String(localized: "Reminder time"),
+                    selection: Binding(
+                        get: { viewModel.reminderTime },
+                        set: { newDate in
+                            let components = Calendar.current.dateComponents([.hour, .minute], from: newDate)
+                            Task {
+                                await viewModel.updateReminderTime(
+                                    hour: components.hour ?? 9,
+                                    minute: components.minute ?? 0
+                                )
+                            }
+                        }
+                    ),
+                    displayedComponents: .hourAndMinute
+                )
+            }
+            
+            if let error = viewModel.notificationError {
+                Text(error)
+                    .font(.caption)
+                    .foregroundStyle(.error)
+            }
+        } header: {
+            Text(String(localized: "Notifications"))
+        } footer: {
+            Text(String(localized: "Get a reminder to log your weekly measurement, even if Forma isn't open."))
+        }
+    }
+    
     private var syncSection: some View {
         Section(String(localized: "iCloud Sync")) {
             HStack {
@@ -265,10 +331,10 @@ struct SettingsView: View {
             LabeledContent(String(localized: "Version"), value: viewModel.appVersion)
         }
     }
-
+    
     // MARK: - Private Functions
-
-    #if DEBUG
+    
+#if DEBUG
     private func clearAllData() {
         try? modelContext.delete(model: MealLog.self)
         try? modelContext.delete(model: DailyNutritionLog.self)
@@ -288,9 +354,9 @@ struct SettingsView: View {
         try? modelContext.delete(model: ProgressPhoto.self)
         try? modelContext.delete(model: UserProfile.self)
     }
-    #endif
-
-    #if DEBUG
+#endif
+    
+#if DEBUG
     private var developerSection: some View {
         Section("Developer") {
             Button {
@@ -305,7 +371,7 @@ struct SettingsView: View {
             }
         }
     }
-    #endif
+#endif
 }
 
 // MARK: - Previews
@@ -314,6 +380,8 @@ struct SettingsView: View {
     @Previewable @Environment(AppContainer.self) var container
     SettingsView(
         userProfileRepository: container.userProfileRepository,
-        healthKitService: container.healthKitService
+        healthKitService: container.healthKitService,
+        notificationService: container.notificationService,
+        measurementReminderScheduler: container.measurementReminderScheduler
     )
 }

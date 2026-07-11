@@ -16,4 +16,5 @@ extension Logger {
     static let progress  = Logger(subsystem: subsystem, category: "progress")
     static let healthKit = Logger(subsystem: subsystem, category: "healthkit")
     static let sync      = Logger(subsystem: subsystem, category: "sync")
+    static let notifications = Logger(subsystem: subsystem, category: "notifications")
 }

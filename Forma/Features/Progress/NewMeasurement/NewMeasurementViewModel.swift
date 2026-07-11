@@ -128,6 +128,7 @@ final class NewMeasurementViewModel {
                 try await interactor.saveMeasurement(measurement)
             }
             await interactor.writeWeight(weight, date: date)
+            await interactor.rescheduleMeasurementReminder()
             Logger.progress.info("Saved measurement: \(weight, privacy: .public) kg")
             onSaved()
         } catch {

@@ -13,6 +13,7 @@ struct AppRootView: View {
     // MARK: - Environment
 
     @Environment(\.modelContext) private var modelContext
+    @Environment(\.scenePhase) private var scenePhase
 
     // MARK: - States
 
@@ -34,7 +35,9 @@ struct AppRootView: View {
                 } else if userProfile == nil {
                     ProfileSetupView(
                         repository: container.userProfileRepository,
-                        healthKitService: container.healthKitService
+                        healthKitService: container.healthKitService,
+                        notificationService: container.notificationService,
+                        measurementReminderScheduler: container.measurementReminderScheduler
                     )
                 } else {
                     MainTabView()
@@ -47,6 +50,10 @@ struct AppRootView: View {
         .onAppear {
             guard container == nil else { return }
             container = AppContainer(modelContext: modelContext)
+        }
+        .onChange(of: scenePhase) { _, newPhase in
+            guard newPhase == .active, let container else { return }
+            Task { await container.measurementReminderScheduler.reschedule() }
         }
     }
 }

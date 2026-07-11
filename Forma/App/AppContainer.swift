@@ -31,6 +31,8 @@ final class AppContainer {
     let macroTrackingService: MacroTrackingServiceProtocol
     let bodyMetricsService: BodyMetricsServiceProtocol
     let healthKitService: HealthKitServiceProtocol
+    let notificationService: NotificationServiceProtocol
+    let measurementReminderScheduler: MeasurementReminderSchedulerProtocol
 
     // MARK: - Initializers
 
@@ -49,6 +51,12 @@ final class AppContainer {
         self.macroTrackingService = MacroTrackingService()
         self.bodyMetricsService = BodyMetricsService()
         self.healthKitService = HealthKitService()
+        self.notificationService = NotificationService()
+        self.measurementReminderScheduler = MeasurementReminderScheduler(
+            userProfileRepository: userProfileRepository,
+            measurementRepository: bodyMeasurementRepository,
+            notificationService: notificationService
+        )
 
         let catalogSeeded = UserDefaults.standard.bool(forKey: "com.armando.forma.foodCatalogV1")
         if !catalogSeeded {

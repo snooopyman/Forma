@@ -9,6 +9,7 @@ import Foundation
 import CloudKit
 import OSLog
 import SwiftUI
+import UserNotifications
 
 @Observable
 @MainActor
@@ -27,6 +28,15 @@ final class SettingsViewModel {
     var healthKitError: String?
     var exportFileURL: URL?
     var exportError: String?
+    
+    var notificationsEnabled = false
+    var reminderWeekday: Weekday = .saturday
+    var reminderHour = 9
+    var reminderMinute = 0
+    var notificationAuthorizationStatus: UNAuthorizationStatus = .notDetermined
+    var isRequestingNotifications = false
+    var notificationError: String?
+    var showNotificationSystemSettingsAlert = false
     
     // MARK: - Computed Properties
     
@@ -65,20 +75,32 @@ final class SettingsViewModel {
     
     var appVersion: String { Bundle.appVersion }
     
+    var reminderTime: Date {
+        var components = DateComponents()
+        components.hour = reminderHour
+        components.minute = reminderMinute
+        return Calendar.current.date(from: components) ?? .now
+    }
+    
     // MARK: - Initializers
     
     init(interactor: SettingsInteractorProtocol) {
         self.interactor = interactor
     }
-
+    
     // MARK: - Functions
-
+    
     func load() async {
         profile = try? await interactor.loadProfile()
         buildExportJSON()
         checkCloudKitStatus()
+        await syncNotificationState()
     }
-
+    
+    func refreshNotificationAuthorization() async {
+        await syncNotificationState()
+    }
+    
     func requestHealthKitAccess() async {
         isRequestingHealthKit = true
         defer { isRequestingHealthKit = false }
@@ -89,7 +111,81 @@ final class SettingsViewModel {
         }
     }
     
+    func setNotificationsEnabled(_ enabled: Bool) async {
+        guard let profile else { return }
+        if enabled {
+            isRequestingNotifications = true
+            defer { isRequestingNotifications = false }
+            
+            switch notificationAuthorizationStatus {
+            case .denied:
+                showNotificationSystemSettingsAlert = true
+                return
+            case .authorized, .provisional, .ephemeral:
+                break
+            default:
+                do {
+                    let granted = try await interactor.requestNotificationAccess()
+                    notificationAuthorizationStatus = granted ? .authorized : .denied
+                    guard granted else { return }
+                } catch {
+                    handleNotificationError(error)
+                    return
+                }
+            }
+        }
+        
+        profile.notificationsEnabled = enabled
+        notificationsEnabled = enabled
+        await persistNotificationPreference()
+    }
+    
+    func updateReminderWeekday(_ weekday: Weekday) async {
+        guard let profile else { return }
+        profile.reminderWeekday = weekday
+        reminderWeekday = weekday
+        await persistNotificationPreference()
+    }
+    
+    func updateReminderTime(hour: Int, minute: Int) async {
+        guard let profile else { return }
+        profile.reminderHour = hour
+        profile.reminderMinute = minute
+        reminderHour = hour
+        reminderMinute = minute
+        await persistNotificationPreference()
+    }
+    
+    func openSystemSettings() {
+        guard let url = URL(string: UIApplication.openSettingsURLString) else { return }
+        UIApplication.shared.open(url)
+    }
+    
     // MARK: - Private Functions
+    
+    private func syncNotificationState() async {
+        notificationAuthorizationStatus = await interactor.notificationAuthorizationStatus()
+        guard let profile else { return }
+        
+        if profile.notificationsEnabled, notificationAuthorizationStatus != .authorized {
+            profile.notificationsEnabled = false
+            await persistNotificationPreference()
+        }
+        
+        notificationsEnabled = profile.notificationsEnabled
+        reminderWeekday = profile.reminderWeekday ?? .saturday
+        reminderHour = profile.reminderHour
+        reminderMinute = profile.reminderMinute
+    }
+    
+    private func persistNotificationPreference() async {
+        guard let profile else { return }
+        do {
+            try await interactor.saveNotificationPreference(profile)
+        } catch {
+            handleNotificationError(error)
+        }
+    }
     
     private func handleError(_ error: Error) {
         Logger.healthKit.error("Error: \(error, privacy: .private)")
@@ -97,6 +193,15 @@ final class SettingsViewModel {
             healthKitError = settingsError.errorDescription
         } else {
             healthKitError = error.localizedDescription
+        }
+    }
+    
+    private func handleNotificationError(_ error: Error) {
+        Logger.notifications.error("Error: \(error, privacy: .private)")
+        if let settingsError = error as? SettingsError {
+            notificationError = settingsError.errorDescription
+        } else {
+            notificationError = error.localizedDescription
         }
     }
     

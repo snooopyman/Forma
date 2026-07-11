@@ -24,6 +24,7 @@ extension NewMeasurementTests {
         let spyMeasurementRepository: SpyBodyMeasurementRepository
         let spyProfileRepository: SpyUserProfileRepository
         let spyHealthKitService: SpyHealthKitService
+        let spyMeasurementReminderScheduler: SpyMeasurementReminderScheduler
 
         // MARK: - Initializers
 
@@ -31,10 +32,12 @@ extension NewMeasurementTests {
             spyMeasurementRepository = SpyBodyMeasurementRepository()
             spyProfileRepository = SpyUserProfileRepository()
             spyHealthKitService = SpyHealthKitService()
+            spyMeasurementReminderScheduler = SpyMeasurementReminderScheduler()
             sut = NewMeasurementInteractor(
                 measurementRepository: spyMeasurementRepository,
                 profileRepository: spyProfileRepository,
-                healthKitService: spyHealthKitService
+                healthKitService: spyHealthKitService,
+                measurementReminderScheduler: spyMeasurementReminderScheduler
             )
         }
 

@@ -115,15 +115,7 @@ final class DashboardInteractor: DashboardInteractorProtocol {
     }
     
     private func currentWeekdayEnum() -> Weekday {
-        switch Calendar.current.component(.weekday, from: .now) {
-        case 1: return .sunday
-        case 2: return .monday
-        case 3: return .tuesday
-        case 4: return .wednesday
-        case 5: return .thursday
-        case 6: return .friday
-        default: return .saturday
-        }
+        Weekday(calendarWeekday: Calendar.current.component(.weekday, from: .now))
     }
     
     private func currentWeekDateRange() -> ClosedRange<Date> {
@@ -134,9 +126,6 @@ final class DashboardInteractor: DashboardInteractorProtocol {
     }
     
     private func shouldShowMeasurementReminder(_ latest: BodyMeasurement?) -> Bool {
-        guard let latest else { return true }
-        let daysSince = Calendar.current.dateComponents([.day], from: latest.date, to: .now).day ?? 0
-        let isMonday = Calendar.current.component(.weekday, from: .now) == 2
-        return isMonday || daysSince > 6
+        MeasurementReminderPolicy.shouldRemind(latestMeasurementDate: latest?.date, referenceDate: .now)
     }
 }

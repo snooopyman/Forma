@@ -23,13 +23,15 @@ struct NewMeasurementView: View {
         repository: BodyMeasurementRepositoryProtocol,
         profileRepository: UserProfileRepositoryProtocol,
         healthKitService: HealthKitServiceProtocol,
+        measurementReminderScheduler: MeasurementReminderSchedulerProtocol,
         editing: BodyMeasurement? = nil,
         onSaved: @escaping @MainActor () -> Void
     ) {
         let interactor = NewMeasurementInteractor(
             measurementRepository: repository,
             profileRepository: profileRepository,
-            healthKitService: healthKitService
+            healthKitService: healthKitService,
+            measurementReminderScheduler: measurementReminderScheduler
         )
         _viewModel = State(initialValue: NewMeasurementViewModel(
             interactor: interactor,
@@ -150,6 +152,7 @@ private struct MeasurementField: View {
         repository: container.bodyMeasurementRepository,
         profileRepository: container.userProfileRepository,
         healthKitService: container.healthKitService,
+        measurementReminderScheduler: container.measurementReminderScheduler,
         onSaved: {}
     )
 }

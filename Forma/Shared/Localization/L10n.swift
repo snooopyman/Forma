@@ -116,6 +116,16 @@ enum L10n {
         }
     }
     
+    // MARK: - Notifications (Localizable.xcstrings)
+    
+    enum Notifications {
+        
+        enum MeasurementReminder {
+            nonisolated static let title = String(localized: "Time to check in")
+            nonisolated static let body  = String(localized: "Log this week's weight and measurements to keep tracking your progress.")
+        }
+    }
+    
     // MARK: - Domain: WorkoutSession (Localizable.xcstrings)
     
     enum WorkoutSession {

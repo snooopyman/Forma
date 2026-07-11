@@ -23,13 +23,22 @@ extension ProfileSetupTests {
 
         let spyRepository: SpyUserProfileRepository
         let spyHealthKitService: SpyHealthKitService
+        let spyNotificationService: SpyNotificationService
+        let spyMeasurementReminderScheduler: SpyMeasurementReminderScheduler
 
         // MARK: - Initializers
 
         init() {
             spyRepository = SpyUserProfileRepository()
             spyHealthKitService = SpyHealthKitService()
-            sut = ProfileSetupInteractor(userProfileRepository: spyRepository, healthKitService: spyHealthKitService)
+            spyNotificationService = SpyNotificationService()
+            spyMeasurementReminderScheduler = SpyMeasurementReminderScheduler()
+            sut = ProfileSetupInteractor(
+                userProfileRepository: spyRepository,
+                healthKitService: spyHealthKitService,
+                notificationService: spyNotificationService,
+                measurementReminderScheduler: spyMeasurementReminderScheduler
+            )
         }
 
         @Test("fetchProfile delegates to repository")

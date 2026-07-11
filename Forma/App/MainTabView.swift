@@ -30,6 +30,8 @@ struct MainTabView: View {
     @State private var planOverviewViewModel: PlanOverviewViewModel?
     @State private var progressOverviewViewModel: ProgressOverviewViewModel?
 
+    private let deepLinkRouter = NotificationDeepLinkRouter.shared
+
     // MARK: - Body
 
     var body: some View {
@@ -85,6 +87,10 @@ struct MainTabView: View {
             if postOnboardingAction != .today {
                 selectedTab = postOnboardingAction
             }
+        }
+        .onChange(of: deepLinkRouter.pendingMeasurementReminder, initial: true) { _, isPending in
+            guard isPending else { return }
+            selectedTab = .today
         }
     }
 }

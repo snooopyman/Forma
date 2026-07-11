@@ -10,19 +10,19 @@ import SwiftData
 
 @Model
 final class WorkoutDay {
-
+    
     var id: UUID
     var name: String
     var order: Int
     var weekday: Weekday?
     var isRestDay: Bool
     var restDayActivity: String
-
+    
     @Relationship(deleteRule: .cascade)
     var plannedExercises: [PlannedExercise]
-
+    
     var mesocycle: Mesocycle?
-
+    
     init(
         id: UUID = UUID(),
         name: String,
@@ -43,7 +43,7 @@ final class WorkoutDay {
 
 enum Weekday: Int, Codable, CaseIterable {
     case monday = 1, tuesday, wednesday, thursday, friday, saturday, sunday
-
+    
     var localizedName: String {
         switch self {
         case .monday:    return L10n.Weekday.monday
@@ -55,7 +55,7 @@ enum Weekday: Int, Codable, CaseIterable {
         case .sunday:    return L10n.Weekday.sunday
         }
     }
-
+    
     var shortName: String {
         switch self {
         case .monday:    return L10n.Weekday.monShort
@@ -65,6 +65,30 @@ enum Weekday: Int, Codable, CaseIterable {
         case .friday:    return L10n.Weekday.friShort
         case .saturday:  return L10n.Weekday.satShort
         case .sunday:    return L10n.Weekday.sunShort
+        }
+    }
+    
+    var calendarWeekday: Int {
+        switch self {
+        case .sunday:    return 1
+        case .monday:    return 2
+        case .tuesday:   return 3
+        case .wednesday: return 4
+        case .thursday:  return 5
+        case .friday:    return 6
+        case .saturday:  return 7
+        }
+    }
+    
+    init(calendarWeekday: Int) {
+        switch calendarWeekday {
+        case 1:  self = .sunday
+        case 2:  self = .monday
+        case 3:  self = .tuesday
+        case 4:  self = .wednesday
+        case 5:  self = .thursday
+        case 6:  self = .friday
+        default: self = .saturday
         }
     }
 }

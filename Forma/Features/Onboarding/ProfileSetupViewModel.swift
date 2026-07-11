@@ -19,6 +19,7 @@ final class ProfileSetupViewModel {
     var heightCm: Double = 170
     var biologicalSex: BiologicalSex = .male
     var activityLevel: ActivityLevel = .moderatelyActive
+    var notificationsEnabled = false
     var currentStep = 0
     var isSaving = false
     var errorMessage: String?
@@ -58,7 +59,11 @@ final class ProfileSetupViewModel {
     func connectHealthKit() async {
         try? await interactor.requestHealthKitAccess()
     }
-    
+
+    func requestNotificationAccess() async {
+        notificationsEnabled = (try? await interactor.requestNotificationAccess()) ?? false
+    }
+
     func save() async {
         isSaving = true
         defer { isSaving = false }
@@ -70,6 +75,7 @@ final class ProfileSetupViewModel {
                 existing.heightCm = heightCm
                 existing.biologicalSex = biologicalSex
                 existing.activityLevel = activityLevel
+                existing.notificationsEnabled = notificationsEnabled
                 try await interactor.saveProfile(existing)
             } else {
                 try await interactor.saveProfile(UserProfile(
@@ -77,8 +83,12 @@ final class ProfileSetupViewModel {
                     birthDate: birthDate,
                     heightCm: heightCm,
                     biologicalSex: biologicalSex,
-                    activityLevel: activityLevel
+                    activityLevel: activityLevel,
+                    notificationsEnabled: notificationsEnabled
                 ))
+            }
+            if notificationsEnabled {
+                await interactor.rescheduleMeasurementReminder()
             }
         } catch {
             handleError(error)

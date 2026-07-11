@@ -10,7 +10,7 @@ import SwiftData
 
 @Model
 final class UserProfile {
-
+    
     var id: UUID
     var name: String
     var birthDate: Date
@@ -19,7 +19,11 @@ final class UserProfile {
     var activityLevel: ActivityLevel
     var weightUnit: WeightUnit
     var createdAt: Date
-
+    var notificationsEnabled: Bool = false
+    var reminderWeekday: Weekday?
+    var reminderHour: Int = 9
+    var reminderMinute: Int = 0
+    
     init(
         id: UUID = UUID(),
         name: String,
@@ -28,7 +32,11 @@ final class UserProfile {
         biologicalSex: BiologicalSex,
         activityLevel: ActivityLevel = .moderatelyActive,
         weightUnit: WeightUnit = .kg,
-        createdAt: Date = .now
+        createdAt: Date = .now,
+        notificationsEnabled: Bool = false,
+        reminderWeekday: Weekday? = .saturday,
+        reminderHour: Int = 9,
+        reminderMinute: Int = 0
     ) {
         self.id = id
         self.name = name
@@ -38,8 +46,12 @@ final class UserProfile {
         self.activityLevel = activityLevel
         self.weightUnit = weightUnit
         self.createdAt = createdAt
+        self.notificationsEnabled = notificationsEnabled
+        self.reminderWeekday = reminderWeekday
+        self.reminderHour = reminderHour
+        self.reminderMinute = reminderMinute
     }
-
+    
     var age: Int {
         Calendar.current.dateComponents([.year], from: birthDate, to: .now).year ?? 0
     }
@@ -48,7 +60,7 @@ final class UserProfile {
 enum BiologicalSex: String, Codable, CaseIterable {
     case male
     case female
-
+    
     var localizedName: String {
         switch self {
         case .male:   return L10n.BiologicalSex.male
@@ -63,7 +75,7 @@ enum ActivityLevel: String, Codable, CaseIterable {
     case moderatelyActive
     case veryActive
     case extraActive
-
+    
     var localizedName: String {
         switch self {
         case .sedentary:        return L10n.ActivityLevel.sedentary
@@ -73,7 +85,7 @@ enum ActivityLevel: String, Codable, CaseIterable {
         case .extraActive:      return L10n.ActivityLevel.extraActive
         }
     }
-
+    
     var description: String {
         switch self {
         case .sedentary:        return L10n.ActivityLevel.Description.sedentary
@@ -83,8 +95,8 @@ enum ActivityLevel: String, Codable, CaseIterable {
         case .extraActive:      return L10n.ActivityLevel.Description.extraActive
         }
     }
-
-    // Multiplier Harris-Benedict
+    
+    /// Multiplier Harris-Benedict
     var tdeeMultiplier: Double {
         switch self {
         case .sedentary:        return 1.2
@@ -99,14 +111,14 @@ enum ActivityLevel: String, Codable, CaseIterable {
 enum WeightUnit: String, Codable, CaseIterable {
     case kg
     case lbs
-
+    
     var localizedName: String {
         switch self {
         case .kg:  return "kg"
         case .lbs: return "lbs"
         }
     }
-
+    
     func convert(_ value: Double, to target: WeightUnit) -> Double {
         guard self != target else { return value }
         return self == .kg ? value * 2.20462 : value / 2.20462
