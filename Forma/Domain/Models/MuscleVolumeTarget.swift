@@ -10,13 +10,13 @@ import SwiftData
 
 @Model
 final class MuscleVolumeTarget {
-
-    var id: UUID
-    var muscleGroup: MuscleGroup
-    var mevSets: Int
-    var mavSets: Int
-    var mrvSets: Int
-
+    
+    var id: UUID = UUID()
+    var muscleGroup: MuscleGroup = MuscleGroup.fullBody
+    var mevSets: Int = 0
+    var mavSets: Int = 0
+    var mrvSets: Int = 0
+    
     init(
         id: UUID = UUID(),
         muscleGroup: MuscleGroup,

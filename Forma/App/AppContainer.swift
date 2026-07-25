@@ -20,6 +20,7 @@ final class AppContainer {
     let workoutSessionRepository: WorkoutSessionRepositoryProtocol
     let bodyMeasurementRepository: BodyMeasurementRepositoryProtocol
     let progressPhotoRepository: ProgressPhotoRepositoryProtocol
+    let muscleVolumeTargetRepository: MuscleVolumeTargetRepositoryProtocol
     let nutritionRepository: NutritionRepositoryProtocol
     let foodItemRepository: FoodItemRepositoryProtocol
 
@@ -43,6 +44,7 @@ final class AppContainer {
         self.workoutSessionRepository = sessionRepo
         self.bodyMeasurementRepository = BodyMeasurementRepository(modelContext: modelContext)
         self.progressPhotoRepository = ProgressPhotoRepository(modelContext: modelContext)
+        self.muscleVolumeTargetRepository = MuscleVolumeTargetRepository(modelContext: modelContext)
         self.nutritionRepository = NutritionRepository(modelContext: modelContext)
         self.foodItemRepository = FoodItemRepository(modelContext: modelContext)
         self.workoutSessionService = WorkoutSessionService(sessionRepository: sessionRepo)

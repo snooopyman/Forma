@@ -37,11 +37,11 @@ final class DashboardInteractor: DashboardInteractorProtocol {
     }
     
     // MARK: - Computed Properties
-
+    
     var isHealthKitAvailable: Bool { healthKitService.isAvailable }
-
+    
     // MARK: - Functions
-
+    
     func loadDashboardData() async throws -> DashboardSnapshot {
         let mesocycle = try await mesocycleRepo.fetchActive()
         let inProgress = try await sessionRepo.fetchInProgress()
@@ -62,7 +62,7 @@ final class DashboardInteractor: DashboardInteractorProtocol {
         var weeklyPlannedDays = 0
         
         if let mesocycle {
-            let weekRange = currentWeekDateRange()
+            let weekRange = NaturalWeek.range(containing: .now)
             weeklyPlannedDays = mesocycle.workoutDays.filter { !$0.isRestDay }.count
             let allSessions = (try? await sessionRepo.fetchAll(for: mesocycle)) ?? []
             weeklyCompletedSessions = allSessions.filter { $0.isCompleted && weekRange.contains($0.date) }.count
@@ -116,13 +116,6 @@ final class DashboardInteractor: DashboardInteractorProtocol {
     
     private func currentWeekdayEnum() -> Weekday {
         Weekday(calendarWeekday: Calendar.current.component(.weekday, from: .now))
-    }
-    
-    private func currentWeekDateRange() -> ClosedRange<Date> {
-        let cal = Calendar.current
-        let start = cal.date(from: cal.dateComponents([.yearForWeekOfYear, .weekOfYear], from: .now)) ?? .now
-        let end = cal.date(byAdding: .day, value: 7, to: start) ?? .now
-        return start...end
     }
     
     private func shouldShowMeasurementReminder(_ latest: BodyMeasurement?) -> Bool {

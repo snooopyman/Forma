@@ -13,6 +13,7 @@ final class SpyWorkoutSessionRepository: WorkoutSessionRepositoryProtocol, @unch
     // MARK: - Spy Tracking
     
     private(set) var fetchAllWasCalled = false
+    private(set) var fetchAllInDateRangeWasCalled = false
     private(set) var fetchInProgressWasCalled = false
     private(set) var saveWasCalled = false
     private(set) var deleteWasCalled = false
@@ -34,6 +35,7 @@ final class SpyWorkoutSessionRepository: WorkoutSessionRepositoryProtocol, @unch
     
     func reset() {
         fetchAllWasCalled = false
+        fetchAllInDateRangeWasCalled = false
         fetchInProgressWasCalled = false
         saveWasCalled = false
         deleteWasCalled = false
@@ -46,6 +48,12 @@ final class SpyWorkoutSessionRepository: WorkoutSessionRepositoryProtocol, @unch
     
     func fetchAll(for mesocycle: Mesocycle) async throws -> [WorkoutSession] {
         fetchAllWasCalled = true
+        if shouldThrowError { throw errorToThrow }
+        return stubbedSessions
+    }
+    
+    func fetchAll(in dateRange: Range<Date>) async throws -> [WorkoutSession] {
+        fetchAllInDateRangeWasCalled = true
         if shouldThrowError { throw errorToThrow }
         return stubbedSessions
     }

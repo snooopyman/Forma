@@ -395,6 +395,7 @@ private struct AddProgressPhotoSheet: View {
     }
 }
 
+#if DEBUG
 private func samplePhotoData(color: UIColor) -> Data {
     let renderer = UIGraphicsImageRenderer(size: CGSize(width: 300, height: 400))
     let image = renderer.image { _ in
@@ -403,3 +404,4 @@ private func samplePhotoData(color: UIColor) -> Data {
     }
     return image.pngData() ?? Data()
 }
+#endif

@@ -30,6 +30,21 @@ final class WorkoutSessionRepository: WorkoutSessionRepositoryProtocol {
         }
     }
     
+    func fetchAll(in dateRange: Range<Date>) async throws -> [WorkoutSession] {
+        let lowerBound = dateRange.lowerBound
+        let upperBound = dateRange.upperBound
+        let descriptor = FetchDescriptor<WorkoutSession>(
+            predicate: #Predicate { $0.date >= lowerBound && $0.date < upperBound },
+            sortBy: [SortDescriptor(\.date, order: .reverse)]
+        )
+        do {
+            return try modelContext.fetch(descriptor)
+        }
+        catch {
+            throw TrainingError.loadFailed
+        }
+    }
+    
     func fetchInProgress() async throws -> WorkoutSession? {
         var descriptor = FetchDescriptor<WorkoutSession>(
             predicate: #Predicate { $0.completedAt == nil }

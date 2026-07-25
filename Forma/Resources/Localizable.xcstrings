@@ -141,6 +141,18 @@
         }
       }
     },
+    "About MEV/MAV/MRV": {
+      "comment": "Accessibility label for the info button that explains the MEV/MAV/MRV volume coaching framework.",
+      "extractionState": "manual",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sobre MEV/MAV/MRV"
+          }
+        }
+      }
+    },
     "Add": {
       "comment": "Generic confirm button to add an item.",
       "localizations": {
@@ -339,6 +351,18 @@
         }
       }
     },
+    "Approaching maximum": {
+      "comment": "Volume coaching state: actual sets above MRV, risk of overtraining.",
+      "extractionState": "manual",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cerca del máximo"
+          }
+        }
+      }
+    },
     "Arm": {
       "localizations": {
         "en": {
@@ -417,6 +441,18 @@
           "stringUnit": {
             "state": "translated",
             "value": "Barra"
+          }
+        }
+      }
+    },
+    "Below minimum": {
+      "comment": "Volume coaching state: actual sets below MEV.",
+      "extractionState": "manual",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bajo mínimo"
           }
         }
       }
@@ -664,12 +700,48 @@
         }
       }
     },
+    "Compare your training against MEV/MAV/MRV": {
+      "comment": "Subtitle for the weekly volume card in Progress overview.",
+      "extractionState": "manual",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Compara tu entrenamiento contra MEV/MAV/MRV"
+          }
+        }
+      }
+    },
+    "Complete a workout this week to see your volume coaching": {
+      "comment": "Empty state description for the no-sessions-this-week case.",
+      "extractionState": "manual",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Completa un entrenamiento esta semana para ver tu coaching de volumen"
+          }
+        }
+      }
+    },
     "Completed": {
       "localizations": {
         "es": {
           "stringUnit": {
             "state": "translated",
             "value": "Completado"
+          }
+        }
+      }
+    },
+    "Configure your volume targets": {
+      "comment": "Empty state title prompting the user to seed MEV/MAV/MRV targets.",
+      "extractionState": "manual",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Configura tus objetivos de volumen"
           }
         }
       }
@@ -1031,6 +1103,18 @@
           "stringUnit": {
             "state": "translated",
             "value": "Editar perfil"
+          }
+        }
+      }
+    },
+    "Edit volume targets": {
+      "comment": "Accessibility label for the button opening the volume targets editor.",
+      "extractionState": "manual",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Editar objetivos de volumen"
           }
         }
       }
@@ -1693,6 +1777,54 @@
         }
       }
     },
+    "MAV": {
+      "comment": "Abbreviation for Maximum Adaptive Volume, used as-is in Spanish strength-training terminology.",
+      "extractionState": "manual",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "MAV"
+          }
+        }
+      }
+    },
+    "MEV": {
+      "comment": "Abbreviation for Minimum Effective Volume, used as-is in Spanish strength-training terminology.",
+      "extractionState": "manual",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "MEV"
+          }
+        }
+      }
+    },
+    "MEV: minimum effective volume. MAV: maximum adaptive volume. MRV: maximum recoverable volume.": {
+      "comment": "Footer explaining the MEV/MAV/MRV acronyms in the volume targets editor.",
+      "extractionState": "manual",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "MEV: volumen mínimo efectivo. MAV: volumen adaptativo máximo. MRV: volumen máximo recuperable."
+          }
+        }
+      }
+    },
+    "MRV": {
+      "comment": "Abbreviation for Maximum Recoverable Volume, used as-is in Spanish strength-training terminology.",
+      "extractionState": "manual",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "MRV"
+          }
+        }
+      }
+    },
     "Machine / Cable": {
       "comment": "Equipment type: machine or cable pulley.",
       "localizations": {
@@ -2178,6 +2310,18 @@
         }
       }
     },
+    "Not configured": {
+      "comment": "Volume coaching state shown when a muscle group has no MuscleVolumeTarget.",
+      "extractionState": "manual",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sin configurar"
+          }
+        }
+      }
+    },
     "Not enough data yet": {
       "localizations": {
         "en": {
@@ -2313,6 +2457,18 @@
         }
       }
     },
+    "Optimal range": {
+      "comment": "Volume coaching state: actual sets between MEV and MRV.",
+      "extractionState": "manual",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Zona óptima"
+          }
+        }
+      }
+    },
     "Option": {
       "comment": "A label for a segmented control that lets a user select different options from a meal.",
       "isCommentAutoGenerated": true,
@@ -2376,6 +2532,18 @@
           "stringUnit": {
             "state": "translated",
             "value": "Parcial"
+          }
+        }
+      }
+    },
+    "Partial progress for this week — check back after more sessions": {
+      "comment": "Caption clarifying the weekly volume comparison is a mid-week snapshot, not a final tally.",
+      "extractionState": "manual",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Progreso parcial de esta semana — vuelve a revisar tras más sesiones"
           }
         }
       }
@@ -2684,6 +2852,18 @@
         }
       }
     },
+    "Restore standard values": {
+      "comment": "Button that reseeds missing/reset targets back to the standard Israetel-based values.",
+      "extractionState": "manual",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Restaurar valores estándar"
+          }
+        }
+      }
+    },
     "Resume": {
       "comment": "Action to resume a paused mesocycle.",
       "localizations": {
@@ -2840,6 +3020,18 @@
         }
       }
     },
+    "Set MEV/MAV/MRV targets per muscle group to get weekly coaching": {
+      "comment": "Empty state description for volume targets setup.",
+      "extractionState": "manual",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Define objetivos MEV/MAV/MRV por grupo muscular para recibir coaching semanal"
+          }
+        }
+      }
+    },
     "Set active": {
       "comment": "Swipe action to mark a mesocycle as the active one.",
       "localizations": {
@@ -2868,6 +3060,18 @@
           "stringUnit": {
             "state": "translated",
             "value": "Configurar nutrición"
+          }
+        }
+      }
+    },
+    "Set up targets": {
+      "comment": "Button that seeds standard MEV/MAV/MRV targets for every muscle group.",
+      "extractionState": "manual",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Configurar objetivos"
           }
         }
       }
@@ -3466,6 +3670,18 @@
         }
       }
     },
+    "Volume targets": {
+      "comment": "Navigation title for the MEV/MAV/MRV editing screen.",
+      "extractionState": "manual",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Objetivos de volumen"
+          }
+        }
+      }
+    },
     "Waist": {
       "localizations": {
         "en": {
@@ -3543,6 +3759,18 @@
           "stringUnit": {
             "state": "translated",
             "value": "Recordatorio semanal de medición"
+          }
+        }
+      }
+    },
+    "Weekly volume": {
+      "comment": "Card/screen title comparing weekly trained volume against MEV/MAV/MRV.",
+      "extractionState": "manual",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Volumen semanal"
           }
         }
       }
@@ -3648,6 +3876,18 @@
           "stringUnit": {
             "state": "translated",
             "value": "Ya tienes una foto de este ángulo este mes. Al guardar, la reemplazarás."
+          }
+        }
+      }
+    },
+    "You haven't trained this week yet": {
+      "comment": "Empty state title when there are no completed sessions in the current natural week.",
+      "extractionState": "manual",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Aún no has entrenado esta semana"
           }
         }
       }

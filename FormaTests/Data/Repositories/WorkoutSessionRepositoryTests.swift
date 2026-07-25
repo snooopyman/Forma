@@ -53,6 +53,39 @@ struct WorkoutSessionRepositoryTests {
         #expect(result.count == 1)
     }
     
+    // MARK: - fetchAll(in dateRange:)
+    
+    @Test("fetchAll(in:) returns sessions whose date falls within the range, regardless of mesocycle")
+    func fetchAllInDateRange() async throws {
+        let inRange = WorkoutSession(date: Date(timeIntervalSinceNow: -86400), sessionType: .freeStyle)
+        let outOfRange = WorkoutSession(date: Date(timeIntervalSinceNow: -10 * 86400), sessionType: .freeStyle)
+        try await sut.save(inRange)
+        try await sut.save(outOfRange)
+        
+        let range = Date(timeIntervalSinceNow: -3 * 86400)..<Date.now
+        let result = try await sut.fetchAll(in: range)
+        #expect(result.count == 1)
+        #expect(result.first?.id == inRange.id)
+    }
+    
+    @Test("fetchAll(in:) returns empty when no sessions fall in range")
+    func fetchAllInDateRangeEmpty() async throws {
+        let range = Date(timeIntervalSinceNow: -3 * 86400)..<Date.now
+        let result = try await sut.fetchAll(in: range)
+        #expect(result.isEmpty)
+    }
+    
+    @Test("fetchAll(in:) excludes a session dated exactly at the range's upperBound (half-open)")
+    func fetchAllInDateRangeExcludesUpperBound() async throws {
+        let lowerBound = Date(timeIntervalSinceNow: -7 * 86400)
+        let upperBound = Date.now
+        let atUpperBound = WorkoutSession(date: upperBound, sessionType: .freeStyle)
+        try await sut.save(atUpperBound)
+        
+        let result = try await sut.fetchAll(in: lowerBound..<upperBound)
+        #expect(result.isEmpty)
+    }
+    
     // MARK: - fetchInProgress
     
     @Test("fetchInProgress returns nil when all sessions are completed")

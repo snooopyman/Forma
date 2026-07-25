@@ -8,19 +8,19 @@
 import SwiftUI
 
 struct ProgressOverviewView: View {
-
+    
     // MARK: - Environment
-
+    
     @Environment(AppContainer.self) private var container
     @Environment(\.progressOverviewViewModel) private var viewModel
-
+    
     // MARK: - States
-
+    
     @State private var showNewMeasurement = false
     @State private var editingMeasurement: BodyMeasurement?
-
+    
     // MARK: - Body
-
+    
     var body: some View {
         Group {
             if let viewModel {
@@ -66,9 +66,9 @@ struct ProgressOverviewView: View {
         .task { await viewModel?.load() }
         .refreshable { await viewModel?.load() }
     }
-
+    
     // MARK: - Private Views
-
+    
     @ViewBuilder
     private func mainContent(_ viewModel: any ProgressOverviewViewModelProtocol) -> some View {
         Group {
@@ -94,7 +94,7 @@ struct ProgressOverviewView: View {
             if let msg = viewModel.errorMessage { Text(msg) }
         }
     }
-
+    
     @ViewBuilder
     private func contentView(_ viewModel: any ProgressOverviewViewModelProtocol) -> some View {
         ScrollView {
@@ -103,6 +103,7 @@ struct ProgressOverviewView: View {
                     latestMetricsCard(latest, viewModel: viewModel)
                 }
                 BodyChartsView(measurements: viewModel.measurements)
+                weeklyVolumeCard
                 photosCard
                 historySection(viewModel)
             }
@@ -111,18 +112,18 @@ struct ProgressOverviewView: View {
         .scrollIndicators(.hidden)
         .background(.backgroundPrimary)
     }
-
+    
     @ViewBuilder
     private func latestMetricsCard(_ m: BodyMeasurement, viewModel: any ProgressOverviewViewModelProtocol) -> some View {
         VStack(alignment: .leading, spacing: DS.Spacing.md) {
             Text(String(localized: "Latest check-in"))
                 .font(.headline)
                 .foregroundStyle(.textPrimary)
-
+            
             Text(m.date.formatted(date: .abbreviated, time: .omitted))
                 .font(.caption)
                 .foregroundStyle(.textSecondary)
-
+            
             HStack(spacing: 0) {
                 metricCell(
                     label: String(localized: "Weight"),
@@ -131,9 +132,9 @@ struct ProgressOverviewView: View {
                     delta: viewModel.weightDelta,
                     lowerIsBetter: false
                 )
-
+                
                 Divider().frame(height: 48)
-
+                
                 if let bmi = m.bmi {
                     metricCell(
                         label: String(localized: "BMI"),
@@ -144,7 +145,7 @@ struct ProgressOverviewView: View {
                     )
                     Divider().frame(height: 48)
                 }
-
+                
                 if let bf = m.bodyFatPercent {
                     metricCell(
                         label: String(localized: "Body fat"),
@@ -173,7 +174,7 @@ struct ProgressOverviewView: View {
         .padding(DS.Spacing.lg)
         .cardStyle()
     }
-
+    
     @ViewBuilder
     private func metricCell(
         label: String,
@@ -186,7 +187,7 @@ struct ProgressOverviewView: View {
             Text(label)
                 .font(.caption)
                 .foregroundStyle(.textSecondary)
-
+            
             HStack(alignment: .firstTextBaseline, spacing: 2) {
                 Text(verbatim: value)
                     .font(.title3.weight(.bold))
@@ -197,7 +198,7 @@ struct ProgressOverviewView: View {
                         .foregroundStyle(.textSecondary)
                 }
             }
-
+            
             if let delta, delta != 0 {
                 let isPositive = delta > 0
                 let isGood = lowerIsBetter ? !isPositive : isPositive
@@ -214,7 +215,7 @@ struct ProgressOverviewView: View {
         }
         .frame(maxWidth: .infinity)
     }
-
+    
     @ViewBuilder
     private func historySection(_ viewModel: any ProgressOverviewViewModelProtocol) -> some View {
         VStack(alignment: .leading, spacing: DS.Spacing.sm) {
@@ -222,14 +223,14 @@ struct ProgressOverviewView: View {
                 .font(.headline)
                 .foregroundStyle(.textPrimary)
                 .padding(.horizontal, DS.Spacing.xs)
-
+            
             ForEach(groupedHistory(viewModel), id: \.header) { group in
                 Text(group.header)
                     .font(.subheadline.weight(.semibold))
                     .foregroundStyle(.textSecondary)
                     .padding(.horizontal, DS.Spacing.xs)
                     .padding(.top, DS.Spacing.xs)
-
+                
                 ForEach(group.items, id: \.current.id) { item in
                     MeasurementRowView(measurement: item.current, previous: item.previous)
                         .contextMenu {
@@ -248,29 +249,33 @@ struct ProgressOverviewView: View {
             }
         }
     }
-
-    private var photosCard: some View {
+    
+    private var weeklyVolumeCard: some View {
         NavigationLink {
-            PhotoGalleryView(repository: container.progressPhotoRepository)
+            WeeklyVolumeView(
+                sessionRepository: container.workoutSessionRepository,
+                volumeCalculatorService: container.volumeCalculatorService,
+                targetRepository: container.muscleVolumeTargetRepository
+            )
         } label: {
             HStack(spacing: DS.Spacing.md) {
-                Image(systemName: "photo.stack.fill")
+                Image(systemName: "chart.bar.fill")
                     .font(.title2)
                     .foregroundStyle(.accent)
                     .frame(width: DS.Sizing.minTapTarget, height: DS.Sizing.minTapTarget)
                     .accessibilityHidden(true)
-
+                
                 VStack(alignment: .leading, spacing: DS.Spacing.xs) {
-                    Text(String(localized: "Photo gallery"))
+                    Text(String(localized: "Weekly volume"))
                         .font(.subheadline.weight(.semibold))
                         .foregroundStyle(.textPrimary)
-                    Text(String(localized: "Track your visual progress"))
+                    Text(String(localized: "Compare your training against MEV/MAV/MRV"))
                         .font(.caption)
                         .foregroundStyle(.textSecondary)
                 }
-
+                
                 Spacer()
-
+                
                 Image(systemName: "chevron.right")
                     .font(.caption)
                     .foregroundStyle(.textTertiary)
@@ -281,7 +286,40 @@ struct ProgressOverviewView: View {
         }
         .buttonStyle(.plain)
     }
-
+    
+    private var photosCard: some View {
+        NavigationLink {
+            PhotoGalleryView(repository: container.progressPhotoRepository)
+        } label: {
+            HStack(spacing: DS.Spacing.md) {
+                Image(systemName: "photo.stack.fill")
+                    .font(.title2)
+                    .foregroundStyle(.accent)
+                    .frame(width: DS.Sizing.minTapTarget, height: DS.Sizing.minTapTarget)
+                    .accessibilityHidden(true)
+                
+                VStack(alignment: .leading, spacing: DS.Spacing.xs) {
+                    Text(String(localized: "Photo gallery"))
+                        .font(.subheadline.weight(.semibold))
+                        .foregroundStyle(.textPrimary)
+                    Text(String(localized: "Track your visual progress"))
+                        .font(.caption)
+                        .foregroundStyle(.textSecondary)
+                }
+                
+                Spacer()
+                
+                Image(systemName: "chevron.right")
+                    .font(.caption)
+                    .foregroundStyle(.textTertiary)
+                    .accessibilityHidden(true)
+            }
+            .padding(DS.Spacing.lg)
+            .cardStyle()
+        }
+        .buttonStyle(.plain)
+    }
+    
     private var emptyView: some View {
         ContentUnavailableView {
             Label(String(localized: "No measurements yet"), systemImage: "chart.line.uptrend.xyaxis")
@@ -298,19 +336,19 @@ struct ProgressOverviewView: View {
             .tint(.accent)
         }
     }
-
+    
     // MARK: - Private Functions
-
+    
     private func groupedHistory(_ viewModel: any ProgressOverviewViewModelProtocol) -> [MeasurementGroup] {
         let all = viewModel.measurements
         var groups: [MeasurementGroup] = []
         var currentHeader = ""
         var currentItems: [MeasurementGroup.Item] = []
-
+        
         for (i, m) in all.enumerated() {
             let header = m.date.formatted(.dateTime.month(.wide).year())
             let previous = i + 1 < all.count ? all[i + 1] : nil
-
+            
             if header != currentHeader {
                 if !currentItems.isEmpty {
                     groups.append(MeasurementGroup(header: currentHeader, items: currentItems))
@@ -341,18 +379,18 @@ private struct MeasurementGroup {
 // MARK: - MeasurementRowView
 
 private struct MeasurementRowView: View {
-
+    
     let measurement: BodyMeasurement
     let previous: BodyMeasurement?
-
+    
     // MARK: - Computed Properties
-
+    
     private var weightDelta: Double? {
         guard let prev = previous else { return nil }
         let delta = measurement.weightKg - prev.weightKg
         return abs(delta) > 0.05 ? delta : nil
     }
-
+    
     private var circumferenceDeltas: [(label: String, delta: Double)] {
         guard let prev = previous else { return [] }
         let pairs: [(String, Double?, Double?)] = [
@@ -369,9 +407,9 @@ private struct MeasurementRowView: View {
         .prefix(3)
         .map { $0 }
     }
-
+    
     // MARK: - Body
-
+    
     var body: some View {
         VStack(alignment: .leading, spacing: DS.Spacing.sm) {
             HStack(alignment: .top) {
@@ -379,21 +417,21 @@ private struct MeasurementRowView: View {
                     Text(measurement.date.formatted(.dateTime.weekday(.abbreviated).day().month(.abbreviated)))
                         .font(.subheadline.weight(.semibold))
                         .foregroundStyle(.textPrimary)
-
+                    
                     if let bf = measurement.bodyFatPercent {
                         Text(verbatim: "\(bf.formatted(.number.precision(.fractionLength(1))))% \(String(localized: "fat"))")
                             .font(.caption)
                             .foregroundStyle(.macroFat)
                     }
                 }
-
+                
                 Spacer()
-
+                
                 VStack(alignment: .trailing, spacing: DS.Spacing.xs) {
                     Text(verbatim: "\(measurement.weightKg.formatted(.number.precision(.fractionLength(1)))) kg")
                         .font(.subheadline.weight(.semibold))
                         .foregroundStyle(.textPrimary)
-
+                    
                     if let delta = weightDelta {
                         HStack(spacing: 2) {
                             Image(systemName: delta > 0 ? "arrow.up" : "arrow.down")
@@ -405,7 +443,7 @@ private struct MeasurementRowView: View {
                     }
                 }
             }
-
+            
             if !circumferenceDeltas.isEmpty {
                 HStack(spacing: DS.Spacing.md) {
                     ForEach(circumferenceDeltas, id: \.label) { item in
