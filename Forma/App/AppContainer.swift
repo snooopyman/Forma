@@ -12,9 +12,9 @@ import os
 
 @Observable
 final class AppContainer {
-
+    
     // MARK: - Repositories
-
+    
     let userProfileRepository: UserProfileRepositoryProtocol
     let mesocycleRepository: MesocycleRepositoryProtocol
     let workoutSessionRepository: WorkoutSessionRepositoryProtocol
@@ -23,9 +23,9 @@ final class AppContainer {
     let muscleVolumeTargetRepository: MuscleVolumeTargetRepositoryProtocol
     let nutritionRepository: NutritionRepositoryProtocol
     let foodItemRepository: FoodItemRepositoryProtocol
-
+    
     // MARK: - Services
-
+    
     let workoutSessionService: WorkoutSessionServiceProtocol
     let volumeCalculatorService: VolumeCalculatorServiceProtocol
     let restTimerActivityService: RestTimerActivityServiceProtocol
@@ -34,9 +34,9 @@ final class AppContainer {
     let healthKitService: HealthKitServiceProtocol
     let notificationService: NotificationServiceProtocol
     let measurementReminderScheduler: MeasurementReminderSchedulerProtocol
-
+    
     // MARK: - Initializers
-
+    
     init(modelContext: ModelContext) {
         self.userProfileRepository = UserProfileRepository(modelContext: modelContext)
         self.mesocycleRepository = MesocycleRepository(modelContext: modelContext)
@@ -59,20 +59,78 @@ final class AppContainer {
             measurementRepository: bodyMeasurementRepository,
             notificationService: notificationService
         )
-
-        let catalogSeeded = UserDefaults.standard.bool(forKey: "com.armando.forma.foodCatalogV1")
-        if !catalogSeeded {
-            let descriptor = FetchDescriptor<FoodItem>(predicate: #Predicate { !$0.isCustom })
-            if let existing = try? modelContext.fetch(descriptor) {
-                existing.forEach { modelContext.delete($0) }
+        
+        Self.repairDanglingMealOptionItemReferences(modelContext: modelContext)
+        Self.reconcileFoodCatalog(modelContext: modelContext)
+    }
+    
+    // MARK: - Private Functions
+    
+    private static func repairDanglingMealOptionItemReferences(modelContext: ModelContext) {
+        do {
+            let validFoodItemIDs = try modelContext.fetch(FetchDescriptor<FoodItem>()).map(\.id)
+            
+            var validlyReferencedIDs: Set<UUID> = []
+            for foodItemID in validFoodItemIDs {
+                let referencing = try modelContext.fetch(
+                    FetchDescriptor<MealOptionItem>(predicate: #Predicate { $0.foodItem?.id == foodItemID })
+                )
+                for mealOptionItem in referencing {
+                    validlyReferencedIDs.insert(mealOptionItem.id)
+                }
             }
-            FoodCatalog.catalog.forEach { modelContext.insert($0) }
-            do {
-                try modelContext.save()
-                UserDefaults.standard.set(true, forKey: "com.armando.forma.foodCatalogV1")
-            } catch {
-                Logger.core.error("Food catalog seed failed: \(error, privacy: .public)")
+            
+            let itemsWithAFoodItem = try modelContext.fetch(
+                FetchDescriptor<MealOptionItem>(predicate: #Predicate { $0.foodItem != nil })
+            )
+            let danglingItems = itemsWithAFoodItem.filter { !validlyReferencedIDs.contains($0.id) }
+            guard !danglingItems.isEmpty else { return }
+            
+            for item in danglingItems {
+                item.foodItem = nil
             }
+            try modelContext.save()
+        } catch {
+            Logger.core.error("Dangling meal option item repair failed: \(error, privacy: .public)")
+        }
+    }
+    
+    private static func reconcileFoodCatalog(modelContext: ModelContext) {
+        do {
+            let catalogItems = FoodCatalog.catalog
+            let catalogNames = Set(catalogItems.map(\.name))
+            let existingNonCustom = try modelContext.fetch(
+                FetchDescriptor<FoodItem>(predicate: #Predicate { !$0.isCustom })
+            )
+            
+            var usageCounts: [(item: FoodItem, count: Int)] = []
+            for item in existingNonCustom {
+                let itemID = item.id
+                let count = try modelContext.fetchCount(
+                    FetchDescriptor<MealOptionItem>(predicate: #Predicate { $0.foodItem?.id == itemID })
+                )
+                usageCounts.append((item, count))
+            }
+            
+            var seenNames: Set<String> = []
+            for (item, count) in usageCounts where count > 0 {
+                seenNames.insert(item.name)
+            }
+            for (item, count) in usageCounts where count == 0 {
+                if !catalogNames.contains(item.name) || seenNames.contains(item.name) {
+                    modelContext.delete(item)
+                } else {
+                    seenNames.insert(item.name)
+                }
+            }
+            
+            for catalogItem in catalogItems where !seenNames.contains(catalogItem.name) {
+                modelContext.insert(catalogItem)
+            }
+            
+            try modelContext.save()
+        } catch {
+            Logger.core.error("Food catalog reconciliation failed: \(error, privacy: .public)")
         }
     }
 }

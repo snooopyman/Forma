@@ -13,31 +13,31 @@ import SwiftData
 @Suite("Food Item Repository Tests")
 @MainActor
 struct FoodItemRepositoryTests {
-
+    
     // MARK: - Properties
-
+    
     let sut: FoodItemRepository
     let modelContainer: ModelContainer
-
+    
     // MARK: - Initializers
-
+    
     init() throws {
         let config = ModelConfiguration(isStoredInMemoryOnly: true)
         modelContainer = try ModelContainer(
-            for: FoodItem.self,
+            for: FoodItem.self, MealOptionItem.self,
             configurations: config
         )
         sut = FoodItemRepository(modelContext: modelContainer.mainContext)
     }
-
+    
     // MARK: - fetchAll
-
+    
     @Test("fetchAll returns empty when no food items")
     func fetchAllEmpty() async throws {
         let result = try await sut.fetchAll()
         #expect(result.isEmpty)
     }
-
+    
     @Test("fetchAll returns all saved items sorted by name")
     func fetchAllSortedByName() async throws {
         let zucchini = Self.makeFoodItem(name: "Zucchini")
@@ -48,9 +48,9 @@ struct FoodItemRepositoryTests {
         #expect(result.count == 2)
         #expect(result.first?.name == "Apple")
     }
-
+    
     // MARK: - search
-
+    
     @Test("search returns items matching query")
     func searchMatchesQuery() async throws {
         try await sut.save(Self.makeFoodItem(name: "Chicken breast"))
@@ -59,16 +59,16 @@ struct FoodItemRepositoryTests {
         let result = try await sut.search(query: "chicken")
         #expect(result.count == 2)
     }
-
+    
     @Test("search returns empty when nothing matches")
     func searchNoMatches() async throws {
         try await sut.save(Self.makeFoodItem(name: "Rice"))
         let result = try await sut.search(query: "chicken")
         #expect(result.isEmpty)
     }
-
+    
     // MARK: - save / delete round-trip
-
+    
     @Test("save and fetchAll round-trip preserves macros")
     func saveAndFetch() async throws {
         let item = Self.makeFoodItem(name: "Oats", caloriesPer100g: 389, proteinPer100g: 16.9)
@@ -78,7 +78,7 @@ struct FoodItemRepositoryTests {
         #expect(result.first?.caloriesPer100g == 389)
         #expect(result.first?.proteinPer100g == 16.9)
     }
-
+    
     @Test("delete removes item from store")
     func deleteItem() async throws {
         let item = Self.makeFoodItem(name: "Oats")
@@ -86,6 +86,47 @@ struct FoodItemRepositoryTests {
         try await sut.delete(item)
         let result = try await sut.fetchAll()
         #expect(result.isEmpty)
+    }
+    
+    // MARK: - usageCount
+    
+    @Test("usageCount returns 0 when item is not referenced by any meal option")
+    func usageCountZero() async throws {
+        let item = Self.makeFoodItem(name: "Oats")
+        try await sut.save(item)
+        let count = try await sut.usageCount(for: item)
+        #expect(count == 0)
+    }
+    
+    @Test("usageCount counts meal options referencing the item")
+    func usageCountMatches() async throws {
+        let item = Self.makeFoodItem(name: "Oats")
+        try await sut.save(item)
+        let optionItem1 = MealOptionItem(amountGrams: 50)
+        optionItem1.foodItem = item
+        let optionItem2 = MealOptionItem(amountGrams: 100)
+        optionItem2.foodItem = item
+        modelContainer.mainContext.insert(optionItem1)
+        modelContainer.mainContext.insert(optionItem2)
+        try modelContainer.mainContext.save()
+        
+        let count = try await sut.usageCount(for: item)
+        #expect(count == 2)
+    }
+    
+    @Test("usageCount ignores meal options referencing a different item")
+    func usageCountIgnoresOtherItems() async throws {
+        let item = Self.makeFoodItem(name: "Oats")
+        let otherItem = Self.makeFoodItem(name: "Rice")
+        try await sut.save(item)
+        try await sut.save(otherItem)
+        let optionItem = MealOptionItem(amountGrams: 50)
+        optionItem.foodItem = otherItem
+        modelContainer.mainContext.insert(optionItem)
+        try modelContainer.mainContext.save()
+        
+        let count = try await sut.usageCount(for: item)
+        #expect(count == 0)
     }
 }
 

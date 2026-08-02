@@ -11,12 +11,14 @@ enum NutritionError: LocalizedError, Equatable {
     case loadFailed
     case saveFailed
     case deleteFailed
+    case inUse(count: Int)
     
     var errorDescription: String? {
         switch self {
         case .loadFailed:   L10n.Nutrition.Error.loadFailed
         case .saveFailed:   L10n.Nutrition.Error.saveFailed
         case .deleteFailed: L10n.Nutrition.Error.deleteFailed
+        case .inUse(let count): L10n.Nutrition.Error.inUse(count: count)
         }
     }
 }

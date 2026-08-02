@@ -8,20 +8,22 @@
 import SwiftUI
 
 struct FoodBrowserView: View {
-
+    
     // MARK: - Private Properties
-
+    
     @State private var viewModel: FoodBrowserViewModel
-
+    @State private var showingAddFood = false
+    @State private var editingItem: FoodItem?
+    
     // MARK: - Initializers
-
+    
     init(repository: FoodItemRepositoryProtocol) {
         let interactor = FoodBrowserInteractor(foodItemRepository: repository)
         _viewModel = State(initialValue: FoodBrowserViewModel(interactor: interactor))
     }
-
+    
     // MARK: - Body
-
+    
     var body: some View {
         Group {
             if viewModel.isLoading {
@@ -40,6 +42,21 @@ struct FoodBrowserView: View {
             placement: .navigationBarDrawer(displayMode: .always),
             prompt: String(localized: "Search foods")
         )
+        .toolbar {
+            ToolbarItem(placement: .topBarTrailing) {
+                Button {
+                    showingAddFood = true
+                } label: {
+                    Image(systemName: "plus")
+                }
+            }
+        }
+        .sheet(isPresented: $showingAddFood) {
+            FoodItemEditorView(viewModel: viewModel)
+        }
+        .sheet(item: $editingItem) { item in
+            FoodItemEditorView(editing: item, viewModel: viewModel)
+        }
         .alert(
             String(localized: "Error"),
             isPresented: Binding(
@@ -53,9 +70,9 @@ struct FoodBrowserView: View {
         }
         .task { await viewModel.load() }
     }
-
+    
     // MARK: - Private Views
-
+    
     @ViewBuilder
     private var contentView: some View {
         VStack(spacing: 0) {
@@ -63,7 +80,7 @@ struct FoodBrowserView: View {
             foodList
         }
     }
-
+    
     @ViewBuilder
     private var categoryFilter: some View {
         ScrollView(.horizontal, showsIndicators: false) {
@@ -80,7 +97,7 @@ struct FoodBrowserView: View {
                         isSelected: viewModel.selectedCategory == category
                     ) {
                         viewModel.selectedCategory =
-                            viewModel.selectedCategory == category ? nil : category
+                        viewModel.selectedCategory == category ? nil : category
                     }
                 }
             }
@@ -88,17 +105,36 @@ struct FoodBrowserView: View {
             .padding(.vertical, DS.Spacing.sm)
         }
     }
-
+    
     @ViewBuilder
     private var foodList: some View {
         List(viewModel.filteredItems) { item in
             FoodBrowserRow(item: item)
                 .listRowBackground(Color(.backgroundCard))
+                .swipeActions(edge: .trailing, allowsFullSwipe: true) {
+                    if item.isCustom {
+                        Button(role: .destructive) {
+                            Task { await viewModel.deleteItem(item) }
+                        } label: {
+                            Label(String(localized: "Delete"), systemImage: "trash")
+                        }
+                    }
+                }
+                .swipeActions(edge: .leading) {
+                    if item.isCustom {
+                        Button {
+                            editingItem = item
+                        } label: {
+                            Label(String(localized: "Edit"), systemImage: "pencil")
+                        }
+                        .tint(.accent)
+                    }
+                }
         }
         .listStyle(.plain)
         .scrollContentBackground(.hidden)
     }
-
+    
     private var emptyView: some View {
         ContentUnavailableView.search(text: viewModel.searchText)
     }
@@ -107,11 +143,11 @@ struct FoodBrowserView: View {
 // MARK: - CategoryChip
 
 private struct CategoryChip: View {
-
+    
     let title: String
     let isSelected: Bool
     let action: () -> Void
-
+    
     var body: some View {
         Button(action: action) {
             Text(title)
@@ -129,9 +165,9 @@ private struct CategoryChip: View {
 // MARK: - FoodBrowserRow
 
 private struct FoodBrowserRow: View {
-
+    
     let item: FoodItem
-
+    
     private var mainMacroColor: Color {
         switch item.mainMacro {
         case .protein: return Color(.macroProtein)
@@ -139,17 +175,28 @@ private struct FoodBrowserRow: View {
         case .fat:     return Color(.macroFat)
         }
     }
-
+    
     var body: some View {
         HStack(spacing: DS.Spacing.md) {
             RoundedRectangle(cornerRadius: DS.Radius.inner)
                 .fill(mainMacroColor)
                 .frame(width: 4, height: 44)
-
+            
             VStack(alignment: .leading, spacing: DS.Spacing.xs) {
-                Text(item.name)
-                    .font(.body)
-                    .foregroundStyle(.textPrimary)
+                HStack(spacing: DS.Spacing.xs) {
+                    Text(item.name)
+                        .font(.body)
+                        .foregroundStyle(.textPrimary)
+                    if item.isCustom {
+                        Text(String(localized: "Custom"))
+                            .font(.caption2.weight(.semibold))
+                            .foregroundStyle(Color(.textOnAccent))
+                            .padding(.horizontal, DS.Spacing.xs)
+                            .padding(.vertical, 2)
+                            .background(Color(.accent))
+                            .clipShape(RoundedRectangle(cornerRadius: DS.Radius.chip))
+                    }
+                }
                 HStack(spacing: DS.Spacing.xs) {
                     Text(item.category)
                         .font(.caption)
@@ -162,9 +209,9 @@ private struct FoodBrowserRow: View {
                         .foregroundStyle(mainMacroColor)
                 }
             }
-
+            
             Spacer()
-
+            
             VStack(alignment: .trailing, spacing: DS.Spacing.xs) {
                 Text(verbatim: "\(item.caloriesPer100g.formatted(.number.precision(.fractionLength(0)))) kcal")
                     .font(.subheadline.weight(.medium))
@@ -178,7 +225,7 @@ private struct FoodBrowserRow: View {
         }
         .padding(.vertical, DS.Spacing.xs)
     }
-
+    
     @ViewBuilder
     private func macroLabel(value: Double, color: Color, prefix: String) -> some View {
         HStack(spacing: 1) {

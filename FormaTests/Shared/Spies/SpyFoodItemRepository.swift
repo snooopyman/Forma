@@ -9,54 +9,66 @@ import Foundation
 @testable import Forma
 
 final class SpyFoodItemRepository: FoodItemRepositoryProtocol, @unchecked Sendable {
-
+    
     // MARK: - Spy Tracking
-
+    
     private(set) var fetchAllWasCalled = false
     private(set) var searchWasCalled = false
+    private(set) var usageCountWasCalled = false
     private(set) var saveWasCalled = false
     private(set) var deleteWasCalled = false
     private(set) var lastSearchQuery: String?
+    private(set) var lastUsageCountItem: FoodItem?
     private(set) var lastSavedItem: FoodItem?
     private(set) var lastDeletedItem: FoodItem?
-
+    
     // MARK: - Stub Data
-
+    
     var stubbedItems: [FoodItem] = []
+    var stubbedUsageCount = 0
     var shouldThrowError = false
     var errorToThrow: Error = NutritionError.loadFailed
-
+    
     // MARK: - Functions
-
+    
     func reset() {
         fetchAllWasCalled = false
         searchWasCalled = false
+        usageCountWasCalled = false
         saveWasCalled = false
         deleteWasCalled = false
         lastSearchQuery = nil
+        lastUsageCountItem = nil
         lastSavedItem = nil
         lastDeletedItem = nil
     }
-
+    
     func fetchAll() async throws -> [FoodItem] {
         fetchAllWasCalled = true
         if shouldThrowError { throw errorToThrow }
         return stubbedItems
     }
-
+    
     func search(query: String) async throws -> [FoodItem] {
         searchWasCalled = true
         lastSearchQuery = query
         if shouldThrowError { throw errorToThrow }
         return stubbedItems
     }
-
+    
+    func usageCount(for item: FoodItem) async throws -> Int {
+        usageCountWasCalled = true
+        lastUsageCountItem = item
+        if shouldThrowError { throw errorToThrow }
+        return stubbedUsageCount
+    }
+    
     func save(_ item: FoodItem) async throws {
         saveWasCalled = true
         lastSavedItem = item
         if shouldThrowError { throw errorToThrow }
     }
-
+    
     func delete(_ item: FoodItem) async throws {
         deleteWasCalled = true
         lastDeletedItem = item

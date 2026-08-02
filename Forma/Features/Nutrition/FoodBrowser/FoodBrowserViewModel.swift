@@ -60,6 +60,33 @@ final class FoodBrowserViewModel {
         }
     }
     
+    func isDuplicateName(_ name: String, excludingID: UUID?) -> Bool {
+        allItems.contains {
+            $0.name.caseInsensitiveCompare(name) == .orderedSame && $0.id != excludingID
+        }
+    }
+    
+    @discardableResult
+    func saveItem(_ item: FoodItem) async -> Bool {
+        do {
+            try await interactor.saveItem(item)
+            await load()
+            return true
+        } catch {
+            handleError(error)
+            return false
+        }
+    }
+    
+    func deleteItem(_ item: FoodItem) async {
+        do {
+            try await interactor.deleteItem(item)
+            await load()
+        } catch {
+            handleError(error)
+        }
+    }
+    
     // MARK: - Private Functions
     
     private func handleError(_ error: Error) {

@@ -41,6 +41,19 @@ final class FoodItemRepository: FoodItemRepositoryProtocol {
         }
     }
     
+    func usageCount(for item: FoodItem) async throws -> Int {
+        let itemID = item.id
+        let descriptor = FetchDescriptor<MealOptionItem>(
+            predicate: #Predicate { $0.foodItem?.id == itemID }
+        )
+        do {
+            return try modelContext.fetchCount(descriptor)
+        }
+        catch {
+            throw NutritionError.loadFailed
+        }
+    }
+    
     func save(_ item: FoodItem) async throws {
         modelContext.insert(item)
         do {

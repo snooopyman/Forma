@@ -82,6 +82,9 @@ enum L10n {
             nonisolated static let loadFailed   = String(localized: .NutritionLocalizable.errorLoadFailed)
             nonisolated static let saveFailed   = String(localized: .NutritionLocalizable.errorSaveFailed)
             nonisolated static let deleteFailed = String(localized: .NutritionLocalizable.errorDeleteFailed)
+            nonisolated static func inUse(count: Int) -> String {
+                String(localized: "This food is used in \(count) meal option(s) and can't be deleted")
+            }
         }
     }
     
