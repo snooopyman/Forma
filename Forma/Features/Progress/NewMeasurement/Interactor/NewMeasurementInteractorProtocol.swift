@@ -12,6 +12,7 @@ protocol NewMeasurementInteractorProtocol: Sendable {
     func fetchLatestWeight() async -> Double?
     func saveMeasurement(_ measurement: BodyMeasurement) async throws
     func updateMeasurement(_ measurement: BodyMeasurement) async throws
+    func deleteMeasurement(_ measurement: BodyMeasurement) async throws
     func writeWeight(_ kg: Double, date: Date) async
     func rescheduleMeasurementReminder() async
 }

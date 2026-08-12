@@ -16,9 +16,12 @@ final class NewMeasurementViewModel {
     
     @ObservationIgnored
     private let interactor: NewMeasurementInteractorProtocol
-
+    
     @ObservationIgnored
     private let existingMeasurement: BodyMeasurement?
+    
+    @ObservationIgnored
+    private let existingMeasurements: [BodyMeasurement]
     
     // MARK: - States
     
@@ -47,6 +50,14 @@ final class NewMeasurementViewModel {
         (Double(weightText.replacingOccurrences(of: ",", with: ".")) ?? 0) > 0
     }
     
+    var duplicateMeasurement: BodyMeasurement? {
+        let calendar = Calendar.current
+        return existingMeasurements.first { measurement in
+            measurement.id != existingMeasurement?.id &&
+            calendar.isDate(measurement.date, equalTo: date, toGranularity: .weekOfYear)
+        }
+    }
+    
     private var resolvedHeightCm: Double {
         Double(heightText.replacingOccurrences(of: ",", with: ".")) ?? 170
     }
@@ -55,10 +66,12 @@ final class NewMeasurementViewModel {
     
     init(
         interactor: NewMeasurementInteractorProtocol,
+        existingMeasurements: [BodyMeasurement] = [],
         editing: BodyMeasurement? = nil,
         onSaved: @escaping @MainActor () -> Void
     ) {
         self.interactor = interactor
+        self.existingMeasurements = existingMeasurements
         self.existingMeasurement = editing
         self.onSaved = onSaved
         
@@ -85,18 +98,21 @@ final class NewMeasurementViewModel {
         let profile = try? await interactor.fetchProfile()
         let h = profile?.heightCm ?? 170
         heightText = h.formatted(.number.precision(.fractionLength(0)))
-
+        
         if weightText.isEmpty, existingMeasurement == nil,
            let hkWeight = await interactor.fetchLatestWeight() {
             weightText = hkWeight.formatted(.number.precision(.fractionLength(1)))
         }
     }
     
-    func save() async {
+    func save(replacing duplicate: BodyMeasurement? = nil) async {
         guard canSave else { return }
         isSaving = true
         defer { isSaving = false }
         do {
+            if let duplicate {
+                try await interactor.deleteMeasurement(duplicate)
+            }
             let weight = Double(weightText.replacingOccurrences(of: ",", with: ".")) ?? 0
             if let existing = existingMeasurement {
                 existing.date = date

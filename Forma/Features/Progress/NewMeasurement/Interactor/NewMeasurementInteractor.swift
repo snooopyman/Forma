@@ -48,6 +48,10 @@ final class NewMeasurementInteractor: NewMeasurementInteractorProtocol {
         try await measurementRepository.update(measurement)
     }
     
+    func deleteMeasurement(_ measurement: BodyMeasurement) async throws {
+        try await measurementRepository.delete(measurement)
+    }
+    
     func writeWeight(_ kg: Double, date: Date) async {
         await healthKitService.writeWeight(kg, date: date)
     }

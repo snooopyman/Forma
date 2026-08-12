@@ -73,5 +73,55 @@ extension NewMeasurementTests {
             await sut.save()
             #expect(sut.errorMessage == ProgressError.saveFailed.errorDescription)
         }
+
+        @Test("duplicateMeasurement finds a measurement in the same calendar week")
+        func duplicateMeasurementSameWeek() {
+            let calendar = Calendar.current
+            let today = Date.now
+            let existing = BodyMeasurement(date: today, weightKg: 70, heightCm: 170, biologicalSex: .male)
+            let sut = NewMeasurementViewModel(interactor: spy, existingMeasurements: [existing], onSaved: {})
+            sut.date = today
+            #expect(sut.duplicateMeasurement?.id == existing.id)
+
+            let nextWeek = calendar.date(byAdding: .weekOfYear, value: 1, to: today)!
+            sut.date = nextWeek
+            #expect(sut.duplicateMeasurement == nil)
+        }
+
+        @Test("duplicateMeasurement excludes the measurement being edited")
+        func duplicateMeasurementExcludesEditing() {
+            let today = Date.now
+            let editing = BodyMeasurement(date: today, weightKg: 70, heightCm: 170, biologicalSex: .male)
+            let sut = NewMeasurementViewModel(interactor: spy, existingMeasurements: [editing], editing: editing, onSaved: {})
+            sut.date = today
+            #expect(sut.duplicateMeasurement == nil)
+        }
+
+        @Test("duplicateMeasurement flags a different measurement when editing moves into its week")
+        func duplicateMeasurementFlagsOtherOnEdit() {
+            let calendar = Calendar.current
+            let today = Date.now
+            let other = BodyMeasurement(date: today, weightKg: 70, heightCm: 170, biologicalSex: .male)
+            let editing = BodyMeasurement(
+                date: calendar.date(byAdding: .weekOfYear, value: -1, to: today)!,
+                weightKg: 72,
+                heightCm: 170,
+                biologicalSex: .male
+            )
+            let sut = NewMeasurementViewModel(interactor: spy, existingMeasurements: [other, editing], editing: editing, onSaved: {})
+            sut.date = today
+            #expect(sut.duplicateMeasurement?.id == other.id)
+        }
+
+        @Test("save(replacing:) deletes the duplicate before saving")
+        func saveReplacingDeletesDuplicate() async {
+            let duplicate = BodyMeasurement(weightKg: 71, heightCm: 170, biologicalSex: .male)
+            let sut = NewMeasurementViewModel(interactor: spy, onSaved: {})
+            sut.weightText = "80"
+            await sut.save(replacing: duplicate)
+            #expect(spy.deleteMeasurementWasCalled == true)
+            #expect(spy.lastDeletedMeasurement?.id == duplicate.id)
+            #expect(spy.saveMeasurementWasCalled == true)
+        }
     }
 }

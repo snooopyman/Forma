@@ -3080,6 +3080,22 @@
         }
       }
     },
+    "Replace measurement?" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Replace measurement?"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "¿Reemplazar medición?"
+          }
+        }
+      }
+    },
     "Replace photo?" : {
       "localizations" : {
         "en" : {
@@ -4192,6 +4208,38 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Ya tienes una foto %@ de este mes. ¿Quieres reemplazarla?"
+          }
+        }
+      }
+    },
+    "You already have a measurement for this week. Do you want to replace it?" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "You already have a measurement for this week. Do you want to replace it?"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ya tienes una medición esta semana. ¿Quieres reemplazarla?"
+          }
+        }
+      }
+    },
+    "You already have a measurement this week. Saving will replace it." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "You already have a measurement this week. Saving will replace it."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ya tienes una medición esta semana. Al guardar, la reemplazarás."
           }
         }
       }

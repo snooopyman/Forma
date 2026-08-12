@@ -81,6 +81,14 @@ extension NewMeasurementTests {
             #expect(spyMeasurementRepository.lastUpdatedMeasurement?.id == measurement.id)
         }
 
+        @Test("deleteMeasurement delegates to measurement repository")
+        func deleteMeasurementTracked() async throws {
+            let measurement = BodyMeasurement(weightKg: 70, heightCm: 170, biologicalSex: .male)
+            try await sut.deleteMeasurement(measurement)
+            #expect(spyMeasurementRepository.deleteWasCalled == true)
+            #expect(spyMeasurementRepository.lastDeletedMeasurement?.id == measurement.id)
+        }
+
         @Test("writeWeight delegates to HealthKit service")
         func writeWeightTracked() async {
             await sut.writeWeight(75, date: .now)

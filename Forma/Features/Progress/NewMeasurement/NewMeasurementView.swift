@@ -12,6 +12,7 @@ struct NewMeasurementView: View {
     // MARK: - Private Properties
 
     @State private var viewModel: NewMeasurementViewModel
+    @State private var showReplaceAlert = false
 
     // MARK: - Environment
 
@@ -24,6 +25,7 @@ struct NewMeasurementView: View {
         profileRepository: UserProfileRepositoryProtocol,
         healthKitService: HealthKitServiceProtocol,
         measurementReminderScheduler: MeasurementReminderSchedulerProtocol,
+        existingMeasurements: [BodyMeasurement] = [],
         editing: BodyMeasurement? = nil,
         onSaved: @escaping @MainActor () -> Void
     ) {
@@ -35,6 +37,7 @@ struct NewMeasurementView: View {
         )
         _viewModel = State(initialValue: NewMeasurementViewModel(
             interactor: interactor,
+            existingMeasurements: existingMeasurements,
             editing: editing,
             onSaved: onSaved
         ))
@@ -52,6 +55,11 @@ struct NewMeasurementView: View {
                         in: ...Date.now,
                         displayedComponents: .date
                     )
+                } footer: {
+                    if viewModel.duplicateMeasurement != nil {
+                        Text(String(localized: "You already have a measurement this week. Saving will replace it."))
+                            .foregroundStyle(.warning)
+                    }
                 }
 
                 Section(String(localized: "Weight")) {
@@ -98,15 +106,32 @@ struct NewMeasurementView: View {
             .toolbar {
                 ToolbarItem(placement: .confirmationAction) {
                     Button(String(localized: "Save")) {
-                        Task {
-                            await viewModel.save()
-                            if viewModel.errorMessage == nil {
-                                dismiss()
+                        if viewModel.duplicateMeasurement != nil {
+                            showReplaceAlert = true
+                        } else {
+                            Task {
+                                await viewModel.save()
+                                if viewModel.errorMessage == nil {
+                                    dismiss()
+                                }
                             }
                         }
                     }
                     .disabled(!viewModel.canSave || viewModel.isSaving)
                 }
+            }
+            .alert(String(localized: "Replace measurement?"), isPresented: $showReplaceAlert) {
+                Button(String(localized: "Replace"), role: .destructive) {
+                    Task {
+                        await viewModel.save(replacing: viewModel.duplicateMeasurement)
+                        if viewModel.errorMessage == nil {
+                            dismiss()
+                        }
+                    }
+                }
+                Button(L10n.Common.cancel, role: .cancel) {}
+            } message: {
+                Text(String(localized: "You already have a measurement for this week. Do you want to replace it?"))
             }
             .alert(
                 String(localized: "Error"),

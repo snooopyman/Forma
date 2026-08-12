@@ -47,7 +47,8 @@ struct ProgressOverviewView: View {
                 repository: container.bodyMeasurementRepository,
                 profileRepository: container.userProfileRepository,
                 healthKitService: container.healthKitService,
-                measurementReminderScheduler: container.measurementReminderScheduler
+                measurementReminderScheduler: container.measurementReminderScheduler,
+                existingMeasurements: viewModel?.measurements ?? []
             ) {
                 Task { await viewModel?.load() }
             }
@@ -58,6 +59,7 @@ struct ProgressOverviewView: View {
                 profileRepository: container.userProfileRepository,
                 healthKitService: container.healthKitService,
                 measurementReminderScheduler: container.measurementReminderScheduler,
+                existingMeasurements: viewModel?.measurements ?? [],
                 editing: measurement
             ) {
                 Task { await viewModel?.load() }

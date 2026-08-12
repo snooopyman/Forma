@@ -16,10 +16,12 @@ final class SpyNewMeasurementInteractor: NewMeasurementInteractorProtocol, @unch
     private(set) var fetchLatestWeightWasCalled = false
     private(set) var saveMeasurementWasCalled = false
     private(set) var updateMeasurementWasCalled = false
+    private(set) var deleteMeasurementWasCalled = false
     private(set) var writeWeightWasCalled = false
     private(set) var rescheduleMeasurementReminderWasCalled = false
     private(set) var lastSavedMeasurement: BodyMeasurement?
     private(set) var lastUpdatedMeasurement: BodyMeasurement?
+    private(set) var lastDeletedMeasurement: BodyMeasurement?
     private(set) var lastWrittenWeight: Double?
     
     // MARK: - Stub Data
@@ -36,10 +38,12 @@ final class SpyNewMeasurementInteractor: NewMeasurementInteractorProtocol, @unch
         fetchLatestWeightWasCalled = false
         saveMeasurementWasCalled = false
         updateMeasurementWasCalled = false
+        deleteMeasurementWasCalled = false
         writeWeightWasCalled = false
         rescheduleMeasurementReminderWasCalled = false
         lastSavedMeasurement = nil
         lastUpdatedMeasurement = nil
+        lastDeletedMeasurement = nil
         lastWrittenWeight = nil
     }
     
@@ -63,6 +67,12 @@ final class SpyNewMeasurementInteractor: NewMeasurementInteractorProtocol, @unch
     func updateMeasurement(_ measurement: BodyMeasurement) async throws {
         updateMeasurementWasCalled = true
         lastUpdatedMeasurement = measurement
+        if shouldThrowError { throw errorToThrow }
+    }
+    
+    func deleteMeasurement(_ measurement: BodyMeasurement) async throws {
+        deleteMeasurementWasCalled = true
+        lastDeletedMeasurement = measurement
         if shouldThrowError { throw errorToThrow }
     }
     
