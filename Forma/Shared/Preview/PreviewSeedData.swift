@@ -7,6 +7,7 @@
 
 import Foundation
 import SwiftData
+import UIKit
 
 enum PreviewSeedData {
 
@@ -18,6 +19,7 @@ enum PreviewSeedData {
         let foodItems = insertFoodItems(into: context)
         insertNutritionPlan(with: foodItems, into: context)
         insertBodyMeasurements(into: context)
+        insertProgressPhotos(into: context)
     }
 
     // MARK: - User Profile
@@ -348,5 +350,31 @@ enum PreviewSeedData {
             )
             context.insert(measurement)
         }
+    }
+
+    // MARK: - Progress Photos
+
+    private static func insertProgressPhotos(into context: ModelContext) {
+        let entries: [(daysAgo: Int, angle: PhotoAngle, color: UIColor)] = [
+            (42, .front, .systemBlue),
+            (35, .back, .systemOrange),
+            (21, .front, .systemTeal),
+            (14, .sideLeft, .systemGreen),
+            (0, .front, .systemIndigo),
+        ]
+        for entry in entries {
+            let date = Calendar.current.date(byAdding: .day, value: -entry.daysAgo, to: .now)!
+            let photo = ProgressPhoto(date: date, angle: entry.angle, imageData: samplePhotoData(color: entry.color))
+            context.insert(photo)
+        }
+    }
+
+    private static func samplePhotoData(color: UIColor) -> Data {
+        let renderer = UIGraphicsImageRenderer(size: CGSize(width: 300, height: 400))
+        let image = renderer.image { _ in
+            color.setFill()
+            UIRectFill(CGRect(x: 0, y: 0, width: 300, height: 400))
+        }
+        return image.pngData() ?? Data()
     }
 }

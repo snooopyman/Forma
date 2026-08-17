@@ -18,10 +18,17 @@ struct PhotoGalleryView: View {
     @State private var viewModel: PhotoGalleryViewModel
     @State private var showAddPhoto = false
     @State private var selectedPhoto: ProgressPhoto?
+    @State private var showComparison = false
 
     // MARK: - Environment
 
     @Environment(AppContainer.self) private var container
+
+    // MARK: - Computed Properties
+
+    private var canCompare: Bool {
+        Dictionary(grouping: viewModel.photos, by: \.angle).contains { $0.value.count >= 2 }
+    }
 
     // MARK: - Initializers
 
@@ -48,6 +55,20 @@ struct PhotoGalleryView: View {
         .toolbar {
             ToolbarItem(placement: .topBarTrailing) {
                 Button {
+                    showComparison = true
+                } label: {
+                    Image(systemName: "square.split.2x1")
+                }
+                .accessibilityLabel(String(localized: "Compare photos"))
+                .accessibilityHint(
+                    canCompare
+                        ? ""
+                        : String(localized: "Add two photos of the same angle to compare")
+                )
+                .disabled(!canCompare)
+            }
+            ToolbarItem(placement: .topBarTrailing) {
+                Button {
                     showAddPhoto = true
                 } label: {
                     Image(systemName: "plus")
@@ -65,6 +86,14 @@ struct PhotoGalleryView: View {
         }
         .fullScreenCover(item: $selectedPhoto) { photo in
             PhotoDetailView(photo: photo)
+        }
+        .fullScreenCover(isPresented: $showComparison) {
+            if canCompare {
+                PhotoComparisonView(
+                    photos: viewModel.photos,
+                    measurementRepository: container.bodyMeasurementRepository
+                )
+            }
         }
         .alert(
             String(localized: "Error"),
@@ -136,7 +165,7 @@ struct PhotoGalleryView: View {
 
 // MARK: - PhotoThumbnailView
 
-private struct PhotoThumbnailView: View {
+struct PhotoThumbnailView: View {
 
     let photo: ProgressPhoto
 
