@@ -43,6 +43,59 @@ struct AppContainerTests {
         #expect(allItems.count == FoodCatalog.catalog.count + 1)
     }
     
+    @Test("Reconciliation backfills catalogKey/categoryKey onto already-seeded rows without touching custom items")
+    func reconciliationBackfillsLocalizationKeys() async throws {
+        let modelContainer = try Self.makeInMemoryContainer()
+        let modelContext = modelContainer.mainContext
+
+        let catalogEntry = FoodCatalog.catalog.first!
+
+        // Simulates a pre-localization install: the row already exists (same name),
+        // seeded before catalogKey/categoryKey existed, so both are nil.
+        let preExistingItem = FoodItem(
+            name: catalogEntry.name,
+            category: catalogEntry.category,
+            mainMacro: catalogEntry.mainMacro,
+            caloriesPer100g: catalogEntry.caloriesPer100g,
+            proteinPer100g: catalogEntry.proteinPer100g,
+            carbsPer100g: catalogEntry.carbsPer100g,
+            fatPer100g: catalogEntry.fatPer100g
+        )
+        modelContext.insert(preExistingItem)
+
+        let customItem = FoodItem(
+            name: "Grandma's soup",
+            category: "Custom",
+            mainMacro: .protein,
+            caloriesPer100g: 80,
+            proteinPer100g: 5,
+            carbsPer100g: 8,
+            fatPer100g: 2,
+            isCustom: true
+        )
+        modelContext.insert(customItem)
+        try modelContext.save()
+
+        #expect(preExistingItem.catalogKey == nil)
+        #expect(preExistingItem.categoryKey == nil)
+
+        _ = AppContainer(modelContext: modelContext)
+
+        let catalogEntryName = catalogEntry.name
+        let backfilled = try modelContext.fetch(
+            FetchDescriptor<FoodItem>(predicate: #Predicate { $0.name == catalogEntryName })
+        ).first
+        #expect(backfilled?.catalogKey == catalogEntry.catalogKey)
+        #expect(backfilled?.categoryKey == catalogEntry.categoryKey)
+
+        let survivingCustomItem = try modelContext.fetch(
+            FetchDescriptor<FoodItem>(predicate: #Predicate { $0.name == "Grandma's soup" })
+        ).first
+        #expect(survivingCustomItem?.catalogKey == nil)
+        #expect(survivingCustomItem?.categoryKey == nil)
+        #expect(survivingCustomItem?.category == "Custom")
+    }
+
     @Test("Reconciliation is idempotent across repeated launches")
     func reconciliationIsIdempotent() async throws {
         let modelContainer = try Self.makeInMemoryContainer()

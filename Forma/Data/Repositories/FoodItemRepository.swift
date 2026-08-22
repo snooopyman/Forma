@@ -17,11 +17,9 @@ final class FoodItemRepository: FoodItemRepositoryProtocol {
     }
     
     func fetchAll() async throws -> [FoodItem] {
-        let descriptor = FetchDescriptor<FoodItem>(
-            sortBy: [SortDescriptor(\.name)]
-        )
         do {
-            return try modelContext.fetch(descriptor)
+            let items = try modelContext.fetch(FetchDescriptor<FoodItem>())
+            return items.sorted { $0.displayName.localizedStandardCompare($1.displayName) == .orderedAscending }
         }
         catch {
             throw NutritionError.loadFailed
@@ -29,12 +27,11 @@ final class FoodItemRepository: FoodItemRepositoryProtocol {
     }
     
     func search(query: String) async throws -> [FoodItem] {
-        let descriptor = FetchDescriptor<FoodItem>(
-            predicate: #Predicate { $0.name.localizedStandardContains(query) },
-            sortBy: [SortDescriptor(\.name)]
-        )
         do {
-            return try modelContext.fetch(descriptor)
+            let items = try modelContext.fetch(FetchDescriptor<FoodItem>())
+            return items
+                .filter { $0.displayName.localizedStandardContains(query) }
+                .sorted { $0.displayName.localizedStandardCompare($1.displayName) == .orderedAscending }
         }
         catch {
             throw NutritionError.loadFailed

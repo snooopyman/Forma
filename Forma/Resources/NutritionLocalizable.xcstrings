@@ -1,60 +1,4254 @@
 {
-  "sourceLanguage" : "en",
-  "strings" : {
-    "ERROR_LOAD_FAILED" : {
-      "comment" : "Error when loading nutrition data fails",
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Could not load nutrition data"
+  "sourceLanguage": "en",
+  "strings": {
+    "ERROR_DELETE_FAILED": {
+      "comment": "Error when deleting a nutrition item fails",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Could not delete item"
           }
         },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "No se pudieron cargar los datos de nutrición"
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No se pudo eliminar el elemento"
           }
         }
       }
     },
-    "ERROR_SAVE_FAILED" : {
-      "comment" : "Error when saving nutrition changes fails",
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Could not save changes"
+    "ERROR_LOAD_FAILED": {
+      "comment": "Error when loading nutrition data fails",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Could not load nutrition data"
           }
         },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "No se pudieron guardar los cambios"
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No se pudieron cargar los datos de nutrición"
           }
         }
       }
     },
-    "ERROR_DELETE_FAILED" : {
-      "comment" : "Error when deleting a nutrition item fails",
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Could not delete item"
+    "ERROR_SAVE_FAILED": {
+      "comment": "Error when saving nutrition changes fails",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Could not save changes"
           }
         },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "No se pudo eliminar el elemento"
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No se pudieron guardar los cambios"
+          }
+        }
+      }
+    },
+    "category_beverages": {
+      "comment": "Food catalog category name",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Beverages"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bebidas"
+          }
+        }
+      }
+    },
+    "category_cured_meats": {
+      "comment": "Food catalog category name",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cured Meats"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Embutidos"
+          }
+        }
+      }
+    },
+    "category_dairy_eggs": {
+      "comment": "Food catalog category name",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dairy & Eggs"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Lácteos y Huevos"
+          }
+        }
+      }
+    },
+    "category_fats_oils": {
+      "comment": "Food catalog category name",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Fats & Oils"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Grasas"
+          }
+        }
+      }
+    },
+    "category_fish_seafood": {
+      "comment": "Food catalog category name",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Fish & Seafood"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pescado"
+          }
+        }
+      }
+    },
+    "category_fruit": {
+      "comment": "Food catalog category name",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Fruit"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Fruta"
+          }
+        }
+      }
+    },
+    "category_grains_bread": {
+      "comment": "Food catalog category name",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Grains & Bread"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cereales y Pan"
+          }
+        }
+      }
+    },
+    "category_legumes": {
+      "comment": "Food catalog category name",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Legumes"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Legumbres"
+          }
+        }
+      }
+    },
+    "category_meat": {
+      "comment": "Food catalog category name",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Meat"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Carne"
+          }
+        }
+      }
+    },
+    "category_nuts_seeds": {
+      "comment": "Food catalog category name",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nuts & Seeds"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Frutos Secos"
+          }
+        }
+      }
+    },
+    "category_prepared_dishes": {
+      "comment": "Food catalog category name",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Prepared Dishes"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Platos"
+          }
+        }
+      }
+    },
+    "category_protein_powders": {
+      "comment": "Food catalog category name",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Protein Powders"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Proteínas"
+          }
+        }
+      }
+    },
+    "category_sauces_condiments": {
+      "comment": "Food catalog category name",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sauces & Condiments"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Condimentos"
+          }
+        }
+      }
+    },
+    "category_vegetables": {
+      "comment": "Food catalog category name",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Vegetables"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Verduras"
+          }
+        }
+      }
+    },
+    "food_almond_butter": {
+      "comment": "Food catalog item name",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Almond butter"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Crema de almendra"
+          }
+        }
+      }
+    },
+    "food_almond_milk": {
+      "comment": "Food catalog item name",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Almond milk"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Leche de almendra"
+          }
+        }
+      }
+    },
+    "food_almonds": {
+      "comment": "Food catalog item name",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Almonds"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Almendras"
+          }
+        }
+      }
+    },
+    "food_anchovies": {
+      "comment": "Food catalog item name",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Anchovies"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Anchoas"
+          }
+        }
+      }
+    },
+    "food_apple": {
+      "comment": "Food catalog item name",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Apple"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Manzana"
+          }
+        }
+      }
+    },
+    "food_apricot": {
+      "comment": "Food catalog item name",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Apricot"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Albaricoque"
+          }
+        }
+      }
+    },
+    "food_arugula": {
+      "comment": "Food catalog item name",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Arugula"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Rúcula"
+          }
+        }
+      }
+    },
+    "food_asparagus": {
+      "comment": "Food catalog item name",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Asparagus"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Espárragos"
+          }
+        }
+      }
+    },
+    "food_avocado": {
+      "comment": "Food catalog item name",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Avocado"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Aguacate"
+          }
+        }
+      }
+    },
+    "food_bacon": {
+      "comment": "Food catalog item name",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bacon"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bacón"
+          }
+        }
+      }
+    },
+    "food_bagel": {
+      "comment": "Food catalog item name",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bagel"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bagel"
+          }
+        }
+      }
+    },
+    "food_banana": {
+      "comment": "Food catalog item name",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Banana"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Plátano"
+          }
+        }
+      }
+    },
+    "food_bbq_sauce": {
+      "comment": "Food catalog item name",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "BBQ sauce"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Salsa barbacoa"
+          }
+        }
+      }
+    },
+    "food_bbq_sauce_0": {
+      "comment": "Food catalog item name",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "BBQ sauce 0%"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Salsa barbacoa 0%"
+          }
+        }
+      }
+    },
+    "food_bechamel_sauce": {
+      "comment": "Food catalog item name",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bechamel sauce"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Salsa bechamel"
+          }
+        }
+      }
+    },
+    "food_beetroot": {
+      "comment": "Food catalog item name",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Beetroot"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Remolacha"
+          }
+        }
+      }
+    },
+    "food_black_coffee": {
+      "comment": "Food catalog item name",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Black coffee"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Café negro"
+          }
+        }
+      }
+    },
+    "food_blackberries": {
+      "comment": "Food catalog item name",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Blackberries"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Moras"
+          }
+        }
+      }
+    },
+    "food_blueberries": {
+      "comment": "Food catalog item name",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Blueberries"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Arándanos"
+          }
+        }
+      }
+    },
+    "food_bolognese_lasagna": {
+      "comment": "Food catalog item name",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bolognese lasagna"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Lasaña boloñesa"
+          }
+        }
+      }
+    },
+    "food_breaded_hake": {
+      "comment": "Food catalog item name",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Breaded hake"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Merluza empanada"
+          }
+        }
+      }
+    },
+    "food_breakfast_cereal": {
+      "comment": "Food catalog item name",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Breakfast cereal"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cereales de desayuno"
+          }
+        }
+      }
+    },
+    "food_broccoli": {
+      "comment": "Food catalog item name",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Broccoli"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Brócoli"
+          }
+        }
+      }
+    },
+    "food_burgos_fresh_cheese_0": {
+      "comment": "Food catalog item name",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Burgos fresh cheese 0%"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Queso fresco burgos 0%"
+          }
+        }
+      }
+    },
+    "food_butter": {
+      "comment": "Food catalog item name",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Butter"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mantequilla"
+          }
+        }
+      }
+    },
+    "food_caesar_dressing": {
+      "comment": "Food catalog item name",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Caesar dressing"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Salsa César"
+          }
+        }
+      }
+    },
+    "food_carrot": {
+      "comment": "Food catalog item name",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Carrot"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Zanahoria"
+          }
+        }
+      }
+    },
+    "food_casein": {
+      "comment": "Food catalog item name",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Casein"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Caseína"
+          }
+        }
+      }
+    },
+    "food_cashews": {
+      "comment": "Food catalog item name",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cashews"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Anacardos"
+          }
+        }
+      }
+    },
+    "food_cauliflower": {
+      "comment": "Food catalog item name",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cauliflower"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Coliflor"
+          }
+        }
+      }
+    },
+    "food_cherries": {
+      "comment": "Food catalog item name",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cherries"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cerezas"
+          }
+        }
+      }
+    },
+    "food_cherry_tomato": {
+      "comment": "Food catalog item name",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cherry tomato"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tomate cherry"
+          }
+        }
+      }
+    },
+    "food_chia_seeds": {
+      "comment": "Food catalog item name",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Chia seeds"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Semillas de chía"
+          }
+        }
+      }
+    },
+    "food_chicken_breast": {
+      "comment": "Food catalog item name",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Chicken breast"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pechuga de pollo"
+          }
+        }
+      }
+    },
+    "food_chicken_thigh": {
+      "comment": "Food catalog item name",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Chicken thigh"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Muslo de pollo"
+          }
+        }
+      }
+    },
+    "food_chicken_wings": {
+      "comment": "Food catalog item name",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Chicken wings"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alitas de pollo"
+          }
+        }
+      }
+    },
+    "food_chopped_pork": {
+      "comment": "Food catalog item name",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Chopped pork"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Chopped"
+          }
+        }
+      }
+    },
+    "food_chorizo": {
+      "comment": "Food catalog item name",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Chorizo"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Chorizo"
+          }
+        }
+      }
+    },
+    "food_cod": {
+      "comment": "Food catalog item name",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cod"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bacalao"
+          }
+        }
+      }
+    },
+    "food_cooked_amaranth": {
+      "comment": "Food catalog item name",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cooked amaranth"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Amaranto cocido"
+          }
+        }
+      }
+    },
+    "food_cooked_barley": {
+      "comment": "Food catalog item name",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cooked barley"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cebada cocida"
+          }
+        }
+      }
+    },
+    "food_cooked_basmati_rice": {
+      "comment": "Food catalog item name",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cooked basmati rice"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Arroz basmati cocido"
+          }
+        }
+      }
+    },
+    "food_cooked_brown_rice": {
+      "comment": "Food catalog item name",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cooked brown rice"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Arroz integral cocido"
+          }
+        }
+      }
+    },
+    "food_cooked_buckwheat": {
+      "comment": "Food catalog item name",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cooked buckwheat"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Trigo sarraceno cocido"
+          }
+        }
+      }
+    },
+    "food_cooked_bulgur": {
+      "comment": "Food catalog item name",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cooked bulgur"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bulgur cocido"
+          }
+        }
+      }
+    },
+    "food_cooked_chickpeas": {
+      "comment": "Food catalog item name",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cooked chickpeas"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Garbanzos cocidos"
+          }
+        }
+      }
+    },
+    "food_cooked_couscous": {
+      "comment": "Food catalog item name",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cooked couscous"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cuscús cocido"
+          }
+        }
+      }
+    },
+    "food_cooked_ham": {
+      "comment": "Food catalog item name",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cooked ham"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Jamón cocido"
+          }
+        }
+      }
+    },
+    "food_cooked_lentils": {
+      "comment": "Food catalog item name",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cooked lentils"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Lentejas cocidas"
+          }
+        }
+      }
+    },
+    "food_cooked_millet": {
+      "comment": "Food catalog item name",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cooked millet"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mijo cocido"
+          }
+        }
+      }
+    },
+    "food_cooked_octopus": {
+      "comment": "Food catalog item name",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cooked octopus"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pulpo cocido"
+          }
+        }
+      }
+    },
+    "food_cooked_pasta": {
+      "comment": "Food catalog item name",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cooked pasta"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pasta cocida"
+          }
+        }
+      }
+    },
+    "food_cooked_peas": {
+      "comment": "Food catalog item name",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cooked peas"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Guisantes cocidos"
+          }
+        }
+      }
+    },
+    "food_cooked_potato": {
+      "comment": "Food catalog item name",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cooked potato"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Patata cocida"
+          }
+        }
+      }
+    },
+    "food_cooked_quinoa": {
+      "comment": "Food catalog item name",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cooked quinoa"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Quinoa cocida"
+          }
+        }
+      }
+    },
+    "food_cooked_red_beans": {
+      "comment": "Food catalog item name",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cooked red beans"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alubias rojas cocidas"
+          }
+        }
+      }
+    },
+    "food_cooked_soybeans": {
+      "comment": "Food catalog item name",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cooked soybeans"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Soja cocida"
+          }
+        }
+      }
+    },
+    "food_cooked_sweet_corn": {
+      "comment": "Food catalog item name",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cooked sweet corn"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Maíz dulce cocido"
+          }
+        }
+      }
+    },
+    "food_cooked_sweet_potato": {
+      "comment": "Food catalog item name",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cooked sweet potato"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Batata cocida"
+          }
+        }
+      }
+    },
+    "food_cooked_white_beans": {
+      "comment": "Food catalog item name",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cooked white beans"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alubias blancas cocidas"
+          }
+        }
+      }
+    },
+    "food_cooked_white_rice": {
+      "comment": "Food catalog item name",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cooked white rice"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Arroz blanco cocido"
+          }
+        }
+      }
+    },
+    "food_cooked_whole_wheat_pasta": {
+      "comment": "Food catalog item name",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cooked whole wheat pasta"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pasta integral cocida"
+          }
+        }
+      }
+    },
+    "food_cookies": {
+      "comment": "Food catalog item name",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cookies"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Galletas"
+          }
+        }
+      }
+    },
+    "food_corn_cakes": {
+      "comment": "Food catalog item name",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Corn cakes"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tortitas de maíz"
+          }
+        }
+      }
+    },
+    "food_cottage_cheese": {
+      "comment": "Food catalog item name",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cottage cheese"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Queso cottage"
+          }
+        }
+      }
+    },
+    "food_croissant": {
+      "comment": "Food catalog item name",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Croissant"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Croissant"
+          }
+        }
+      }
+    },
+    "food_cucumber": {
+      "comment": "Food catalog item name",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cucumber"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pepino"
+          }
+        }
+      }
+    },
+    "food_curd_cheese": {
+      "comment": "Food catalog item name",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Curd cheese"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Requesón"
+          }
+        }
+      }
+    },
+    "food_cured_cheese": {
+      "comment": "Food catalog item name",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cured cheese"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Queso curado"
+          }
+        }
+      }
+    },
+    "food_cured_pork_loin": {
+      "comment": "Food catalog item name",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cured pork loin"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Lomo embuchado"
+          }
+        }
+      }
+    },
+    "food_curry_sauce": {
+      "comment": "Food catalog item name",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Curry sauce"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Salsa curry"
+          }
+        }
+      }
+    },
+    "food_cuttlefish": {
+      "comment": "Food catalog item name",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cuttlefish"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sepia"
+          }
+        }
+      }
+    },
+    "food_dark_chocolate_70": {
+      "comment": "Food catalog item name",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dark chocolate 70%"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Chocolate negro 70%"
+          }
+        }
+      }
+    },
+    "food_dates": {
+      "comment": "Food catalog item name",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dates"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dátiles"
+          }
+        }
+      }
+    },
+    "food_diet_beef_burger": {
+      "comment": "Food catalog item name",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Diet beef burger"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hamburguesa Diet Ternera"
+          }
+        }
+      }
+    },
+    "food_diet_chicken_burger": {
+      "comment": "Food catalog item name",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Diet chicken burger"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hamburguesa Diet Pollo"
+          }
+        }
+      }
+    },
+    "food_diet_ox_burger": {
+      "comment": "Food catalog item name",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Diet ox burger"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hamburguesa Diet Buey"
+          }
+        }
+      }
+    },
+    "food_diet_turkey_burger": {
+      "comment": "Food catalog item name",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Diet turkey burger"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hamburguesa Diet Pavo"
+          }
+        }
+      }
+    },
+    "food_duck": {
+      "comment": "Food catalog item name",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Duck"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pato"
+          }
+        }
+      }
+    },
+    "food_edamame": {
+      "comment": "Food catalog item name",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Edamame"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Edamame"
+          }
+        }
+      }
+    },
+    "food_egg_white_powder": {
+      "comment": "Food catalog item name",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Egg white powder"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Claras de huevo en polvo"
+          }
+        }
+      }
+    },
+    "food_egg_whites": {
+      "comment": "Food catalog item name",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Egg whites"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Claras de huevo"
+          }
+        }
+      }
+    },
+    "food_eggplant": {
+      "comment": "Food catalog item name",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Eggplant"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Berenjena"
+          }
+        }
+      }
+    },
+    "food_feta_cheese": {
+      "comment": "Food catalog item name",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Feta cheese"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Queso feta"
+          }
+        }
+      }
+    },
+    "food_fig": {
+      "comment": "Food catalog item name",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Fig"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Higo"
+          }
+        }
+      }
+    },
+    "food_firm_tofu": {
+      "comment": "Food catalog item name",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Firm tofu"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tofu firme"
+          }
+        }
+      }
+    },
+    "food_flax_seeds": {
+      "comment": "Food catalog item name",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Flax seeds"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Semillas de lino"
+          }
+        }
+      }
+    },
+    "food_french_fries": {
+      "comment": "Food catalog item name",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "French fries"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Patatas fritas"
+          }
+        }
+      }
+    },
+    "food_fresh_cheese": {
+      "comment": "Food catalog item name",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Fresh cheese"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Queso fresco"
+          }
+        }
+      }
+    },
+    "food_fresh_cheese_0": {
+      "comment": "Food catalog item name",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Fresh cheese 0%"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Queso fresco 0%"
+          }
+        }
+      }
+    },
+    "food_fresh_coconut": {
+      "comment": "Food catalog item name",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Fresh coconut"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Coco fresco"
+          }
+        }
+      }
+    },
+    "food_fresh_sardine": {
+      "comment": "Food catalog item name",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Fresh sardine"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sardina fresca"
+          }
+        }
+      }
+    },
+    "food_fried_chicken": {
+      "comment": "Food catalog item name",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Fried chicken"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pollo frito"
+          }
+        }
+      }
+    },
+    "food_fuet_sausage": {
+      "comment": "Food catalog item name",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Fuet sausage"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Fuet"
+          }
+        }
+      }
+    },
+    "food_garlic_sauce": {
+      "comment": "Food catalog item name",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Garlic sauce"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Salsa de ajo"
+          }
+        }
+      }
+    },
+    "food_gazpacho": {
+      "comment": "Food catalog item name",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gazpacho"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gazpacho"
+          }
+        }
+      }
+    },
+    "food_gluten_free_bread": {
+      "comment": "Food catalog item name",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gluten-free bread"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pan sin gluten"
+          }
+        }
+      }
+    },
+    "food_gnocchi": {
+      "comment": "Food catalog item name",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gnocchi"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gnocchi"
+          }
+        }
+      }
+    },
+    "food_greek_yogurt_10": {
+      "comment": "Food catalog item name",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Greek yogurt 10%"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Yogur griego 10%"
+          }
+        }
+      }
+    },
+    "food_greek_yogurt_2": {
+      "comment": "Food catalog item name",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Greek yogurt 2%"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Yogur griego 2%"
+          }
+        }
+      }
+    },
+    "food_green_beans": {
+      "comment": "Food catalog item name",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Green beans"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Judías verdes"
+          }
+        }
+      }
+    },
+    "food_green_bell_pepper": {
+      "comment": "Food catalog item name",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Green bell pepper"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pimiento verde"
+          }
+        }
+      }
+    },
+    "food_hake_fillet": {
+      "comment": "Food catalog item name",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hake fillet"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Filete de merluza"
+          }
+        }
+      }
+    },
+    "food_hazelnut_spread": {
+      "comment": "Food catalog item name",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hazelnut spread"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Crema de avellana"
+          }
+        }
+      }
+    },
+    "food_hemp_seeds": {
+      "comment": "Food catalog item name",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hemp seeds"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Semillas de cáñamo"
+          }
+        }
+      }
+    },
+    "food_high_protein_custard": {
+      "comment": "Food catalog item name",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "High-protein custard"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Natillas +Proteínas"
+          }
+        }
+      }
+    },
+    "food_high_protein_ice_cream": {
+      "comment": "Food catalog item name",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "High-protein ice cream"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Helado proteico"
+          }
+        }
+      }
+    },
+    "food_high_protein_pizza": {
+      "comment": "Food catalog item name",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "High-protein pizza"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pizza proteica"
+          }
+        }
+      }
+    },
+    "food_high_protein_yogurt_coconut": {
+      "comment": "Food catalog item name",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "High-protein yogurt Coconut"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Yogur +Proteínas Coco"
+          }
+        }
+      }
+    },
+    "food_high_protein_yogurt_natural": {
+      "comment": "Food catalog item name",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "High-protein yogurt Natural"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Yogur +Proteínas Natural"
+          }
+        }
+      }
+    },
+    "food_honey": {
+      "comment": "Food catalog item name",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Honey"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Miel"
+          }
+        }
+      }
+    },
+    "food_ice_cream": {
+      "comment": "Food catalog item name",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ice cream"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Helado"
+          }
+        }
+      }
+    },
+    "food_instant_mashed_potatoes": {
+      "comment": "Food catalog item name",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Instant mashed potatoes"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Puré de patata instantáneo"
+          }
+        }
+      }
+    },
+    "food_instant_oats": {
+      "comment": "Food catalog item name",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Instant oats"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Avena instantánea"
+          }
+        }
+      }
+    },
+    "food_jam": {
+      "comment": "Food catalog item name",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Jam"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mermelada"
+          }
+        }
+      }
+    },
+    "food_kale": {
+      "comment": "Food catalog item name",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kale"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kale"
+          }
+        }
+      }
+    },
+    "food_ketchup": {
+      "comment": "Food catalog item name",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ketchup"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ketchup"
+          }
+        }
+      }
+    },
+    "food_ketchup_0": {
+      "comment": "Food catalog item name",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ketchup 0%"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ketchup 0%"
+          }
+        }
+      }
+    },
+    "food_kiwi": {
+      "comment": "Food catalog item name",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kiwi"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kiwi"
+          }
+        }
+      }
+    },
+    "food_lean_beef": {
+      "comment": "Food catalog item name",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Lean beef"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Carne de vacuno magra"
+          }
+        }
+      }
+    },
+    "food_lean_ox": {
+      "comment": "Food catalog item name",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Lean ox"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Buey magro"
+          }
+        }
+      }
+    },
+    "food_lean_pork": {
+      "comment": "Food catalog item name",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Lean pork"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Carne de cerdo magra"
+          }
+        }
+      }
+    },
+    "food_lettuce": {
+      "comment": "Food catalog item name",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Lettuce"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Lechuga"
+          }
+        }
+      }
+    },
+    "food_light_mayonnaise": {
+      "comment": "Food catalog item name",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Light mayonnaise"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mayonesa ligera"
+          }
+        }
+      }
+    },
+    "food_mackerel": {
+      "comment": "Food catalog item name",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mackerel"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Caballa"
+          }
+        }
+      }
+    },
+    "food_madrid_style_stew": {
+      "comment": "Food catalog item name",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Madrid-style stew"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cocido madrileño"
+          }
+        }
+      }
+    },
+    "food_mango": {
+      "comment": "Food catalog item name",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mango"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mango"
+          }
+        }
+      }
+    },
+    "food_mayonnaise": {
+      "comment": "Food catalog item name",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mayonnaise"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mayonesa"
+          }
+        }
+      }
+    },
+    "food_mayonnaise_0": {
+      "comment": "Food catalog item name",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mayonnaise 0%"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mayonesa 0%"
+          }
+        }
+      }
+    },
+    "food_melon": {
+      "comment": "Food catalog item name",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Melon"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Melón"
+          }
+        }
+      }
+    },
+    "food_mixed_nuts": {
+      "comment": "Food catalog item name",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mixed nuts"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Frutos secos mixtos"
+          }
+        }
+      }
+    },
+    "food_mortadella": {
+      "comment": "Food catalog item name",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mortadella"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mortadela"
+          }
+        }
+      }
+    },
+    "food_mozzarella_cheese": {
+      "comment": "Food catalog item name",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mozzarella cheese"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Queso mozzarella"
+          }
+        }
+      }
+    },
+    "food_muesli": {
+      "comment": "Food catalog item name",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Muesli"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Muesli"
+          }
+        }
+      }
+    },
+    "food_mushrooms": {
+      "comment": "Food catalog item name",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mushrooms"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Champiñones"
+          }
+        }
+      }
+    },
+    "food_mussels": {
+      "comment": "Food catalog item name",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mussels"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mejillones"
+          }
+        }
+      }
+    },
+    "food_mustard": {
+      "comment": "Food catalog item name",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mustard"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mostaza"
+          }
+        }
+      }
+    },
+    "food_nectarine": {
+      "comment": "Food catalog item name",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nectarine"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nectarina"
+          }
+        }
+      }
+    },
+    "food_oat_flour": {
+      "comment": "Food catalog item name",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Oat flour"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Harina de avena"
+          }
+        }
+      }
+    },
+    "food_oat_milk": {
+      "comment": "Food catalog item name",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Oat milk"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Leche de avena"
+          }
+        }
+      }
+    },
+    "food_oats_rolled": {
+      "comment": "Food catalog item name",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Oats (rolled)"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Avena (copos)"
+          }
+        }
+      }
+    },
+    "food_olive_oil": {
+      "comment": "Food catalog item name",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Olive oil"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Aceite de oliva"
+          }
+        }
+      }
+    },
+    "food_orange": {
+      "comment": "Food catalog item name",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Orange"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Naranja"
+          }
+        }
+      }
+    },
+    "food_orange_juice": {
+      "comment": "Food catalog item name",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Orange juice"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Zumo de naranja"
+          }
+        }
+      }
+    },
+    "food_oysters": {
+      "comment": "Food catalog item name",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Oysters"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ostras"
+          }
+        }
+      }
+    },
+    "food_pea_protein": {
+      "comment": "Food catalog item name",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pea protein"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Proteína de guisante"
+          }
+        }
+      }
+    },
+    "food_peanut_butter": {
+      "comment": "Food catalog item name",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Peanut butter"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Crema de cacahuete"
+          }
+        }
+      }
+    },
+    "food_peanuts": {
+      "comment": "Food catalog item name",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Peanuts"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cacahuetes"
+          }
+        }
+      }
+    },
+    "food_pear": {
+      "comment": "Food catalog item name",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pear"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pera"
+          }
+        }
+      }
+    },
+    "food_pineapple": {
+      "comment": "Food catalog item name",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pineapple"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Piña"
+          }
+        }
+      }
+    },
+    "food_pistachios": {
+      "comment": "Food catalog item name",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pistachios"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pistachos"
+          }
+        }
+      }
+    },
+    "food_pizza": {
+      "comment": "Food catalog item name",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pizza"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pizza"
+          }
+        }
+      }
+    },
+    "food_plain_yogurt": {
+      "comment": "Food catalog item name",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Plain yogurt"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Yogur natural"
+          }
+        }
+      }
+    },
+    "food_plum": {
+      "comment": "Food catalog item name",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Plum"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ciruela"
+          }
+        }
+      }
+    },
+    "food_pork_loin": {
+      "comment": "Food catalog item name",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pork loin"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Lomo de cerdo"
+          }
+        }
+      }
+    },
+    "food_prawns": {
+      "comment": "Food catalog item name",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Prawns"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Langostinos"
+          }
+        }
+      }
+    },
+    "food_pumpkin": {
+      "comment": "Food catalog item name",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pumpkin"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Calabaza"
+          }
+        }
+      }
+    },
+    "food_pumpkin_seeds": {
+      "comment": "Food catalog item name",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pumpkin seeds"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pipas de calabaza"
+          }
+        }
+      }
+    },
+    "food_quail": {
+      "comment": "Food catalog item name",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Quail"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Codorniz"
+          }
+        }
+      }
+    },
+    "food_rabbit": {
+      "comment": "Food catalog item name",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Rabbit"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Conejo"
+          }
+        }
+      }
+    },
+    "food_raspberries": {
+      "comment": "Food catalog item name",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Raspberries"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Frambuesas"
+          }
+        }
+      }
+    },
+    "food_raw_quinoa": {
+      "comment": "Food catalog item name",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Raw quinoa"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Quinoa cruda"
+          }
+        }
+      }
+    },
+    "food_red_bell_pepper": {
+      "comment": "Food catalog item name",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Red bell pepper"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pimiento rojo"
+          }
+        }
+      }
+    },
+    "food_rice_cakes": {
+      "comment": "Food catalog item name",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Rice cakes"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tortitas de arroz"
+          }
+        }
+      }
+    },
+    "food_rice_protein": {
+      "comment": "Food catalog item name",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Rice protein"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Proteína de arroz"
+          }
+        }
+      }
+    },
+    "food_ricotta_cheese": {
+      "comment": "Food catalog item name",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ricotta cheese"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Queso ricotta"
+          }
+        }
+      }
+    },
+    "food_rye_bread": {
+      "comment": "Food catalog item name",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Rye bread"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pan de centeno"
+          }
+        }
+      }
+    },
+    "food_rye_bread_55": {
+      "comment": "Food catalog item name",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "55% rye bread"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pan 55% centeno"
+          }
+        }
+      }
+    },
+    "food_salchichon_sausage": {
+      "comment": "Food catalog item name",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Salchichón sausage"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Salchichón"
+          }
+        }
+      }
+    },
+    "food_salmon": {
+      "comment": "Food catalog item name",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Salmon"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Salmón"
+          }
+        }
+      }
+    },
+    "food_salmorejo": {
+      "comment": "Food catalog item name",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Salmorejo"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Salmorejo"
+          }
+        }
+      }
+    },
+    "food_sardines_in_oil": {
+      "comment": "Food catalog item name",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sardines in oil"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sardinas en aceite"
+          }
+        }
+      }
+    },
+    "food_sausages": {
+      "comment": "Food catalog item name",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sausages"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Salchichas"
+          }
+        }
+      }
+    },
+    "food_seitan": {
+      "comment": "Food catalog item name",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Seitan"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Seitán"
+          }
+        }
+      }
+    },
+    "food_semi_skimmed_milk": {
+      "comment": "Food catalog item name",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Semi-skimmed milk"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Leche semidesnatada"
+          }
+        }
+      }
+    },
+    "food_serrano_ham": {
+      "comment": "Food catalog item name",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Serrano ham"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Jamón serrano"
+          }
+        }
+      }
+    },
+    "food_shiitake_mushrooms": {
+      "comment": "Food catalog item name",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Shiitake mushrooms"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Setas shiitake"
+          }
+        }
+      }
+    },
+    "food_shrimp": {
+      "comment": "Food catalog item name",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Shrimp"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gambas"
+          }
+        }
+      }
+    },
+    "food_sliced_turkey": {
+      "comment": "Food catalog item name",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sliced turkey"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pavo en lonchas"
+          }
+        }
+      }
+    },
+    "food_sobrasada": {
+      "comment": "Food catalog item name",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sobrasada"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sobrasada"
+          }
+        }
+      }
+    },
+    "food_soft_cheese": {
+      "comment": "Food catalog item name",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Soft cheese"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Queso tierno"
+          }
+        }
+      }
+    },
+    "food_soy_milk": {
+      "comment": "Food catalog item name",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Soy milk"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Leche de soja"
+          }
+        }
+      }
+    },
+    "food_spanish_potato_omelet": {
+      "comment": "Food catalog item name",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Spanish potato omelet"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tortilla de patata"
+          }
+        }
+      }
+    },
+    "food_spelt_bread": {
+      "comment": "Food catalog item name",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Spelt bread"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pan de espelta"
+          }
+        }
+      }
+    },
+    "food_spelt_flakes": {
+      "comment": "Food catalog item name",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Spelt flakes"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Copos de espelta"
+          }
+        }
+      }
+    },
+    "food_spinach": {
+      "comment": "Food catalog item name",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Spinach"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Espinacas"
+          }
+        }
+      }
+    },
+    "food_sports_drink": {
+      "comment": "Food catalog item name",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sports drink"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bebida isotónica"
+          }
+        }
+      }
+    },
+    "food_spring_onion": {
+      "comment": "Food catalog item name",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Spring onion"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cebolleta"
+          }
+        }
+      }
+    },
+    "food_squid": {
+      "comment": "Food catalog item name",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Squid"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Calamares"
+          }
+        }
+      }
+    },
+    "food_strawberries": {
+      "comment": "Food catalog item name",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Strawberries"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Fresas"
+          }
+        }
+      }
+    },
+    "food_sugar": {
+      "comment": "Food catalog item name",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sugar"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Azúcar"
+          }
+        }
+      }
+    },
+    "food_sunflower_oil": {
+      "comment": "Food catalog item name",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sunflower oil"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Aceite de girasol"
+          }
+        }
+      }
+    },
+    "food_sweet_chili_sauce": {
+      "comment": "Food catalog item name",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sweet chili sauce"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Salsa chili dulce"
+          }
+        }
+      }
+    },
+    "food_swiss_chard": {
+      "comment": "Food catalog item name",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Swiss chard"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Acelga"
+          }
+        }
+      }
+    },
+    "food_tempeh": {
+      "comment": "Food catalog item name",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tempeh"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tempeh"
+          }
+        }
+      }
+    },
+    "food_tomato": {
+      "comment": "Food catalog item name",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tomato"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tomate"
+          }
+        }
+      }
+    },
+    "food_tomato_sauce": {
+      "comment": "Food catalog item name",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tomato sauce"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Salsa de tomate"
+          }
+        }
+      }
+    },
+    "food_trout": {
+      "comment": "Food catalog item name",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Trout"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Trucha"
+          }
+        }
+      }
+    },
+    "food_tuna_in_water": {
+      "comment": "Food catalog item name",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tuna in water"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Atún en agua"
+          }
+        }
+      }
+    },
+    "food_tuna_lasagna": {
+      "comment": "Food catalog item name",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tuna lasagna"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Lasaña de atún"
+          }
+        }
+      }
+    },
+    "food_turkey": {
+      "comment": "Food catalog item name",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Turkey"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pavo"
+          }
+        }
+      }
+    },
+    "food_turkey_breast_92_hacendado": {
+      "comment": "Food catalog item name",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Turkey breast 92% Hacendado"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pechuga de pavo 92% Hacendado"
+          }
+        }
+      }
+    },
+    "food_veal": {
+      "comment": "Food catalog item name",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Veal"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ternera"
+          }
+        }
+      }
+    },
+    "food_vegan_protein": {
+      "comment": "Food catalog item name",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Vegan protein"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Proteína vegana"
+          }
+        }
+      }
+    },
+    "food_walnuts": {
+      "comment": "Food catalog item name",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Walnuts"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nueces"
+          }
+        }
+      }
+    },
+    "food_watermelon": {
+      "comment": "Food catalog item name",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Watermelon"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sandía"
+          }
+        }
+      }
+    },
+    "food_wheat_flour": {
+      "comment": "Food catalog item name",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wheat flour"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Harina de trigo"
+          }
+        }
+      }
+    },
+    "food_whey_isolate": {
+      "comment": "Food catalog item name",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Whey isolate"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Whey Isolate"
+          }
+        }
+      }
+    },
+    "food_whey_protein": {
+      "comment": "Food catalog item name",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Whey protein"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Whey Protein"
+          }
+        }
+      }
+    },
+    "food_white_bread": {
+      "comment": "Food catalog item name",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "White bread"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pan blanco"
+          }
+        }
+      }
+    },
+    "food_white_sandwich_bread": {
+      "comment": "Food catalog item name",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "White sandwich bread"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pan de molde blanco"
+          }
+        }
+      }
+    },
+    "food_whole_eggs": {
+      "comment": "Food catalog item name",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Whole eggs"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Huevos enteros"
+          }
+        }
+      }
+    },
+    "food_whole_grain_cereal": {
+      "comment": "Food catalog item name",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Whole grain cereal"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cereales integrales"
+          }
+        }
+      }
+    },
+    "food_whole_milk": {
+      "comment": "Food catalog item name",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Whole milk"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Leche entera"
+          }
+        }
+      }
+    },
+    "food_whole_wheat_bread": {
+      "comment": "Food catalog item name",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Whole wheat bread"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pan integral"
+          }
+        }
+      }
+    },
+    "food_whole_wheat_flour": {
+      "comment": "Food catalog item name",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Whole wheat flour"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Harina integral de trigo"
+          }
+        }
+      }
+    },
+    "food_whole_wheat_pita_bread": {
+      "comment": "Food catalog item name",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Whole wheat pita bread"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pan de pita integral"
+          }
+        }
+      }
+    },
+    "food_whole_wheat_sandwich_bread": {
+      "comment": "Food catalog item name",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Whole wheat sandwich bread"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pan de molde integral"
+          }
+        }
+      }
+    },
+    "food_zucchini": {
+      "comment": "Food catalog item name",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Zucchini"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Calabacín"
           }
         }
       }
     }
   },
-  "version" : "1.0"
+  "version": "1.0"
 }

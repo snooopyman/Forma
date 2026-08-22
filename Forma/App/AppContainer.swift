@@ -98,7 +98,7 @@ final class AppContainer {
     private static func reconcileFoodCatalog(modelContext: ModelContext) {
         do {
             let catalogItems = FoodCatalog.catalog
-            let catalogNames = Set(catalogItems.map(\.name))
+            let catalogByName = Dictionary(uniqueKeysWithValues: catalogItems.map { ($0.name, $0) })
             let existingNonCustom = try modelContext.fetch(
                 FetchDescriptor<FoodItem>(predicate: #Predicate { !$0.isCustom })
             )
@@ -116,16 +116,25 @@ final class AppContainer {
             for (item, count) in usageCounts where count > 0 {
                 seenNames.insert(item.name)
             }
+            
+            var survivingItems = usageCounts.filter { $0.count > 0 }.map(\.item)
             for (item, count) in usageCounts where count == 0 {
-                if !catalogNames.contains(item.name) || seenNames.contains(item.name) {
+                if catalogByName[item.name] == nil || seenNames.contains(item.name) {
                     modelContext.delete(item)
                 } else {
                     seenNames.insert(item.name)
+                    survivingItems.append(item)
                 }
             }
             
             for catalogItem in catalogItems where !seenNames.contains(catalogItem.name) {
                 modelContext.insert(catalogItem)
+            }
+            
+            for item in survivingItems {
+                guard let catalogItem = catalogByName[item.name] else { continue }
+                item.catalogKey = catalogItem.catalogKey
+                item.categoryKey = catalogItem.categoryKey
             }
             
             try modelContext.save()

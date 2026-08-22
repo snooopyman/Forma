@@ -13,8 +13,10 @@ final class FoodItem {
 
     var id: UUID
     var name: String
+    var catalogKey: String?
     var brand: String
     var category: String
+    var categoryKey: String?
     var mainMacro: MacroType
     var caloriesPer100g: Double
     var proteinPer100g: Double
@@ -24,11 +26,23 @@ final class FoodItem {
     var basePortionG: Double
     var isCustom: Bool
 
+    var displayName: String {
+        guard let catalogKey else { return name }
+        return String(localized: String.LocalizationValue(catalogKey), table: "NutritionLocalizable")
+    }
+
+    var displayCategory: String {
+        guard let categoryKey else { return category }
+        return String(localized: String.LocalizationValue(categoryKey), table: "NutritionLocalizable")
+    }
+
     init(
         id: UUID = UUID(),
         name: String,
+        catalogKey: String? = nil,
         brand: String = "",
         category: String,
+        categoryKey: String? = nil,
         mainMacro: MacroType,
         caloriesPer100g: Double,
         proteinPer100g: Double,
@@ -40,8 +54,10 @@ final class FoodItem {
     ) {
         self.id = id
         self.name = name
+        self.catalogKey = catalogKey
         self.brand = brand
         self.category = category
+        self.categoryKey = categoryKey
         self.mainMacro = mainMacro
         self.caloriesPer100g = caloriesPer100g
         self.proteinPer100g = proteinPer100g

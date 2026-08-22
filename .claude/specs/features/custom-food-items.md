@@ -4,7 +4,7 @@
 Flujo para que el usuario cree sus propios `FoodItem` cuando el catálogo semilla no tiene lo que busca, con formulario manual de macros.
 
 ## Problema que resuelve
-`FoodItem.isCustom: Bool` (`Forma/Domain/Models/FoodItem.swift`, default `false`) ya existe en el modelo y ya está protegido del reseed del catálogo (`AppContainer.swift`, línea ~55: `FetchDescriptor<FoodItem>(predicate: #Predicate { !$0.isCustom })` borra solo los no-custom antes de re-sembrar `FoodCatalog.catalog`). Pero nada en la UI escribe nunca ese campo — `FoodBrowserView` solo tiene filtro por categoría, búsqueda y lista, sin botón de creación. `Exercise` ya tiene el patrón equivalente completo y funcionando (`WorkoutDayDetailViewModel.swift`: `Exercise(name: name, primaryMuscle: muscle, isCustom: true)`) — este spec replica ese patrón para comida.
+`FoodItem.isCustom: Bool` (`Forma/Domain/Models/FoodItem.swift`, default `false`) ya existe en el modelo y ya está protegido de la reconciliación del catálogo (`AppContainer.reconcileFoodCatalog`, `AppContainer.swift:98-135` — corrección: no hay ningún flag `foodCatalogV1`/`UserDefaults` de un solo uso; la función corre en cada arranque y hace diff por `name` entre `FoodCatalog.catalog` y los `FoodItem` `!isCustom` existentes, borrando los que ya no están en el catálogo y no están en uso, e insertando los que faltan por nombre — `#Predicate { !$0.isCustom }` en la línea 103 es lo que excluye a los custom de todo esto). Pero nada en la UI escribe nunca ese campo — `FoodBrowserView` solo tiene filtro por categoría, búsqueda y lista, sin botón de creación. `Exercise` ya tiene el patrón equivalente completo y funcionando (`WorkoutDayDetailViewModel.swift`: `Exercise(name: name, primaryMuscle: muscle, isCustom: true)`) — este spec replica ese patrón para comida.
 
 ## Flujo principal
 1. El usuario busca un alimento en `FoodBrowserView` y no lo encuentra
@@ -33,7 +33,7 @@ Flujo para que el usuario cree sus propios `FoodItem` cuando el catálogo semill
 
 ## Casos edge
 - [x] Nombre duplicado con un alimento del catálogo semilla o con otro custom → se avisa con alert de confirmación, no se bloquea
-- [ ] El reseed del catálogo (`AppContainer.swift`) debe seguir sin tocar los `isCustom == true` — el mecanismo actual (gateado por `UserDefaults` flag `foodCatalogV1`, corre una sola vez y ya filtra `!isCustom`) ya lo garantiza estructuralmente; falta test que lo verifique explícitamente
+- [ ] La reconciliación del catálogo (`AppContainer.reconcileFoodCatalog`) debe seguir sin tocar los `isCustom == true` — el mecanismo actual (corre en cada arranque, filtra `!isCustom` antes de operar) ya lo garantiza estructuralmente; falta test que lo verifique explícitamente
 - [x] `basePortionG` con valor 0 o negativo — mínimo de validación en el formulario: `1g` (default prellenado sigue siendo `100`, consistente con el default de `FoodItem.init`, pero eso es un valor por defecto, no un mínimo — el mínimo real es 1)
 
 ## Criterios de aceptación

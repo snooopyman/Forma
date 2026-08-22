@@ -345,7 +345,7 @@ private struct FoodItemRow: View {
             }
 
             VStack(alignment: .leading, spacing: DS.Spacing.xs) {
-                Text(item.foodItem?.name ?? "")
+                Text(item.foodItem?.displayName ?? "")
                     .font(.body)
                     .foregroundStyle(.textPrimary)
                 Text(verbatim: "\(item.amountGrams.formatted(.number.precision(.fractionLength(0)))) g")
@@ -403,8 +403,8 @@ private struct FoodPickerSheet: View {
 
     private var filtered: [FoodItem] {
         searchText.isEmpty
-            ? foods.sorted { $0.name < $1.name }
-            : foods.filter { $0.name.localizedStandardContains(searchText) }
+            ? foods.sorted { $0.displayName < $1.displayName }
+            : foods.filter { $0.displayName.localizedStandardContains(searchText) }
     }
 
     private var canConfirm: Bool {
@@ -458,7 +458,7 @@ private struct FoodPickerSheet: View {
                 }
             } message: {
                 if let food = selectedFood {
-                    Text(verbatim: "\(food.name) · \(food.proteinPer100g.formatted(.number.precision(.fractionLength(0))))P \(food.carbsPer100g.formatted(.number.precision(.fractionLength(0))))C \(food.fatPer100g.formatted(.number.precision(.fractionLength(0))))F /100g")
+                    Text(verbatim: "\(food.displayName) · \(food.proteinPer100g.formatted(.number.precision(.fractionLength(0))))P \(food.carbsPer100g.formatted(.number.precision(.fractionLength(0))))C \(food.fatPer100g.formatted(.number.precision(.fractionLength(0))))F /100g")
                 }
             }
         }
@@ -486,10 +486,10 @@ private struct FoodPickerRow: View {
                 .frame(width: 4, height: 40)
 
             VStack(alignment: .leading, spacing: DS.Spacing.xs) {
-                Text(food.name)
+                Text(food.displayName)
                     .font(.body)
                     .foregroundStyle(.textPrimary)
-                Text(food.category)
+                Text(food.displayCategory)
                     .font(.caption)
                     .foregroundStyle(.textSecondary)
             }

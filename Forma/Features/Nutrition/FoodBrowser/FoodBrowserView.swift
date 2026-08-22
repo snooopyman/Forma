@@ -184,7 +184,7 @@ private struct FoodBrowserRow: View {
             
             VStack(alignment: .leading, spacing: DS.Spacing.xs) {
                 HStack(spacing: DS.Spacing.xs) {
-                    Text(item.name)
+                    Text(item.displayName)
                         .font(.body)
                         .foregroundStyle(.textPrimary)
                     if item.isCustom {
@@ -198,7 +198,7 @@ private struct FoodBrowserRow: View {
                     }
                 }
                 HStack(spacing: DS.Spacing.xs) {
-                    Text(item.category)
+                    Text(item.displayCategory)
                         .font(.caption)
                         .foregroundStyle(.textSecondary)
                     Text(verbatim: "·")

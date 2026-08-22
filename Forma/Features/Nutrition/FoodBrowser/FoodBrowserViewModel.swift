@@ -28,16 +28,16 @@ final class FoodBrowserViewModel {
     // MARK: - Computed Properties
     
     var categories: [String] {
-        Array(Set(allItems.map { $0.category })).sorted()
+        Array(Set(allItems.map { $0.displayCategory })).sorted()
     }
-    
+
     var filteredItems: [FoodItem] {
         var items = allItems
         if let cat = selectedCategory {
-            items = items.filter { $0.category == cat }
+            items = items.filter { $0.displayCategory == cat }
         }
         if !searchText.isEmpty {
-            items = items.filter { $0.name.localizedStandardContains(searchText) }
+            items = items.filter { $0.displayName.localizedStandardContains(searchText) }
         }
         return items
     }
@@ -62,7 +62,7 @@ final class FoodBrowserViewModel {
     
     func isDuplicateName(_ name: String, excludingID: UUID?) -> Bool {
         allItems.contains {
-            $0.name.caseInsensitiveCompare(name) == .orderedSame && $0.id != excludingID
+            $0.displayName.caseInsensitiveCompare(name) == .orderedSame && $0.id != excludingID
         }
     }
     
