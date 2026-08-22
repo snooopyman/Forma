@@ -4419,6 +4419,193 @@
           }
         }
       }
+    },
+    "Compare mesocycles" : {
+      "comment" : "Toolbar button on the mesocycle list to open the mesocycle comparison picker.",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Comparar mesociclos"
+          }
+        }
+      }
+    },
+    "Complete at least one session in two or more mesocycles to compare them" : {
+      "comment" : "Accessibility hint on the disabled compare-mesocycles button.",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Completa al menos una sesión en dos o más mesociclos para poder compararlos"
+          }
+        }
+      }
+    },
+    "Compare" : {
+      "comment" : "Toolbar button confirming the mesocycle selection in the comparison picker.",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Comparar"
+          }
+        }
+      }
+    },
+    "Adherence" : {
+      "comment" : "Section header comparing completed vs. planned sessions across mesocycles.",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Adherencia"
+          }
+        }
+      }
+    },
+    "Mesocycle comparison" : {
+      "comment" : "Navigation title for the mesocycle comparison screen.",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Comparativa de mesociclos"
+          }
+        }
+      }
+    },
+    "%lld of %lld sessions" : {
+      "comment" : "Adherence row: completed sessions out of planned sessions for a mesocycle.",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld de %lld sesiones"
+          }
+        }
+      }
+    },
+    "%@ kilograms per week" : {
+      "comment" : "Accessibility value for a weekly volume bar in the mesocycle comparison chart.",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ kilogramos por semana"
+          }
+        }
+      }
+    },
+    "%@ sets per week" : {
+      "comment" : "Accessibility value for a muscle volume bar in the mesocycle comparison chart.",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ series por semana"
+          }
+        }
+      }
+    },
+    "Mesocycle" : {
+      "comment" : "Chart value label identifying the mesocycle series/category.",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mesociclo"
+          }
+        }
+      }
+    },
+    "Volume" : {
+      "comment" : "Chart value label for total training volume.",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Volumen"
+          }
+        }
+      }
+    },
+    "Average kg per week" : {
+      "comment" : "Caption under the weekly volume chart title in mesocycle comparison, explaining the Y axis.",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kg promedio por semana"
+          }
+        }
+      }
+    },
+    "Average sets per week" : {
+      "comment" : "Caption under the volume-by-muscle chart title in mesocycle comparison, explaining the Y axis.",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Series promedio por semana"
+          }
+        }
+      }
+    },
+    "None of the selected mesocycles trained %@" : {
+      "comment" : "Empty state shown instead of the volume-by-muscle chart when no selected mesocycle logged any sets for the picked muscle group.",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ninguno de los mesociclos seleccionados entrenó %@"
+          }
+        }
+      }
+    },
+    "None of the selected mesocycles logged any volume yet" : {
+      "comment" : "Empty state shown instead of the weekly volume chart when every selected mesocycle has 0 kg of logged volume.",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ninguno de los mesociclos seleccionados registró volumen todavía"
+          }
+        }
+      }
+    },
+    "No training days planned" : {
+      "comment" : "Adherence row value when the mesocycle has no non-rest workout days configured, so adherence can't be measured.",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sin días de entreno planificados"
+          }
+        }
+      }
+    },
+    "About weekly volume" : {
+      "comment" : "Accessibility label for the info button next to the weekly volume chart in mesocycle comparison.",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sobre el volumen semanal"
+          }
+        }
+      }
+    },
+    "Mesocycles have different lengths, so we show the weekly average kg lifted instead of a raw total. That way, a 4-week block and an 8-week block compare fairly." : {
+      "comment" : "Popover explaining why weekly volume is averaged instead of totaled, shown from the info button in mesocycle comparison.",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Los mesociclos tienen duraciones distintas, así que mostramos el promedio semanal de kg levantados en vez de un total. Así, un bloque de 4 semanas y uno de 8 se comparan de forma justa."
+          }
+        }
+      }
     }
   },
   "version" : "1.1"

@@ -18,6 +18,13 @@ struct MesocycleListView: View {
     
     @AppStorage("postOnboardingAction") private var postOnboardingAction: AppTab = .today
     @State private var showingCreate = false
+    @State private var showingComparisonPicker = false
+    
+    // MARK: - Computed Properties
+    
+    private var eligibleForComparison: [Mesocycle] {
+        (viewModel?.mesocycles ?? []).filter { $0.sessions.contains { $0.isCompleted } }
+    }
     
     // MARK: - Body
     
@@ -40,11 +47,31 @@ struct MesocycleListView: View {
                     Image(systemName: "plus")
                 }
             }
+            ToolbarItem(placement: .topBarTrailing) {
+                Button {
+                    showingComparisonPicker = true
+                } label: {
+                    Image(systemName: "chart.bar.xaxis")
+                }
+                .disabled(eligibleForComparison.count < 2)
+                .accessibilityLabel(String(localized: "Compare mesocycles"))
+                .accessibilityHint(
+                    eligibleForComparison.count < 2
+                    ? String(localized: "Complete at least one session in two or more mesocycles to compare them")
+                    : ""
+                )
+            }
         }
         .sheet(isPresented: $showingCreate) {
             if let viewModel {
                 CreateMesocycleView(viewModel: viewModel)
             }
+        }
+        .navigationDestination(isPresented: $showingComparisonPicker) {
+            MesocycleComparisonPickerView(
+                mesocycles: eligibleForComparison,
+                volumeCalculatorService: container.volumeCalculatorService
+            )
         }
         .task {
             await viewModel?.load()

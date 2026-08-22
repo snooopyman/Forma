@@ -38,6 +38,8 @@ enum MuscleGroup: String, CaseIterable, Codable {
         }
     }
     
+    static let comparable: [MuscleGroup] = allCases.filter { $0 != .cardio && $0 != .fullBody && $0 != .legs }
+    
     var localizedName: String {
         switch self {
         case .chest:        return String(localized: "Chest")

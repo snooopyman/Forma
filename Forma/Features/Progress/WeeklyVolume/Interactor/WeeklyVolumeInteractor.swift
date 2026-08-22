@@ -14,9 +14,6 @@ final class WeeklyVolumeInteractor: WeeklyVolumeInteractorProtocol {
     private let sessionRepository: WorkoutSessionRepositoryProtocol
     private let volumeCalculatorService: VolumeCalculatorServiceProtocol
     private let targetRepository: MuscleVolumeTargetRepositoryProtocol
-    private static let comparedMuscleGroups: [MuscleGroup] = MuscleGroup.allCases.filter {
-        $0 != .cardio && $0 != .fullBody && $0 != .legs
-    }
     
     // MARK: - Initializers
     
@@ -40,7 +37,7 @@ final class WeeklyVolumeInteractor: WeeklyVolumeInteractorProtocol {
         let targets = try await targetRepository.fetchAll()
         let targetsByMuscle = Dictionary(uniqueKeysWithValues: targets.map { ($0.muscleGroup, $0) })
         
-        let coachings = Self.comparedMuscleGroups.map { muscle -> MuscleVolumeCoaching in
+        let coachings = MuscleGroup.comparable.map { muscle -> MuscleVolumeCoaching in
             let actualSets = weeklySummary.volumeByMuscle[muscle]?.totalSets ?? 0
             guard let target = targetsByMuscle[muscle] else {
                 return MuscleVolumeCoaching(muscleGroup: muscle, actualSets: actualSets, target: nil, state: nil)
